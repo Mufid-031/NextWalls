@@ -1,9 +1,10 @@
 "use client";
 
-import Button from "@/components/auth/Button";
 import Header from "@/components/auth/Header";
-import Input from "@/components/auth/Input";
 import Label from "@/components/auth/Label";
+import Input from "@/components/auth/Input";
+import Checkbox from "@/components/auth/Checkbox";
+import Button from "@/components/auth/Button";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
@@ -19,23 +20,23 @@ export default function LoginPage() {
           <form className="w-full md:w-1/2">
             <Header />
             <div className="mb-5 flex flex-col">
-              <Label htmlFor="email" className="text-lg mb-1">
+              <Label className="text-lg mb-1" htmlFor="email">
                 Email address
               </Label>
-              <Input type="email" name="email" id="email" className="p-3" />
+              <Input className="p-3" type="email" name="email" id="email" />
             </div>
             <div className="mb-5 flex flex-col">
-              <Label htmlFor="password" className="text-lg mb-1">
+              <Label className="text-lg mb-1" htmlFor="password">
                 Password
               </Label>
-              <Input type="password" name="password" id="password" className="p-3" />
+              <Input className="p-3" type="password" name="password" id="password" />
             </div>
             <div className="mb-5 flex justify-between">
               <div className="flex items-center gap-2">
-                <input className="h-4 w-4 border border-gray-300 rounded text-white checked:bg-purple-600" type="checkbox" name="remember" id="remember" />
-                <label className="text-sm text-slate-600" htmlFor="remember">
+                <Checkbox className="checked:bg-purple-600" name="remember" id="remember" />
+                <Label className="text-sm" htmlFor="remember">
                   Remember for 30 days
-                </label>
+                </Label>
               </div>
               <Link href="/auth/forgot-password" className="text-sm underline text-purple-400">
                 Forgot Password

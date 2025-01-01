@@ -1,8 +1,11 @@
 "use client";
 
+import Header from "@/components/auth/Header";
+import Label from "@/components/auth/Label";
+import Input from "@/components/auth/Input";
+import Button from "@/components/auth/Button";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Header from "@/components/auth/Header";
 
 export default function RegisterPage() {
   return (
@@ -25,26 +28,26 @@ export default function RegisterPage() {
           <form className="w-full md:w-1/2">
             <Header />
             <div className="mb-5 flex flex-col">
-              <label className="text-lg text-slate-600 font-semibold mb-1" htmlFor="email">
+              <Label className="text-lg mb-1" htmlFor="email">
                 Email address
-              </label>
-              <input className="text-black p-3 border rounded border-slate-600" type="email" name="email" id="email" />
+              </Label>
+              <Input className="p-3" type="email" name="email" id="email" />
             </div>
             <div className="mb-5 flex flex-col">
-              <label className="text-lg text-slate-600 font-semibold mb-1" htmlFor="password">
+              <Label className="text-lg mb-1" htmlFor="password">
                 Password
-              </label>
-              <input className="text-black p-3 border rounded border-slate-600" type="password" name="password" id="password" />
+              </Label>
+              <Input className="p-3" type="password" name="password" id="password" />
             </div>
             <div className="mb-5 flex flex-col">
-              <label className="text-lg text-slate-600 font-semibold mb-1" htmlFor="confirmPassword">
+              <Label className="text-lg mb-1" htmlFor="confirmPassword">
                 Confirm Password
-              </label>
-              <input className="text-black p-3 border rounded border-slate-600" type="password" name="confirmPassword" id="confirmPassword" />
+              </Label>
+              <Input className="p-3" type="password" name="confirmPassword" id="confirmPassword" />
             </div>
-            <button className="w-full bg-purple-600 text-white rounded p-3 mb-5 hover:bg-purple-700 active:scale-90 transition-all duration-200 cursor-pointer" type="submit">
+            <Button className="w-full bg-purple-600 text-white rounded p-3 mb-5 hover:bg-purple-700" type="submit">
               Sign Up
-            </button>
+            </Button>
             <p className="text-sm text-center">
               Already have an account?{" "}
               <Link href="/auth/login" className="underline text-purple-400">
