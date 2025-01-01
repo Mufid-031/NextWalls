@@ -10,6 +10,11 @@ export default function Checkbox({
     className?: string;
 }) {
     return (
-        <input className={cn("h-4 w-4 border border-gray-300 rounded text-white", className)} type="checkbox" name={name} id={id} />
+        <input 
+            className={cn("h-4 w-4 border border-gray-300 rounded text-white", className)} 
+            type="checkbox" 
+            name={name} 
+            id={id} 
+        />
     )
 }
