@@ -1,5 +1,7 @@
 "use client";
 
+import { signIn } from "next-auth/react";
+
 export default function Home() {
 
 
@@ -7,13 +9,14 @@ export default function Home() {
     <main>
       <nav className="flex items-center justify-between p-4 h-20">
         <h3 className="text-3xl font-semibold">NextWalls</h3>
-        <div className="flex gap-2 p-2 bg-slate-100 rounded-md">
+        {/* <div className="flex gap-2 p-2 bg-slate-100 rounded-md">
           <select className="text-black p-1" name="options" id="options">
             <option value="photo">Photo</option>
             <option value="video">Video</option>
           </select>
           <input className="text-black p-1 bg-slate-100" type="text" name="search" id="search" />
-        </div>
+        </div> */}
+        <button onClick={() => signIn()}>SignIn</button>
       </nav>
 
       <main className="container mx-auto px-4 py-8">
