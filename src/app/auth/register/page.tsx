@@ -9,9 +9,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Background from "@/components/auth/Background";
 
 export default function RegisterPage() {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -28,7 +28,7 @@ export default function RegisterPage() {
       return;
     }
     try {
-      const response = await axios.post("/api/auth/callback/credentials", {
+      const response = await axios.post("/api/register", {
         email,
         password,
       });
@@ -42,24 +42,11 @@ export default function RegisterPage() {
       setError((error as Error).message);
       setIsLoading(false);
     }
-  }
-
+  };
 
   return (
     <main className="flex overflow-hidden">
-      <motion.section className="hidden lg:block w-1/2 p-5 bg-purple-600" initial={{ x: "-100%" }} animate={{ x: 0 }} transition={{ duration: 0.7 }}>
-        <header className="text-2xl font-bold text-white">
-          <span className="outline-text">Next</span>Walls
-        </header>
-        <style jsx>
-          {`
-            .outline-text {
-              -webkit-text-stroke: 1px white;
-              color: transparent;
-            }
-          `}
-        </style>
-      </motion.section>
+      <Background x="-100%" />
       <motion.section className="w-full lg:w-1/2 p-5" initial={{ x: "100%" }} animate={{ x: 0 }} transition={{ duration: 0.7 }}>
         <div className="my-14 py-[3.33rem] w-full flex justify-center items-center">
           <form className="w-full md:w-1/2" onSubmit={handleSubmit}>
