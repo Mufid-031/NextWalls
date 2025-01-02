@@ -2,15 +2,19 @@
 
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 
 export default function AdminPage() {
   const { isOpen } = useAdminSidebar();
+  const { data: session } = useSession();
+
   return (
     <div className={cn(
       "p-6 space-y-6 transition-all duration-300",
       isOpen ? "ml-64" : "ml-16"
     )}>
+      <h2 className="text-3xl font-bold">Dashboard {session && session.user?.name}</h2>
       <div className="grid grid-cols-2 gap-4">
         <div className="w-full h-40 bg-white rounded-md"></div>
         <div className="w-full h-40 bg-white rounded-md"></div>

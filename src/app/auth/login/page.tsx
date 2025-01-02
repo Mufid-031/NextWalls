@@ -10,12 +10,10 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,21 +24,31 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/auth/callback/credentials", {
+      const response = await signIn("credentials", {
         email,
         password,
+        redirect: false,
       });
 
-      if (response.status === 200) {
+      if (response?.ok) {
         setError("");
         setIsLoading(false);
-        push("/");
+        const session = await getSession();
+        if (session) {
+          const role = session.user.role;
+
+          if (role === "ADMIN") {
+            push("/admin");
+          } else {
+            push("/");
+          }
+        }
       }
     } catch (error) {
       setError((error as Error).message);
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <main className="flex overflow-hidden">

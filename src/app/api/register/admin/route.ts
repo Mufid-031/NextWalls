@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
         data: {
             name: email.split("@")[0],
             email,
-            password: await bcrypt.hash(password, 10)
+            password: await bcrypt.hash(password, 10),
+            role: "ADMIN"
         }
     })
 

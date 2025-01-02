@@ -28,7 +28,7 @@ export default function RegisterPage() {
       return;
     }
     try {
-      const response = await axios.post("/api/register", {
+      const response = await axios.post("/api/register/admin", {
         email,
         password,
       });
@@ -36,7 +36,7 @@ export default function RegisterPage() {
       if (response.status === 200) {
         setError("");
         setIsLoading(false);
-        push("/");
+        push("/auth/login");
       }
     } catch (error) {
       setError((error as Error).message);

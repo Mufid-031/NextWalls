@@ -11,15 +11,22 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
+      type: "credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const { email, password } = credentials as { email: string; password: string };
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
         if (!email || !password) {
           throw new Error("Email and Password are required");
         }
@@ -29,16 +36,22 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) {
-          throw new Error("No user found with this email");
+          return null;
         }
+
+        console.log(user);
 
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
-          throw new Error("Incorrect password");
+          return null;
         }
-
-        return { id: user.id.toString(), email: user.email, name: user.name };
+        return {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
     GoogleProvider({
@@ -54,20 +67,43 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
+    async jwt({ token, account, profile, user }) {
+      if (account?.provider === "credentials" && user) {
+        token.name = user?.name;
+        token.email = user?.email;
+        token.role = user?.role;
+      }
+
+      if (account?.provider === "google" && profile) {
+        const userInDb = await prisma.user.findUnique({
+          where: { email: profile.email },
+        });
+
+        if (!userInDb) {
+          await prisma.user.create({
+            data: {
+              email: profile.email!,
+              name: profile.name!,
+              password: await bcrypt.hash("google", 10),
+              role: "USER",
+            },
+          });
+        }
+
+        token.email = profile.email;
+        token.name = profile.name;
+        token.role = "USER";
       }
       return token;
     },
     async session({ session, token }) {
-      if (token?.id) {
-        if (session.user && "id" in session.user) {
-          session.user.id = token.id;
+      if (token) {
+        session.user = {
+          ...session.user,
+          name: token.name as string,
+          email: token.email as string,
+          role: token.role as string,
         }
       }
       return session;
