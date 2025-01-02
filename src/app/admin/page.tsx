@@ -15,7 +15,7 @@ export default function AdminPage() {
       isOpen ? "ml-64" : "ml-16"
     )}>
       <h2 className="text-3xl font-bold">Dashboard {session && session.user?.name}</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="w-full h-40 bg-white rounded-md"></div>
         <div className="w-full h-40 bg-white rounded-md"></div>
         <div className="w-full h-40 bg-white rounded-md"></div>

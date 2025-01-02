@@ -28,7 +28,7 @@ export default function RegisterPage() {
       return;
     }
     try {
-      const response = await axios.post("/api/register/admin", {
+      const response = await axios.post("/api/register", {
         email,
         password,
       });

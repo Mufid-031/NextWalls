@@ -16,7 +16,7 @@ export default function WallpapersPage() {
             <Link href="/admin/upload">Upload</Link>
         </Button>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <div className="w-full h-52 bg-white rounded-md"></div>
         <div className="w-full h-52 bg-white rounded-md"></div>
         <div className="w-full h-52 bg-white rounded-md"></div>
