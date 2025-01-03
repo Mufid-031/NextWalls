@@ -157,8 +157,15 @@ export default function UploadPage() {
             )}
           </div>
           <div className="mt-4">
-            <h2 className="text-2xl font-bold">{title || "Title"}</h2>
-            <p>{description || "Description"}</p>
+            <h2 className={`text-2xl font-bold text-center w-1/2 h-10 ${title ? "line-clamp-1" : "bg-gray-300"} mx-auto rounded-md`}>{title || ""}</h2>
+            <p className={`mt-2 text-center h-7 ${description ? "" : "bg-gray-300"} rounded-md`}>{description || ""}</p>
+            {!description && (
+              <>
+                <p className="mt-2 text-center h-7 bg-gray-300 rounded-md">{description || ""}</p>
+                <p className="mt-2 text-center h-7 bg-gray-300 rounded-md">{description || ""}</p>
+                <p className="mt-2 text-center h-7 bg-gray-300 rounded-md">{description || ""}</p>
+              </>
+            )}
           </div>
         </div>
       </div>
