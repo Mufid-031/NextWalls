@@ -56,7 +56,7 @@ export default function UploadPage() {
         console.log(`${key}: ${value}`);
       }
 
-      const response = await axios.post("/api/wallpapers", formData, {
+      const response = await axios.post("/api/wallpapers/nocloud", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -67,7 +67,6 @@ export default function UploadPage() {
         setTitle("");
         setDescription("");
         setFiles([]);
-        console.log(response.data);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
