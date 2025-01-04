@@ -18,8 +18,9 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
         data: {
             name: email.split("@")[0],
-            email,
-            password: await bcrypt.hash(password, 10)
+            email: email,
+            password: await bcrypt.hash(password, 10),
+            role: "USER"
         }
     })
 

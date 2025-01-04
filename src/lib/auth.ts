@@ -75,25 +75,31 @@ export const authOptions: NextAuthOptions = {
         token.role = user?.role;
       }
 
-      if (account?.provider === "google" && profile) {
+      if (account?.provider === "google") {
         const userInDb = await prisma.user.findUnique({
-          where: { email: profile.email },
+          where: { email: profile?.email },
         });
 
+        let user;
+
         if (!userInDb) {
-          await prisma.user.create({
+          user = await prisma.user.create({
             data: {
-              email: profile.email!,
-              name: profile.name!,
+              email: profile?.email as string,
+              name: profile?.name as string,
               password: await bcrypt.hash("google", 10),
               role: "USER",
             },
           });
+        } else {
+          user = await prisma.user.findUnique({
+            where: { email: profile?.email },
+          });
         }
 
-        token.email = profile.email;
-        token.name = profile.name;
-        token.role = "USER";
+        token.email = user?.email;
+        token.name = user?.name;
+        token.role = user?.role;
       }
       return token;
     },

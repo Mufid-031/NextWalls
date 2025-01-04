@@ -28,7 +28,7 @@ export default function RegisterPage() {
       return;
     }
     try {
-      const response = await axios.post("/api/register", {
+      const response = await axios.post("/api/register/admin", {
         email,
         password,
       });
@@ -71,12 +71,12 @@ export default function RegisterPage() {
               <Input className="p-3" type="password" name="confirmPassword" id="confirmPassword" onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
             <Button className="w-full bg-purple-600 text-white rounded p-3 mb-5 hover:bg-purple-700" type="submit">
-              Sign Up
+              {isLoading ? "Registering..." : "Register"}
             </Button>
             <p className="text-sm text-center">
               Already have an account?{" "}
               <Link href="/auth/login" className="underline text-purple-400">
-                {isLoading ? "Loading..." : "Sign In"}
+                Sign In
               </Link>
             </p>
           </form>

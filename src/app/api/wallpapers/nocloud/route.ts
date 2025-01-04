@@ -39,12 +39,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    const categoryInDb = await prisma.category.findFirst({
+      where: { name: title },
+    })
+
+    let category;
+    if (!categoryInDb) {
+      category = await prisma.category.create({
+        data: {
+          name: title.toLowerCase(),
+        }
+      })
+    }
+
     const wallpaper = await prisma.wallpaper.create({
       data: {
-        title,
-        description,
+        title: title,
+        description: description,
         imageUrl: `/uploads/${fileName}`,
-        userId: user.id
+        userId: user.id,
+        categoryId: category?.id || categoryInDb?.id || 0
       }
     })
 
