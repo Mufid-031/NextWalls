@@ -51,10 +51,10 @@ export default function UploadPage() {
       formData.append("email", session.user?.email || "");
       formData.append("file", files[0]);
 
-      // Log formData contents for debugging
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      // // Log formData contents for debugging
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
 
       const response = await axios.post("/api/wallpapers/nocloud", formData, {
         headers: {

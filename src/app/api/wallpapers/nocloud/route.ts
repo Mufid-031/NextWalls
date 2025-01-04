@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
+    const email = formData.get("email") as string;
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -26,19 +27,26 @@ export async function POST(req: NextRequest) {
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     const filePath = path.join(uploadDir, fileName);
     
-    // Ensure the uploads directory exists
     await fs.mkdir(uploadDir, { recursive: true });
 
     await fs.writeFile(filePath, buffer);
+
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     const wallpaper = await prisma.wallpaper.create({
       data: {
         title,
         description,
         imageUrl: `/uploads/${fileName}`,
-        userId: 4 // Note: You might want to get this dynamically
+        userId: user.id
       }
-    });
+    })
 
     return NextResponse.json({ 
       message: "File uploaded successfully", 
