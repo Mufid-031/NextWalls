@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Label from "@/components/auth/Label";
 import { Button } from "@/components/ui/Button";
@@ -12,15 +12,33 @@ import axios from "axios";
 import { ImageIcon } from 'lucide-react';
 import Image from "next/image";
 
+interface Categories {
+  id: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export default function UploadPage() {
   const { isOpen } = useAdminSidebar();
   const { data: session, status } = useSession();
+  const [categories, setCategories] = useState<Categories[]>([]);
   const [title, setTitle] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await axios.get("/api/category").then(res => res.data);
+      setCategories(response);
+    }
+
+    getCategories();
+  }, [])
 
   const handleFileUpload = (files: File[]) => {
     setFiles(files);
@@ -47,6 +65,7 @@ export default function UploadPage() {
     try {
       const formData = new FormData();
       formData.append("title", title.trim());
+      formData.append("categoryId", category);
       formData.append("description", description.trim());
       formData.append("email", session.user?.email || "");
       formData.append("file", files[0]);
@@ -107,6 +126,21 @@ export default function UploadPage() {
               />
             </div>
             <div className="flex flex-col gap-2 mb-5">
+              <Label htmlFor="category" className="text-xl">
+                Category
+              </Label>
+              <select
+                name="category" 
+                id="category" 
+                onChange={(e) => setCategory(e.target.value)}
+                className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2 mb-5">
               <Label htmlFor="description" className="text-xl">
                 Description
               </Label>
@@ -121,7 +155,7 @@ export default function UploadPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="file" className="text-xl">
-                Image
+                Image/Video
               </Label>
               <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
                 <FileUpload onChange={handleFileUpload} />
