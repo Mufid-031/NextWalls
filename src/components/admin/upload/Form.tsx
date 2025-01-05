@@ -2,9 +2,10 @@ import { Input } from "@/components/ui/Input";
 import Label from "@/components/auth/Label";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { Button } from "@/components/ui/Button";
+import { useIsomorphicLayoutEffect } from "framer-motion";
 
 interface Categories {
   id: number;
@@ -39,7 +40,7 @@ export default function Form({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const getCategories = async () => {
       const response = await axios.get("/api/category").then((res) => res.data);
       setCategories(response);

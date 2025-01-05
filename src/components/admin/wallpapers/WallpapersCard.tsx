@@ -1,42 +1,19 @@
 import { Eye, Heart, BookmarkPlus } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Tag, WallpaperTag } from "@prisma/client";
-
-interface Wallpaper {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string;
-  userId: number;
-  categoryId: number;
-  views: number;
-  totalSaves: number;
-  totalLikes: number;
-  width: number;
-  height: number;
-  wallpaperTags: WallpaperTag &
-    {
-      tag: Tag;
-    }[];
-  createdAt: Date;
-  updatedAt: Date;
-  liked?: boolean;
-}
+import { Wallpaper } from "@/types/wallpaper.type";
 
 export default function WallpapersCard({
-  key,
   wallpaper,
   categories,
   handleWallpaperClick,
 }: {
-  key: number;
   wallpaper: Wallpaper;
   categories: Record<number, string>;
   handleWallpaperClick: (wallpaper: Wallpaper) => void;
 }) {
   return (
-    <motion.div key={key} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} onClick={() => handleWallpaperClick(wallpaper)}>
+    <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} onClick={() => handleWallpaperClick(wallpaper)}>
       <div className="w-full h-64 bg-white rounded-t-md relative">
         <span className="absolute top-2 left-2 text-sm font-semibold text-white bg-gray-700 p-2 rounded">
           {wallpaper.width}x{wallpaper.height}
@@ -65,7 +42,9 @@ export default function WallpapersCard({
               {wallpaper.totalSaves}
             </p>
           </div>
-          <div className="text-md text-white bg-purple-500 px-2 py-1 rounded">{categories[wallpaper.categoryId] || "Unknown Category"}</div>
+          <div className="text-md text-white bg-purple-500 px-2 py-1 rounded">
+            {categories[wallpaper.categoryId] || "Unknown Category"}
+          </div>
         </div>
         <div className="cursor-pointer w-full pb-5 px-5">
           <motion.h3 whileHover={{ color: "#8b5cf6" }} className="text-lg font-semibold text-white">

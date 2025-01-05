@@ -76,24 +76,18 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (account?.provider === "google") {
-        const userInDb = await prisma.user.findUnique({
+        let user = await prisma.user.findUnique({
           where: { email: profile?.email },
         });
 
-        let user;
-
-        if (!userInDb) {
+        if (!user) {
           user = await prisma.user.create({
             data: {
               email: profile?.email as string,
               name: profile?.name as string,
-              password: await bcrypt.hash("google", 10),
+              password: await bcrypt.hash(crypto.randomUUID().toString(), 10),
               role: "USER",
             },
-          });
-        } else {
-          user = await prisma.user.findUnique({
-            where: { email: profile?.email },
           });
         }
 

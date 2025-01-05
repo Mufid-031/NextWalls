@@ -5,69 +5,24 @@ import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import WallpaperModal from "@/components/admin/wallpapers/WallpaperModal";
-import { Tag, WallpaperTag } from "@prisma/client";
 import WallpapersCard from "@/components/admin/wallpapers/WallpapersCard";
-
-interface Wallpaper {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string;
-  userId: number;
-  categoryId: number;
-  views: number;
-  totalSaves: number;
-  totalLikes: number;
-  width: number;
-  height: number;
-  wallpaperTags: WallpaperTag & {
-    tag: Tag; 
-  }[];
-  createdAt: Date;
-  updatedAt: Date;
-  liked?: boolean;
-}
-
-interface Category {
-  id: number;
-  name: string;
-}
+import useFetch from "@/hooks/useFetch";
+import { Wallpaper } from "@/types/wallpaper.type";
+import { useIsomorphicLayoutEffect } from "framer-motion";
 
 export default function WallpapersPage() {
   const { isOpen } = useAdminSidebar();
-  const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
-  const [categories, setCategories] = useState<Record<number, string>>({});
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
+  const { data: wallpapers } = useFetch("/api/wallpapers", 60000);
+  const { data: categories } = useFetch(
+    "/api/category",
+    60000,
+    (categories) => categories.reduce((acc: Record<number, string>, category: { id: number; name: string }) => ({ ...acc, [category.id]: category.name }), {})
+  );
 
-  useEffect(() => {
-    const fetchWallpapers = async () => {
-      try {
-        const response = await axios.get("/api/wallpapers");
-        setWallpapers(response.data);
-        // console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching wallpapers:", error);
-      }
-    };
-
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`/api/category`);
-        const categoriesData: Category[] = response.data;
-        const categoriesMap = categoriesData.reduce((acc, category) => ({ ...acc, [category.id]: category.name }), {});
-        setCategories(categoriesMap);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchWallpapers();
-    fetchCategories();
-  }, [selectedWallpaper]);
-
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const addView = async () => {
       if (selectedWallpaper) {
         try {
@@ -100,8 +55,8 @@ export default function WallpapersPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {wallpapers.map((wallpaper, index) => (
-          <WallpapersCard key={index} wallpaper={wallpaper} categories={categories} handleWallpaperClick={(wallpaper) => handleWallpaperClick(wallpaper)} />
+        {wallpapers?.map((wallpaper: Wallpaper) => (
+          <WallpapersCard key={wallpaper.id} wallpaper={wallpaper} categories={categories} handleWallpaperClick={(wallpaper) => handleWallpaperClick(wallpaper)} />
         ))}
       </div>
       {selectedWallpaper && <WallpaperModal wallpaper={selectedWallpaper} category={categories[selectedWallpaper.categoryId] || "Unknown Category"} isOpen={!!selectedWallpaper} onClose={handleCloseModal} />}

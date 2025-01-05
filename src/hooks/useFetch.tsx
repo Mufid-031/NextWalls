@@ -1,36 +1,35 @@
+import axios from "axios";
+import { useIsomorphicLayoutEffect } from "framer-motion";
 import { useState } from "react";
 
-export default function useFetch({
-    enpoint,
-    headers,
-    method,
-    body,
-}: {
-    enpoint: string;
-    headers: Record<string, string>;
-    method: string;
-    body: Array<{ key: string; value: string }>;
-}) {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function useFetch(enpoint: string, revalidateInterval?: number, callback?: (data: any) => void) {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
+  useIsomorphicLayoutEffect(() => {
     const fetchData = async () => {
-        setIsLoading(true);
-        try {  
-            const response = await fetch(`${enpoint}`, {
-                method,
-                headers: headers,
-                body: JSON.stringify(body)
-            })
-            const data = await response.json();
-            setData(data);
-        } catch (error) {
-            setError(error as string);
-        } finally {
-            setIsLoading(false);
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`${enpoint}`);
+        let data = await response.data;
+        if (callback) {
+            data = callback(data);
         }
-    }
+        setData(data);
+      } catch (error) {
+        setError(error as string);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+    const intervalId = setInterval(() => {
+        fetchData();
+    }, revalidateInterval);
+    return () => clearInterval(intervalId);
+  }, []);
 
-    return { fetchData, data, isLoading, error };
+  return { data, isLoading, error };
 }
