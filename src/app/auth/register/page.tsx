@@ -4,12 +4,12 @@ import Header from "@/components/auth/Header";
 import Label from "@/components/auth/Label";
 import Input from "@/components/auth/Input";
 import Button from "@/components/auth/Button";
+import Background from "@/components/auth/Background";
 import Link from "next/link";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import Background from "@/components/auth/Background";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState<string>("");
