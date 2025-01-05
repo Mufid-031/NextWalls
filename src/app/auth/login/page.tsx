@@ -52,7 +52,13 @@ export default function LoginPage() {
 
   return (
     <main className="flex overflow-hidden">
-      <motion.section className="w-full lg:w-1/2 p-5" initial={{ x: "-100%" }} animate={{ x: 0 }} transition={{ duration: 0.7 }}>
+      <motion.section 
+        className="w-full lg:w-1/2 p-5" 
+        initial={{ x: "-100%" }} 
+        animate={{ x: 0 }} 
+        exit={{ x: "-100%" }}
+        transition={{ duration: 0.7 }}
+      >
         <div className="my-14 py-[3.12rem] w-full flex justify-center items-center">
           <form className="w-full md:w-1/2" onSubmit={handleSubmit}>
             <Header />

@@ -30,7 +30,13 @@ const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, is
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          exit={{ opacity: 0 }} 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" 
+          onClick={onClose}
+        >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -44,7 +50,13 @@ const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, is
             </Button>
             <div className="flex flex-col md:flex-row gap-6">
               <div className="w-full md:w-2/3 relative">
-                <Image src={wallpaper.imageUrl} alt={wallpaper.title} width={800} height={600} className="w-full h-auto rounded-lg object-cover" />
+                <Image 
+                  src={wallpaper.imageUrl} 
+                  alt={wallpaper.title} 
+                  width={800} 
+                  height={600} 
+                  className="w-full h-auto rounded-lg object-cover" 
+                />
                 <span className="absolute top-2 left-2 text-sm font-semibold text-white bg-gray-700 p-2 rounded">
                   {wallpaper.width}x{wallpaper.height}
                 </span>
