@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     const description = formData.get("description") as string;
     const email = formData.get("email") as string;
     const categoryId = formData.get("categoryId") as string;
+    const tags = JSON.parse(formData.get("tags") as string);
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -85,6 +86,24 @@ export async function POST(req: NextRequest) {
       where: { id: Number(categoryId) },
     });
 
+    const tagsInDb = await prisma.tag.findMany({
+      where: { name: { in: tags } },
+    });
+
+    if (tagsInDb.length !== tags.length) {
+      await prisma.tag.createMany({
+        data: tags
+          .filter((tag: string) => !tagsInDb.map((t: {name: string}) => t.name).includes(tag))
+          .map((tag: string) => ({
+            name: tag,
+          })),
+      });
+    }
+
+    const tagsInTags = await prisma.tag.findMany({
+      where: { name: { in: tags } },
+    });
+
     const wallpaper = await prisma.wallpaper.create({
       data: {
         title: title,
@@ -96,6 +115,13 @@ export async function POST(req: NextRequest) {
         height: height,
       },
     });
+
+    await prisma.wallpaperTag.createMany({
+      data: tagsInTags.map((tag: { id: number }) => ({
+        wallpaperId: wallpaper.id,
+        tagId: tag.id,
+      }))
+    })
 
     return NextResponse.json(
       {

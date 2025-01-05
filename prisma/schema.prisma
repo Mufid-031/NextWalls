@@ -34,6 +34,7 @@ model Wallpaper {
   category    Category @relation(fields: [categoryId], references: [id])
   savedBy     SavedWallpaper[]
   likedBy     LikedWallpaper[]
+  wallpaperTags WallpaperTag[]
   totalSaves  Int      @default(0)
   totalLikes  Int      @default(0)
   views       Int      @default(0)
@@ -58,6 +59,29 @@ model Category {
   updatedAt DateTime @updatedAt
 
   @@map("categories")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  wallpapers WallpaperTag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tags")
+}
+
+model WallpaperTag {
+  id          Int      @id @default(autoincrement())
+  wallpaperId Int
+  wallpaper   Wallpaper @relation(fields: [wallpaperId], references: [id])
+  tagId       Int
+  tag         Tag       @relation(fields: [tagId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([wallpaperId, tagId])
+  @@map("wallpaper_tags")
 }
 
 model SavedWallpaper {

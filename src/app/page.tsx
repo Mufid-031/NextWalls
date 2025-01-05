@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     console.log(session);
-  }, [])
+  }, []);
   return (
     <main>
       <nav className="flex items-center justify-between p-4 h-20">

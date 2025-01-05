@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/Input";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { cn } from "@/lib/utils";
 import axios from "axios";
-import { ImageIcon } from 'lucide-react';
+import { ImageIcon, X } from 'lucide-react';
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface Categories {
   id: number;
@@ -25,11 +26,22 @@ export default function UploadPage() {
   const [categories, setCategories] = useState<Categories[]>([]);
   const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const handleAddTag = (tag: string) => {
+    if (!tags.includes(tag)) {
+      setTags((prevTags) => [...prevTags, tag]);
+    }
+  };
+
+  const handleRemoveTag = (tag: string) => {
+    setTags((prevTags) => prevTags.filter((t) => t !== tag));
+  };
 
   useEffect(() => {
     const getCategories = async () => {
@@ -69,6 +81,7 @@ export default function UploadPage() {
       formData.append("description", description.trim());
       formData.append("email", session.user?.email || "");
       formData.append("file", files[0]);
+      formData.append("tags", JSON.stringify(tags));
 
       // // Log formData contents for debugging
       // for (const [key, value] of formData.entries()) {
@@ -141,6 +154,23 @@ export default function UploadPage() {
               </select>
             </div>
             <div className="flex flex-col gap-2 mb-5">
+              <Label htmlFor="tags" className="text-xl">
+                Tags
+              </Label>
+              <Input 
+                name="tags" 
+                id="tags"
+                className="text-black"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddTag(e.currentTarget.value);
+                    e.currentTarget.value = "";
+                  }
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-2 mb-5">
               <Label htmlFor="description" className="text-xl">
                 Description
               </Label>
@@ -149,7 +179,7 @@ export default function UploadPage() {
                 id="description" 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                rows={10}
+                rows={5}
                 className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
@@ -178,13 +208,23 @@ export default function UploadPage() {
         <div className="w-full p-5 bg-white rounded-md shadow">
           <div className="w-full h-96 bg-gray-300 flex justify-center items-center overflow-hidden">
             {files.length > 0 ? (
-              <Image
-                src={URL.createObjectURL(files[0])}
-                alt="Preview"
-                width={500}
-                height={500}
-                className="w-full h-full object-cover"
-              />
+              files[0].type.startsWith("image/") ? (
+                <Image
+                  src={URL.createObjectURL(files[0])}
+                  alt="Preview"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover"
+                />
+              ) : files[0].type.startsWith("video/") ? (
+                <video
+                  controls
+                  className="w-full h-full object-cover"
+                >
+                  <source src={URL.createObjectURL(files[0])} type={files[0].type} />
+                  Your browser does not support the video tag.
+                </video>
+              ) : null
             ) : (
               <ImageIcon className="w-10 h-10" />
             )}
@@ -199,6 +239,13 @@ export default function UploadPage() {
                 <p className="mt-2 text-center h-7 bg-gray-300 rounded-md">{description || ""}</p>
               </>
             )}
+            <div className="flex gap-2 mt-5">
+                {tags.map((tag) => (
+                  <motion.span key={tag} whileHover={{ scale: 1.1 }} className="px-2 py-1 text-sm bg-purple-500 text-white rounded-md flex gap-2 items-center font-semibold cursor-pointer">
+                    {tag} <X className="w-4 h-4 cursor-pointer text-red-600 bg-white" onClick={() => handleRemoveTag(tag)} />
+                  </motion.span>
+                ))}
+            </div>
           </div>
         </div>
       </div>
