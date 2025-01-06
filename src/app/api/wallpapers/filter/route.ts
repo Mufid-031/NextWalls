@@ -20,6 +20,7 @@ export const GET = async (req: NextRequest) => {
         },
       },
     },
+    include: { category: true, wallpaperTags: { include: { tag: true } } },
   });
 
   if (wallpapers.length === 0) {

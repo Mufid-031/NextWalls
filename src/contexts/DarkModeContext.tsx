@@ -3,28 +3,24 @@
 import React, { createContext, useContext, useState } from "react";
 
 interface DarkModeContextType {
-    isDarkMode: boolean;
-    toggleDarkMode: () => void;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
 const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
 
 export function DarkModeProvider({ children }: { children: React.ReactNode }) {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-    const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
-    return (
-        <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-            {children}
-        </DarkModeContext.Provider>
-    );
+  return <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>{children}</DarkModeContext.Provider>;
 }
 
 export function useDarkMode() {
-    const context = useContext(DarkModeContext);
-    if (context === undefined) {
-        throw new Error("useDarkMode must be used within a DarkModeProvider");
-    }
-    return context;
+  const context = useContext(DarkModeContext);
+  if (context === undefined) {
+    throw new Error("useDarkMode must be used within a DarkModeProvider");
+  }
+  return context;
 }

@@ -13,26 +13,26 @@ type SelectedFiltersContextType = {
 export const SelectedFiltersContext = createContext<SelectedFiltersContextType | undefined>(undefined);
 
 export function SelectedFiltersProvider({ children }: { children: React.ReactNode }) {
-    const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(["General", "Anime"]));
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(["General", "Anime"]));
 
-    const toggleFilter = (filterName: string) => {
-      const newSelected = new Set(selectedFilters);
-      if (newSelected.has(filterName)) {
-        newSelected.delete(filterName);
-      } else {
-        newSelected.add(filterName);
-      }
-      setSelectedFilters(newSelected);
-    };
+  const toggleFilter = (filterName: string) => {
+    const newSelected = new Set(selectedFilters);
+    if (newSelected.has(filterName)) {
+      newSelected.delete(filterName);
+    } else {
+      newSelected.add(filterName);
+    }
+    setSelectedFilters(newSelected);
+  };
 
-    const getWallpapersBySelectedFilters = async (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => {
-      try {
-        const response = await axios.get(`/api/wallpapers/filter?general=${selectedFilters.has("General") ? "General" : ""}&anime=${selectedFilters.has("Anime") ? "Anime" : ""}&people=${selectedFilters.has("People") ? "People" : ""}`);
-        setWallpapers(response.data);
-      } catch (error) {
-        console.error("Error searching wallpapers:", error);
-      }
-    };
+  const getWallpapersBySelectedFilters = async (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => {
+    try {
+      const response = await axios.get(`/api/wallpapers/filter?general=${selectedFilters.has("General") ? "General" : ""}&anime=${selectedFilters.has("Anime") ? "Anime" : ""}&people=${selectedFilters.has("People") ? "People" : ""}`);
+      setWallpapers(response.data);
+    } catch (error) {
+      console.error("Error searching wallpapers:", error);
+    }
+  };
   return <SelectedFiltersContext.Provider value={{ selectedFilters, toggleFilter, getWallpapersBySelectedFilters }}>{children}</SelectedFiltersContext.Provider>;
 }
 

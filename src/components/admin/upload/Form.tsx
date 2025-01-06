@@ -17,6 +17,7 @@ export default function Form({
   handleAddTag,
   files,
   setFiles,
+  handleResetTag,
 }: {
   title: string;
   setTitle: (title: string) => void;
@@ -26,6 +27,7 @@ export default function Form({
   handleAddTag: (tag: string) => void;
   files: File[];
   setFiles: (files: File[]) => void;
+  handleResetTag: () => void;
 }) {
   const { data: session, status } = useSession();
   const { data: categories } = useFetch<Category[]>("/api/category", 60000);
@@ -76,6 +78,7 @@ export default function Form({
         setTitle("");
         setDescription("");
         setFiles([]);
+        handleResetTag();
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

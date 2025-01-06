@@ -43,6 +43,14 @@ export default function WallpapersPage() {
     };
 
     addView();
+
+    const intervalId = setInterval(() => {
+      getWallpapers();
+    }, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    }
   }, [selectedWallpaper]);
 
   useIsomorphicLayoutEffect(() => {
@@ -51,6 +59,7 @@ export default function WallpapersPage() {
     } else {
       getWallpapers();
     }
+
   }, [search])
 
   const handleWallpaperClick = useCallback((wallpaper: Wallpaper) => {

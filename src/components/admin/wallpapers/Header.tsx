@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useSelectedFilters } from "@/contexts/SelectedFiltersContext";
-import { useWallpaper } from "@/contexts/WallpaperContext";
-import useFetch from "@/hooks/useFetch";
-import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
-import { useIsomorphicLayoutEffect } from "framer-motion";
+import { cn } from "@/lib/utils";
+import useFetch from "@/hooks/useFetch";
+import { useWallpaper } from "@/contexts/WallpaperContext";
+import { useSelectedFilters } from "@/contexts/SelectedFiltersContext";
+import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 
 export default function Header() {
     const { data: categories } = useFetch<Category[]>("/api/category", 60000);

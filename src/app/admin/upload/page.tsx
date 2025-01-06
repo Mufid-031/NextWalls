@@ -19,6 +19,8 @@ export default function UploadPage() {
     }
   };
 
+  const handleResetTag = () => setTags([]);
+
   const handleRemoveTag = (tag: string) => {
     setTags((prevTags) => prevTags.filter((t) => t !== tag));
   };
@@ -35,7 +37,8 @@ export default function UploadPage() {
           tags={tags} 
           handleAddTag={handleAddTag} 
           files={files} 
-          setFiles={setFiles} 
+          setFiles={setFiles}
+          handleResetTag={handleResetTag}
         />
         <PreviewCard
           title={title}
