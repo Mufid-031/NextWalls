@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Image, Upload, Users, Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home, Image, Upload, Users, Settings, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
+import { signOut } from "next-auth/react";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/admin" },
@@ -45,7 +46,7 @@ export function Sidebar() {
             <motion.li 
               initial={{ opacity: 0, x: -20 }} 
               animate={{ opacity: 1, x: 0 }} 
-              key={item.href} 
+              key={item.label} 
               className="group"
             >
               <Link 
@@ -65,6 +66,27 @@ export function Sidebar() {
               </Link>
             </motion.li>
           ))}
+          <motion.li 
+            initial={{ opacity: 0, x: -20 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            className="group"
+          >
+            <button 
+              onClick={() => signOut()} 
+              className={cn("flex items-center p-2 text-gray-700 rounded hover:bg-gray-100", isOpen ? "justify-start" : "justify-center")}
+            >
+              <LogOut className={cn("w-5 h-5 group-hover:text-purple-500", isOpen && "mr-3")} />
+              {isOpen && (
+                <motion.span 
+                  initial={{ opacity: 0, x: -20 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  className="text-sm font-medium group-hover:text-purple-500"
+                >
+                  Logout
+                </motion.span>
+              )}
+            </button>
+          </motion.li>
         </ul>
       </nav>
     </div>
