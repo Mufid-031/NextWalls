@@ -1,16 +1,16 @@
 "use client";
 
-import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
+import Header from "@/components/admin/wallpapers/Header";
 import WallpaperModal from "@/components/admin/wallpapers/WallpaperModal";
 import WallpapersCard from "@/components/admin/wallpapers/WallpapersCard";
 import useFetch from "@/hooks/useFetch";
+import axios from "axios";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
-import axios from "axios";
+import { Wallpaper } from "@/types/wallpaper.type";
 import { useState, useCallback } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
-import { Wallpaper } from "@/types/wallpaper.type";
-import Header from "@/components/admin/wallpapers/Header";
+import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useAdminSearch } from "@/contexts/AdminSearchContext";
 
@@ -20,8 +20,7 @@ export default function WallpapersPage() {
   const { isOpen } = useAdminSidebar();
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
   const { wallpapers, setWallpapers, getWallpapers } = useWallpaper();
-  const { search } = useAdminSearch();
-  // const { data: wallpapers } = useFetch<Wallpaper[]>("/api/wallpapers", 60000);
+  const { search, searchWallpapers } = useAdminSearch();
   const { data: categoriesName } = useFetch<Category[], CategoryMap>(
     "/api/category",
     60000,
@@ -44,20 +43,11 @@ export default function WallpapersPage() {
     };
 
     addView();
-    getWallpapers();
   }, [selectedWallpaper]);
 
   useIsomorphicLayoutEffect(() => {
     if (search) {
-      const searchWallpapers = async () => {
-        try {
-          const response = await axios.get(`/api/wallpapers/search?name=${search}`);
-          setWallpapers(response.data);
-        } catch (error) {
-          console.error("Error searching wallpapers:", error);
-        }
-      }
-      searchWallpapers();
+      searchWallpapers(setWallpapers);
     } else {
       getWallpapers();
     }

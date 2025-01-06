@@ -1,27 +1,24 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useSelectedFilters } from "@/contexts/SelectedFiltersContext";
+import { useWallpaper } from "@/contexts/WallpaperContext";
 import useFetch from "@/hooks/useFetch";
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
-import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "framer-motion";
 
 export default function Header() {
     const { data: categories } = useFetch<Category[]>("/api/category", 60000);
-    const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(["General", "Anime"]));
+    const { selectedFilters, toggleFilter, getWallpapersBySelectedFilters } = useSelectedFilters();
+    const { setWallpapers } = useWallpaper();
 
-    const toggleFilter = (filterName: string) => {
-        const newSelected = new Set(selectedFilters);
-        if (newSelected.has(filterName)) {
-          newSelected.delete(filterName);
-        } else {
-          newSelected.add(filterName);
-        }
-        setSelectedFilters(newSelected);
-    };
+    useIsomorphicLayoutEffect(() => {
+        getWallpapersBySelectedFilters(setWallpapers);
+    }, [selectedFilters])
 
     return (
-        <header className="flex justify-center items-center h-16 bg-gray-700 gap-3 overflow-x-auto">
-        <div className="flex gap-1 p-1 bg-gray-800 rounded">
+        <header className="flex items-center bg-gray-700 gap-3 overflow-x-auto px-4 py-2">
+        <div className="flex gap-1 p-2 bg-gray-800 rounded-md">
           {categories?.map((category) => (
             <div key={category.id}>
               <Input

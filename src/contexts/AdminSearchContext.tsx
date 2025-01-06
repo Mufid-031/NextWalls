@@ -1,10 +1,13 @@
 "use client";
 
+import { Wallpaper } from "@/types/wallpaper.type";
+import axios from "axios";
 import { useContext, useState, createContext } from "react";
 
 type AdminSearchContextType = {
     search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
+    searchWallpapers: (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => void;
 };
 
 const AdminSearchContext = createContext<AdminSearchContextType | undefined>(undefined);
@@ -12,8 +15,17 @@ const AdminSearchContext = createContext<AdminSearchContextType | undefined>(und
 export function AdminSearchProvider({ children }: { children: React.ReactNode }) {
     const [search, setSearch] = useState<string>('');
 
+    const searchWallpapers = async (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => {
+        try {
+          const response = await axios.get(`/api/wallpapers/search?name=${search}`);
+          setWallpapers(response.data);
+        } catch (error) {
+          console.error("Error searching wallpapers:", error);
+        }
+    }
+
     return (
-        <AdminSearchContext.Provider value={{ search, setSearch }}>
+        <AdminSearchContext.Provider value={{ search, setSearch, searchWallpapers }}>
             {children}
         </AdminSearchContext.Provider>
     );
