@@ -18,5 +18,4 @@ export interface Wallpaper {
     }[];
   createdAt: Date;
   updatedAt: Date;
-  liked?: boolean;
 }

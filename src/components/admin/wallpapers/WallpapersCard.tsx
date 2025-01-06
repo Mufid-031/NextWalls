@@ -2,13 +2,14 @@ import { Eye, Heart, BookmarkPlus } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Wallpaper } from "@/types/wallpaper.type";
+import { Tag, WallpaperTag } from "@prisma/client";
 
 export default function WallpapersCard({
   wallpaper,
   categories,
   handleWallpaperClick,
 }: {
-  wallpaper: Wallpaper;
+  wallpaper: Wallpaper & { wallpaperTags: WallpaperTag & { tag: Tag }[] };
   categories: Record<number, string>;
   handleWallpaperClick: (wallpaper: Wallpaper) => void;
 }) {

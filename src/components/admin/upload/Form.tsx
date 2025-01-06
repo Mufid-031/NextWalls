@@ -8,27 +8,27 @@ import { Button } from "@/components/ui/Button";
 import useFetch from "@/hooks/useFetch";
 import { Category } from "@prisma/client";
 
-export default function Form({ 
-    title,
-    setTitle,
-    description,
-    setDescription,
-    tags, 
-    handleAddTag, 
-    files, 
-    setFiles 
-}: { 
-    title: string; 
-    setTitle: (title: string) => void; 
-    description: string; 
-    setDescription: (description: string) => void;
-    tags: string[];
-    handleAddTag: (tag: string) => void; 
-    files: File[]; 
-    setFiles: (files: File[]) => void 
+export default function Form({
+  title,
+  setTitle,
+  description,
+  setDescription,
+  tags,
+  handleAddTag,
+  files,
+  setFiles,
+}: {
+  title: string;
+  setTitle: (title: string) => void;
+  description: string;
+  setDescription: (description: string) => void;
+  tags: string[];
+  handleAddTag: (tag: string) => void;
+  files: File[];
+  setFiles: (files: File[]) => void;
 }) {
   const { data: session, status } = useSession();
-  const { data: categories } = useFetch("/api/category", 60000);
+  const { data: categories } = useFetch<Category[]>("/api/category", 60000);
   const [category, setCategory] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -96,13 +96,7 @@ export default function Form({
           <Label htmlFor="title" className="text-xl">
             Title
           </Label>
-          <Input 
-            name="title" 
-            id="title" 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} 
-            required 
-          />
+          <Input name="title" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
         </div>
         <div className="flex flex-col gap-2 mb-5">
           <Label htmlFor="category" className="text-xl">
@@ -114,7 +108,7 @@ export default function Form({
             onChange={(e) => setCategory(e.target.value)}
             className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
-            {categories.map((category: Category) => (
+            {categories?.map((category: Category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -159,14 +153,7 @@ export default function Form({
             <FileUpload onChange={handleFileUpload} />
           </div>
         </div>
-        <Button 
-          variant="default" 
-          className="mt-5 bg-purple-500 text-white hover:bg-purple-600" 
-          whileTap={{ scale: 0.9 }} 
-          whileHover={{ scale: 1.1 }} 
-          type="submit" 
-          disabled={isLoading}
-        >
+        <Button variant="default" className="mt-5 bg-purple-500 text-white hover:bg-purple-600" whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }} type="submit" disabled={isLoading}>
           {isLoading ? "Uploading..." : "Upload"}
         </Button>
       </form>
