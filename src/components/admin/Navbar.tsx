@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/Button";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { cn } from "@/lib/utils";
 import { useDarkMode } from "@/contexts/DarkModeContext";
-import { useEffect } from "react";
 import { useAnimation, motion } from "framer-motion";
+import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { useAdminSearch } from "@/contexts/AdminSearchContext";
 
 export function Navbar() {
   const { isOpen, toggle } = useAdminSidebar();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { setSearch } = useAdminSearch();
   const ctrls = useAnimation();
 
   const animate = {
@@ -23,7 +25,7 @@ export function Navbar() {
     },
   }
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     ctrls.start(isDarkMode ? "initial" : "animate");
   }, [isDarkMode, ctrls]);
 
@@ -45,7 +47,12 @@ export function Navbar() {
           className="relative w-full max-w-md"
         >
           <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." className="pl-8 w-full" />
+          <Input 
+            type="search" 
+            placeholder="Search..." 
+            className="pl-8 w-full" 
+            onChange={(e) => setSearch(e.target.value)} 
+          />
         </motion.div>
       </div>
       <motion.div 

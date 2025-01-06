@@ -19,11 +19,11 @@ export default function WallpapersCard({
           {wallpaper.width}x{wallpaper.height}
         </span>
         <Image 
-            src={wallpaper.imageUrl} 
-            alt={wallpaper.title} 
-            width={500} 
-            height={500} 
-            className="w-full h-full object-cover rounded-md" 
+          src={wallpaper.imageUrl} 
+          alt={wallpaper.title} 
+          width={500} 
+          height={500} 
+          className="w-full h-full object-cover rounded-md" 
         />
       </div>
       <div className="flex flex-col gap-2 p-2 bg-gray-700 rounded-b-md">
