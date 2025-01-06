@@ -3,29 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, Eye, Heart, BookmarkPlus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Tag, Wallpaper, WallpaperTag } from "@prisma/client";
-import axios from "axios";
+import { Wallpaper } from "@/types/wallpaper.type";
 
 interface WallpaperModalProps {
-  wallpaper: Wallpaper & {
-    wallpaperTags: WallpaperTag & {
-      tag: Tag;
-    }[];
-    liked?: boolean;
-  };
+  wallpaper: Wallpaper;
   category: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, isOpen, onClose }) => {
-  const like = async () => {
-    try {
-      await axios.post(`/api/wallpapers/like/${wallpaper.id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <AnimatePresence>
@@ -84,7 +71,9 @@ const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, is
                       {wallpaper.views}
                     </p>
                     <p className="flex items-center gap-1 text-gray-600">
-                      <Heart className={`w-5 h-5 text-pink-600 ${wallpaper.liked ? "fill-pink-600" : ""}`} onClick={() => {like()}} />
+                      <Heart 
+                        className={`w-5 h-5 text-pink-600`} 
+                      />
                       {wallpaper.totalLikes}
                     </p>
                     <p className="flex items-center gap-1 text-gray-600">

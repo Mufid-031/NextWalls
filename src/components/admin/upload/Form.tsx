@@ -96,7 +96,13 @@ export default function Form({
           <Label htmlFor="title" className="text-xl">
             Title
           </Label>
-          <Input name="title" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <Input 
+            name="title" 
+            id="title" 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+            required 
+          />
         </div>
         <div className="flex flex-col gap-2 mb-5">
           <Label htmlFor="category" className="text-xl">
