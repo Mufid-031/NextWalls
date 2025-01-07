@@ -1,19 +1,19 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Category } from "@prisma/client";
 import { cn } from "@/lib/utils";
-import useFetch from "@/hooks/useFetch";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useSelectedFilters } from "@/contexts/SelectedFiltersContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { useCategories } from "@/contexts/CategoriesContext";
 
 export default function Header() {
-    const { data: categories } = useFetch<Category[]>("/api/category", 60000);
+    const { categories, getCategories } = useCategories();
     const { selectedFilters, toggleFilter, getWallpapersBySelectedFilters } = useSelectedFilters();
     const { setWallpapers } = useWallpaper();
 
     useIsomorphicLayoutEffect(() => {
-        getWallpapersBySelectedFilters(setWallpapers);
+      getWallpapersBySelectedFilters(setWallpapers);
+      if (categories.length === 0) getCategories();
     }, [selectedFilters])
 
     return (

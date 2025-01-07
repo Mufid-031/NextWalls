@@ -3,32 +3,41 @@
 import Header from "@/components/admin/wallpapers/Header";
 import WallpaperModal from "@/components/admin/wallpapers/WallpaperModal";
 import WallpapersCard from "@/components/admin/wallpapers/WallpapersCard";
-import useFetch from "@/hooks/useFetch";
 import axios from "axios";
 import { cn } from "@/lib/utils";
-import { Category } from "@prisma/client";
 import { Wallpaper } from "@/types/wallpaper.type";
 import { useState, useCallback } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useAdminSearch } from "@/contexts/AdminSearchContext";
+import { useCategories } from "@/contexts/CategoriesContext";
 
-type CategoryMap = Record<number, string>;
 
 export default function WallpapersPage() {
   const { isOpen } = useAdminSidebar();
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
   const { wallpapers, setWallpapers, getWallpapers } = useWallpaper();
   const { search, searchWallpapers } = useAdminSearch();
-  const { data: categoriesName } = useFetch<Category[], CategoryMap>(
-    "/api/category",
-    60000,
-    useCallback((categories: Category[]) => 
-      categories.reduce((acc, category) => ({ ...acc, [category.id]: category.name }), {} as CategoryMap),
-    []),
-  );
-  
+  const { categories, getCategories } = useCategories();
+
+  useIsomorphicLayoutEffect(() => {
+    if (categories.length === 0) {
+      getCategories();
+    }
+
+    if (wallpapers.length === 0) {
+      getWallpapers();
+    }
+
+    const intervalId = setInterval(() => {
+      getCategories();
+      getWallpapers();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   useIsomorphicLayoutEffect(() => {
     const addView = async () => {
       if (selectedWallpaper) {
@@ -50,17 +59,16 @@ export default function WallpapersPage() {
 
     return () => {
       clearInterval(intervalId);
-    }
+    };
   }, [selectedWallpaper]);
 
   useIsomorphicLayoutEffect(() => {
     if (search) {
       searchWallpapers(setWallpapers);
-    } else {
+    } else if (!search || wallpapers.length === 0) {
       getWallpapers();
     }
-
-  }, [search])
+  }, [search]);
 
   const handleWallpaperClick = useCallback((wallpaper: Wallpaper) => {
     setSelectedWallpaper(wallpaper);
@@ -79,21 +87,18 @@ export default function WallpapersPage() {
             <WallpapersCard 
               key={wallpaper.id} 
               wallpaper={wallpaper} 
-              categories={categoriesName || {}} 
               handleWallpaperClick={handleWallpaperClick} 
             />
           ))}
         </div>
       </div>
-      {selectedWallpaper && categoriesName && (
-        <WallpaperModal 
-          wallpaper={selectedWallpaper} 
-          category={categoriesName[selectedWallpaper.categoryId] || "Unknown Category"} 
-          isOpen={!!selectedWallpaper} 
-          onClose={handleCloseModal} 
-        />
-      )}
+      {selectedWallpaper
+       && wallpapers 
+       && <WallpaperModal 
+       wallpaper={selectedWallpaper} 
+       isOpen={!!selectedWallpaper} 
+       onClose={handleCloseModal} 
+      />}
     </div>
   );
 }
-

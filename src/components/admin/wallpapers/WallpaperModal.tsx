@@ -7,12 +7,11 @@ import { Wallpaper } from "@/types/wallpaper.type";
 
 interface WallpaperModalProps {
   wallpaper: Wallpaper;
-  category: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, isOpen, onClose }) => {
+const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, isOpen, onClose }) => {
 
   return (
     <AnimatePresence>
@@ -62,7 +61,7 @@ const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, category, is
                     </span>
                   ))}
                   <p className="text-gray-600 mb-4">{wallpaper.description}</p>
-                  <div className="bg-purple-500 text-white px-3 py-1 rounded-full inline-block mb-4">{category}</div>
+                  <div className="bg-purple-500 text-white px-3 py-1 rounded-full inline-block mb-4">{wallpaper.category.name}</div>
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="flex gap-4">

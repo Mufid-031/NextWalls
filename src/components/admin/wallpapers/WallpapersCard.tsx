@@ -5,11 +5,9 @@ import { Wallpaper } from "@/types/wallpaper.type";
 
 export default function WallpapersCard({
   wallpaper,
-  categories,
   handleWallpaperClick,
 }: {
   wallpaper: Wallpaper;
-  categories: Record<number, string>;
   handleWallpaperClick: (wallpaper: Wallpaper) => void;
 }) {
   return (
@@ -43,7 +41,7 @@ export default function WallpapersCard({
             </p>
           </div>
           <div className="text-md text-white bg-purple-500 px-2 py-1 rounded">
-            {categories[wallpaper.categoryId] || "Unknown Category"}
+            {wallpaper.category.name || "Unknown Category"}
           </div>
         </div>
         <div className="cursor-pointer w-full pb-5 px-5">

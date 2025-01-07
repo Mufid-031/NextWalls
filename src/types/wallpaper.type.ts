@@ -12,6 +12,7 @@ export interface Wallpaper {
   totalLikes: number;
   width: number;
   height: number;
+  category: { name: string };
   wallpaperTags: WallpaperTag &
     {
       tag: Tag;
