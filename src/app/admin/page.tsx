@@ -8,16 +8,20 @@ import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useCategories } from "@/contexts/CategoriesContext";
+import moment from "moment";
 
 export default function AdminPage() {
   const { isOpen } = useAdminSidebar();
   const { topCategories, getTopCategories } = useCategories();
-  const { wallpapers, getWallpapers, totalViews, getTotalViews } = useWallpaper();
+  const { wallpapers, recentWallpapers, getRecentWallpapers, totalViews, getTotalViews } = useWallpaper();
 
   useIsomorphicLayoutEffect(() => {
-    if (wallpapers.length === 0) {
-      getWallpapers();
+    if (wallpapers.length === 0 || wallpapers.length !== 3) {
       getTotalViews();
+    }
+
+    if (recentWallpapers.length === 0) {
+      getRecentWallpapers();
     }
 
     if (topCategories.length === 0) {
@@ -25,7 +29,7 @@ export default function AdminPage() {
     }
 
     const intervalId = setInterval(() => {
-      getWallpapers();
+      getRecentWallpapers();
       getTotalViews();
       getTopCategories();
     }, 60000);
@@ -48,14 +52,14 @@ export default function AdminPage() {
         <div className="w-full p-5 bg-white rounded-md flex flex-col gap-4">
           <h3 className="font-bold text-lg">Recent Uploads</h3>
           <ul className="flex flex-col gap-4">
-            {wallpapers?.map((wallpaper) => (
+            {recentWallpapers?.map((wallpaper) => (
               <li key={wallpaper.id} className="flex gap-2">
                 <div className="w-20 h-10 bg-gray-300 rounded">
                   <Image src={wallpaper.imageUrl} alt={wallpaper.title} width={100} height={100} />
                 </div>
                 <div>
                   <h3 className="font-semibold">{wallpaper.title}</h3>
-                  <p className="text-sm">{new Date(wallpaper.createdAt).toLocaleString()}</p>
+                  <p className="text-sm">Uploads {moment(wallpaper.createdAt).fromNow()}</p>
                 </div>
               </li>
             ))}

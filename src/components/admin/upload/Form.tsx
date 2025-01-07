@@ -31,7 +31,7 @@ export default function Form({
 }) {
   const { data: session, status } = useSession();
   const { data: categories } = useFetch<Category[]>("/api/category", 60000);
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string>("1");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -60,6 +60,7 @@ export default function Form({
 
     try {
       const formData = new FormData();
+      formData.forEach((value, key) => console.log(key, value));
       formData.append("title", title.trim());
       formData.append("categoryId", category);
       formData.append("description", description.trim());
@@ -67,7 +68,7 @@ export default function Form({
       formData.append("file", files[0]);
       formData.append("tags", JSON.stringify(tags));
 
-      const response = await axios.post("/api/wallpapers/nocloud", formData, {
+      const response = await axios.post("/api/wallpapers/cloud", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
