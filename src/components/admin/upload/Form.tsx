@@ -162,7 +162,14 @@ export default function Form({
             <FileUpload onChange={handleFileUpload} />
           </div>
         </div>
-        <Button variant="default" className="mt-5 bg-purple-500 text-white hover:bg-purple-600" whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }} type="submit" disabled={isLoading}>
+        <Button 
+          variant="default" 
+          className="mt-5 bg-purple-500 text-white hover:bg-purple-600" 
+          whileTap={{ scale: 0.9 }} 
+          whileHover={{ scale: 1.1 }} 
+          type="submit" 
+          disabled={isLoading}
+        >
           {isLoading ? "Uploading..." : "Upload"}
         </Button>
       </form>

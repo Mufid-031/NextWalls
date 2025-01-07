@@ -8,12 +8,15 @@ interface WallpaperContext {
   wallpapers: Wallpaper[];
   setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>;
   getWallpapers: () => Promise<void>;
+  totalViews: number;
+  getTotalViews: () => Promise<void>;
 }
 
 const WallpaperContext = createContext<WallpaperContext | undefined>(undefined);
 
 export function WallpaperProvider({ children }: { children: React.ReactNode }) {
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
+  const [totalViews, setTotalViews] = useState<number>(0);
 
   const getWallpapers = async () => {
     try {
@@ -24,7 +27,16 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  return <WallpaperContext.Provider value={{ wallpapers, setWallpapers, getWallpapers }}>{children}</WallpaperContext.Provider>;
+  const getTotalViews = async () => {
+    try {
+      const response = await axios.get("/api/wallpapers/view");
+      setTotalViews(response.data.totalViews);
+    } catch (error) {
+      console.error("Error fetching total views:", error);
+    }
+  };
+
+  return <WallpaperContext.Provider value={{ wallpapers, setWallpapers, getWallpapers, totalViews, getTotalViews }}>{children}</WallpaperContext.Provider>;
 }
 
 export function useWallpaper() {

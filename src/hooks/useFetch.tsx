@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 export type UseFetchReturn<T> = {
   data: T | null;
@@ -16,7 +17,7 @@ export default function useFetch<T, R = T>(
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const source = axios.CancelToken.source();
 
     const fetchData = async () => {
