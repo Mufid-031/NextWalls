@@ -68,7 +68,7 @@ export default function Form({
       formData.append("file", files[0]);
       formData.append("tags", JSON.stringify(tags));
 
-      const response = await axios.post("/api/wallpapers/cloud", formData, {
+      const response = await axios.post("/api/wallpapers/nocloud", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

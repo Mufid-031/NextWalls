@@ -30,7 +30,7 @@ export function Navbar() {
   }, [isDarkMode, ctrls]);
 
   return (
-    <header className={cn("sticky top-0 z-30 flex items-center justify-between px-6 py-4 bg-white border-b transition-all duration-300", isOpen ? "ml-64" : "ml-16")}>
+    <header className={cn("sticky top-0 z-30 flex items-center justify-between px-6 py-4 transition-all duration-300", isOpen ? "ml-64" : "ml-16", isDarkMode ? "bg-gray-900" : "bg-white")}>
       <div className="flex items-center flex-1">
         <Button 
           variant="ghost" 
@@ -38,7 +38,7 @@ export function Navbar() {
           className="mr-4 md:hidden" 
           onClick={toggle}
         >
-          <Menu className="h-5 w-5" />
+          <Menu className={cn("h-5 w-5", isDarkMode ? "text-white" : "text-gray-900")} />
           <span className="sr-only">Toggle sidebar</span>
         </Button>
         <motion.div 
@@ -46,11 +46,11 @@ export function Navbar() {
           animate={{ opacity: 1, x: 0 }} 
           className="relative w-full max-w-md"
         >
-          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className={cn("absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground")} />
           <Input 
             type="search" 
             placeholder="Search..." 
-            className="pl-8 w-full" 
+            className={cn("pl-8 w-full", isDarkMode ? "text-white bg-gray-900" : "text-gray-900 bg-white")} 
             onChange={(e) => setSearch(e.target.value)} 
           />
         </motion.div>
@@ -69,7 +69,7 @@ export function Navbar() {
             size="icon" 
             onClick={toggleDarkMode}
           >
-            <Moon className="w-5 h-5 hover:text-purple-500" />
+            <Moon className="w-5 h-5 text-white hover:text-purple-500" />
             <span className="sr-only">Toggle theme</span>
           </Button>
         ) : (
@@ -90,11 +90,11 @@ export function Navbar() {
           variant="ghost" 
           size="icon"
         >
-          <Bell className="w-5 h-5 hover:text-purple-500" />
+          <Bell className={cn("w-5 h-5 hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")} />
           <span className="sr-only">Notifications</span>
         </Button>
         <Button variant="ghost" size="icon">
-          <User className="w-5 h-5 hover:text-purple-500" />
+          <User className={cn("w-5 h-5 hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")} />
           <span className="sr-only">User</span>
         </Button>
       </motion.div>

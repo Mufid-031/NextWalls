@@ -1,14 +1,14 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
 import React from 'react'
 
-interface ButtonProps extends HTMLMotionProps<"button">  {
+interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: 'default' | 'ghost' | 'outline'
   size?: 'default' | 'icon'
 }
 
 export const Button: React.FC<ButtonProps> = ({ 
   children, 
-  variant = 'default', 
+  variant = 'default',
   size = 'default', 
   className = '', 
   ...props 

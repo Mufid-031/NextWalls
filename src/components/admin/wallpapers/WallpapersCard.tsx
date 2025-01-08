@@ -2,14 +2,15 @@ import { Eye, Heart, BookmarkPlus } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Wallpaper } from "@/types/wallpaper.type";
+import React from "react";
 
-export default function WallpapersCard({
+const WallpapersCard = React.memo(({
   wallpaper,
   handleWallpaperClick,
 }: {
   wallpaper: Wallpaper;
   handleWallpaperClick: (wallpaper: Wallpaper) => void;
-}) {
+}) => {
   return (
     <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} onClick={() => handleWallpaperClick(wallpaper)}>
       <div className="w-full h-64 bg-white rounded-t-md relative">
@@ -52,4 +53,7 @@ export default function WallpapersCard({
       </div>
     </motion.div>
   );
-}
+});
+
+WallpapersCard.displayName = "WallpapersCard";
+export default WallpapersCard;

@@ -11,7 +11,11 @@ interface WallpaperModalProps {
   onClose: () => void;
 }
 
-const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, isOpen, onClose }) => {
+const WallpaperModal = React.memo(({
+  wallpaper,
+  isOpen,
+  onClose,
+}: WallpaperModalProps) => {
 
   return (
     <AnimatePresence>
@@ -88,6 +92,7 @@ const WallpaperModal: React.FC<WallpaperModalProps> = ({ wallpaper, isOpen, onCl
       )}
     </AnimatePresence>
   );
-};
+});
 
+WallpaperModal.displayName = "WallpaperModal";
 export default WallpaperModal;

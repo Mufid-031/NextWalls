@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import { signOut } from "next-auth/react";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/admin" },
@@ -18,25 +19,26 @@ const navItems = [
 
 export function Sidebar() {
   const { isOpen, toggle } = useAdminSidebar();
+  const { isDarkMode } = useDarkMode();
 
   return (
-    <div className={cn("fixed top-0 left-0 z-40 h-screen bg-white transition-all duration-300", isOpen ? "w-64" : "w-16")}>
+    <div className={cn("fixed top-0 left-0 z-40 h-screen bg-white transition-all duration-300", isOpen ? "w-64" : "w-16", isDarkMode ? "bg-gray-900" : "bg-white")}>
       <div className={cn("flex items-center h-16 px-4", isOpen ? "justify-between" : "justify-center")}>
         {isOpen && (
           <motion.span 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
-            className="text-2xl font-bold"
+            className={cn("text-2xl font-bold", isDarkMode ? "text-white" : "text-gray-900")}
           >
             <span className="text-purple-500">Next</span>Walls
           </motion.span>
         )}
         <Button variant="ghost" size="icon" onClick={toggle}>
           {isOpen ? (
-            <ChevronLeft className="h-4 w-4 hover:text-purple-500" />
+            <ChevronLeft className={cn("h-4 w-4 hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")} />
 
             ) : (
-            <ChevronRight className="h-4 w-4 hover:text-purple-500" />
+            <ChevronRight className={cn("h-4 w-4 hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")} />
           )}
         </Button>
       </div>
@@ -53,12 +55,12 @@ export function Sidebar() {
                 href={item.href} 
                 className={cn("flex items-center p-2 text-gray-700 rounded hover:bg-gray-100", isOpen ? "justify-start" : "justify-center")}
               >
-                <item.icon className={cn("w-5 h-5 group-hover:text-purple-500", isOpen && "mr-3")} />
+                <item.icon className={cn("w-5 h-5 group-hover:text-purple-500", isOpen && "mr-3", isDarkMode ? "text-white" : "text-gray-900")} />
                 {isOpen && (
                   <motion.span 
                     initial={{ opacity: 0, x: -20 }} 
                     animate={{ opacity: 1, x: 0 }} 
-                    className="text-sm font-medium group-hover:text-purple-500"
+                    className={cn("text-sm font-medium group-hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")}
                   >
                     {item.label}
                   </motion.span>
@@ -73,14 +75,14 @@ export function Sidebar() {
           >
             <button 
               onClick={() => signOut()} 
-              className={cn("flex items-center p-2 text-gray-700 rounded hover:bg-gray-100", isOpen ? "justify-start" : "justify-center")}
+              className={cn("flex items-center p-2 text-gray-700 rounded hover:bg-gray-100 w-full", isOpen ? "justify-start" : "justify-center")}
             >
-              <LogOut className={cn("w-5 h-5 group-hover:text-purple-500", isOpen && "mr-3")} />
+              <LogOut className={cn("w-5 h-5 group-hover:text-purple-500", isOpen && "mr-3", isDarkMode ? "text-white" : "text-gray-900")} />
               {isOpen && (
                 <motion.span 
                   initial={{ opacity: 0, x: -20 }} 
                   animate={{ opacity: 1, x: 0 }} 
-                  className="text-sm font-medium group-hover:text-purple-500"
+                  className={cn("text-sm font-medium group-hover:text-purple-500", isDarkMode ? "text-white" : "text-gray-900")}
                 >
                   Logout
                 </motion.span>
