@@ -29,6 +29,9 @@ export const GET = async (req: NextRequest) => {
         },
       ],
     },
+    include: {
+      category: true,
+    }
   });
 
   if (wallpapers.length === 0) {
