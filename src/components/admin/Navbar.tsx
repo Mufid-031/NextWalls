@@ -46,7 +46,7 @@ export function Navbar() {
           animate={{ opacity: 1, x: 0 }} 
           className="relative w-full max-w-md"
         >
-          <Search className={cn("absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground")} />
+          <Search className={cn("absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground", isDarkMode ? "text-white" : "text-gray-900")} />
           <Input 
             type="search" 
             placeholder="Search..." 
