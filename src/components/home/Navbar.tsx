@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/Input";
 
 export function NavBar() {
   return (
-    <header className="w-full border-b bg-background">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 flex">
+    <header className="w-full border-b bg-gray-900 px-3 text-white">
+      <div className="container flex h-14 items-center justify-between">
+        <div className="mr-4 flex gap-5">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-xl font-bold">Wallhaven</span>
+            <span className="text-xl font-bold">
+              <span className="text-purple-500">Next</span>Walls
+            </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link href="/latest" className="text-foreground/60 hover:text-foreground">
@@ -31,12 +33,12 @@ export function NavBar() {
               Forums
             </Link>
           </nav>
-        </div>
-        <div className="ml-auto flex items-center space-x-4">
-          <div className="relative w-64">
+          <div className="relative w-full">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search..." className="pl-8" />
+            <Input placeholder="Search..." className="w-96 pl-8" />
           </div>
+        </div>
+        <div className="flex items-center space-x-4">
           <Button variant="default">Login</Button>
           <Button variant="default">Register</Button>
         </div>
