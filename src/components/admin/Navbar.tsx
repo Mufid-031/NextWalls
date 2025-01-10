@@ -8,12 +8,12 @@ import { cn } from "@/lib/utils";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 import { useAnimation, motion } from "framer-motion";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
-import { useAdminSearch } from "@/contexts/AdminSearchContext";
+import { useSearch } from "@/contexts/SearchContext";
 
 export function Navbar() {
   const { isOpen, toggle } = useAdminSidebar();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const { setSearch } = useAdminSearch();
+  const { setSearch } = useSearch();
   const ctrls = useAnimation();
 
   const animate = {

@@ -4,15 +4,15 @@ import { Wallpaper } from "@/types/wallpaper.type";
 import axios from "axios";
 import { useContext, useState, createContext } from "react";
 
-type AdminSearchContextType = {
+type SearchContextType = {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   searchWallpapers: (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => void;
 };
 
-const AdminSearchContext = createContext<AdminSearchContextType | undefined>(undefined);
+const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
-export function AdminSearchProvider({ children }: { children: React.ReactNode }) {
+export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState<string>("");
 
   const searchWallpapers = async (setWallpapers: React.Dispatch<React.SetStateAction<Wallpaper[]>>) => {
@@ -24,13 +24,13 @@ export function AdminSearchProvider({ children }: { children: React.ReactNode })
     }
   };
 
-  return <AdminSearchContext.Provider value={{ search, setSearch, searchWallpapers }}>{children}</AdminSearchContext.Provider>;
+  return <SearchContext.Provider value={{ search, setSearch, searchWallpapers }}>{children}</SearchContext.Provider>;
 }
 
-export function useAdminSearch() {
-  const context = useContext(AdminSearchContext);
+export function useSearch() {
+  const context = useContext(SearchContext);
   if (context === undefined) {
-    throw new Error("useAdminSearch must be used within a AdminSearchProvider");
+    throw new Error("useSearch must be used within a SearchProvider");
   }
   return context;
 }

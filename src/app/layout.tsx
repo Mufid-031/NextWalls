@@ -6,6 +6,7 @@ import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { SelectedFiltersProvider } from "@/contexts/SelectedFiltersContext";
 import { WallpaperProvider } from "@/contexts/WallpaperContext";
 import { CategoriesProvider } from "@/contexts/CategoriesContext";
+import { SearchProvider } from "@/contexts/SearchContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,13 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Session>
           <DarkModeProvider>
-            <CategoriesProvider>
-              <SelectedFiltersProvider>
-                <WallpaperProvider>{children}</WallpaperProvider>
-              </SelectedFiltersProvider>
-            </CategoriesProvider>
+            <SearchProvider>
+              <CategoriesProvider>
+                <SelectedFiltersProvider>
+                  <WallpaperProvider>{children}</WallpaperProvider>
+                </SelectedFiltersProvider>
+              </CategoriesProvider>
+            </SearchProvider>
           </DarkModeProvider>
         </Session>
       </body>
