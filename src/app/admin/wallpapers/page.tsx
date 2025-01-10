@@ -10,7 +10,7 @@ import { useState, useCallback } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
-import { useAdminSearch } from "@/contexts/AdminSearchContext";
+import { useSearch } from "@/contexts/SearchContext";
 import { useCategories } from "@/contexts/CategoriesContext";
 
 
@@ -18,7 +18,7 @@ export default function WallpapersPage() {
   const { isOpen } = useAdminSidebar();
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
   const { wallpapers, setWallpapers, getWallpapers } = useWallpaper();
-  const { search, searchWallpapers } = useAdminSearch();
+  const { search, searchWallpapers } = useSearch();
   const { categories, getCategories } = useCategories();
 
   useIsomorphicLayoutEffect(() => {
