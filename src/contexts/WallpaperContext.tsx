@@ -13,6 +13,7 @@ interface WallpaperContext {
   totalViews: number;
   getTotalViews: () => Promise<void>;
   getWallpaperById: (id: string) => Promise<Wallpaper | null>;
+  addView: (selectedWallpaper: Wallpaper) => Promise<void>;
 }
 
 const WallpaperContext = createContext<WallpaperContext | undefined>(undefined);
@@ -59,6 +60,18 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const addView = async (selectedWallpaper: Wallpaper) => {
+    if (selectedWallpaper) {
+      try {
+        await axios.patch(`/api/wallpapers/view`, {
+          wallpaperId: selectedWallpaper.id,
+        });
+      } catch (error) {
+        console.error("Error adding view:", error);
+      }
+    }
+  };
+
   return <WallpaperContext.Provider 
     value={{ 
       wallpapers, 
@@ -68,7 +81,8 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       getRecentWallpapers, 
       totalViews, 
       getTotalViews, 
-      getWallpaperById 
+      getWallpaperById,
+      addView
     }}>
       {children}
     </WallpaperContext.Provider>;

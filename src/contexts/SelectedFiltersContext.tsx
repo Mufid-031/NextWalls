@@ -33,6 +33,7 @@ export function SelectedFiltersProvider({ children }: { children: React.ReactNod
       console.error("Error searching wallpapers:", error);
     }
   };
+  
   return <SelectedFiltersContext.Provider value={{ selectedFilters, toggleFilter, getWallpapersBySelectedFilters }}>{children}</SelectedFiltersContext.Provider>;
 }
 

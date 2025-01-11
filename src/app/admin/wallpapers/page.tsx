@@ -3,7 +3,6 @@
 import Header from "@/components/admin/wallpapers/Header";
 import WallpaperModal from "@/components/admin/wallpapers/WallpaperModal";
 import WallpapersCard from "@/components/admin/wallpapers/WallpapersCard";
-import axios from "axios";
 import { cn } from "@/lib/utils";
 import { Wallpaper } from "@/types/wallpaper.type";
 import { useState, useCallback } from "react";
@@ -11,27 +10,20 @@ import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useAdminSidebar } from "@/contexts/AdminSidebarContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useSearch } from "@/contexts/SearchContext";
-import { useCategories } from "@/contexts/CategoriesContext";
 
 
 export default function WallpapersPage() {
   const { isOpen } = useAdminSidebar();
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
-  const { wallpapers, setWallpapers, getWallpapers } = useWallpaper();
+  const { wallpapers, setWallpapers, getWallpapers, addView } = useWallpaper();
   const { search, searchWallpapers } = useSearch();
-  const { categories, getCategories } = useCategories();
 
   useIsomorphicLayoutEffect(() => {
-    if (categories.length === 0) {
-      getCategories();
-    }
-
     if (wallpapers.length === 0) {
       getWallpapers();
     }
 
     const intervalId = setInterval(() => {
-      getCategories();
       getWallpapers();
     }, 60000);
 
@@ -39,27 +31,12 @@ export default function WallpapersPage() {
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    const addView = async () => {
-      if (selectedWallpaper) {
-        try {
-          await axios.patch(`/api/wallpapers/view`, {
-            wallpaperId: selectedWallpaper.id,
-          });
-        } catch (error) {
-          console.error("Error adding view:", error);
-        }
-      }
-    };
-
-    addView();
-
+    addView(selectedWallpaper!);
     const intervalId = setInterval(() => {
       getWallpapers();
     }, 60000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
+    return () => clearInterval(intervalId);
   }, [selectedWallpaper]);
 
   useIsomorphicLayoutEffect(() => {
