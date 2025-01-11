@@ -29,6 +29,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       setWallpapers(response.data);
     } catch (error) {
       console.error("Error fetching wallpapers:", error);
+      setWallpapers([]);
     }
   };
 
@@ -38,6 +39,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       setRecentWallpapers(response.data);
     } catch (error) {
       console.error("Error fetching recent wallpapers:", error);
+      setRecentWallpapers([]);
     }
   };
 
@@ -47,6 +49,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       setTotalViews(response.data.totalViews);
     } catch (error) {
       console.error("Error fetching total views:", error);
+      setTotalViews(0);
     }
   };
 

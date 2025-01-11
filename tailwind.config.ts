@@ -13,7 +13,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         darkgunmetal: "#212427",
-        raisinblack: "#222222",
+        raisinblack: "rgba(34, 34, 34, 0.8)",
       },
     },
   },

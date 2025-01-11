@@ -2,7 +2,6 @@
 
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,13 +29,13 @@ export function ImageGrid() {
   }, []);
 
   return (
-    <div className={cn("py-8")}>
+    <div className="py-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {wallpapers.map((wallpaper) => (
+        {wallpapers.length > 0 ? wallpapers.map((wallpaper) => (
           <Link href={`/wallpapers/${wallpaper.id}`} key={wallpaper.id}>
             <ImageCard src={wallpaper.imageUrl} resolution={`${wallpaper.width}x${wallpaper.height}`} />
           </Link>
-        ))}
+        )) : null}
       </div>
     </div>
   );

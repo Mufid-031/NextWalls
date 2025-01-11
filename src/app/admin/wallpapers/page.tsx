@@ -19,9 +19,7 @@ export default function WallpapersPage() {
   const { search, searchWallpapers } = useSearch();
 
   useIsomorphicLayoutEffect(() => {
-    if (wallpapers.length === 0) {
-      getWallpapers();
-    }
+    if (wallpapers.length === 0) getWallpapers();
 
     const intervalId = setInterval(() => {
       getWallpapers();
@@ -32,6 +30,7 @@ export default function WallpapersPage() {
 
   useIsomorphicLayoutEffect(() => {
     addView(selectedWallpaper!);
+
     const intervalId = setInterval(() => {
       getWallpapers();
     }, 60000);
