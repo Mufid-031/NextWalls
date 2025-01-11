@@ -12,6 +12,7 @@ interface WallpaperContext {
   getRecentWallpapers: () => Promise<void>;
   totalViews: number;
   getTotalViews: () => Promise<void>;
+  getWallpaperById: (id: string) => Promise<Wallpaper | null>;
 }
 
 const WallpaperContext = createContext<WallpaperContext | undefined>(undefined);
@@ -48,7 +49,29 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  return <WallpaperContext.Provider value={{ wallpapers, setWallpapers, getWallpapers, recentWallpapers, getRecentWallpapers, totalViews, getTotalViews }}>{children}</WallpaperContext.Provider>;
+  const getWallpaperById = async (id: string) => {
+    try {
+      const response = await axios.get(`/api/wallpapers/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching wallpaper by ID:", error);
+      return null;
+    }
+  };
+
+  return <WallpaperContext.Provider 
+    value={{ 
+      wallpapers, 
+      setWallpapers, 
+      getWallpapers, 
+      recentWallpapers, 
+      getRecentWallpapers, 
+      totalViews, 
+      getTotalViews, 
+      getWallpaperById 
+    }}>
+      {children}
+    </WallpaperContext.Provider>;
 }
 
 export function useWallpaper() {

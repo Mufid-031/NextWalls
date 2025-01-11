@@ -6,6 +6,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const wallpaper = await prisma.wallpaper.findUnique({
         where: { id: Number(id) },
+        include: {
+            category: true,
+            wallpaperTags: {
+                include: {
+                    tag: true
+                }
+            }
+        }
     })
 
     if (!wallpaper) {
