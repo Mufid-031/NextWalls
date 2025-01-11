@@ -94,10 +94,10 @@ export default function Form({
   };
 
   return (
-    <div className="w-full p-5 bg-white rounded-md shadow">
+    <div className="w-full p-5 bg-white dark:bg-gray-800 rounded-md shadow">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2 mb-5">
-          <Label htmlFor="title" className="text-xl">
+          <Label htmlFor="title" className="text-xl dark:text-white text-black">
             Title
           </Label>
           <Input 
@@ -106,6 +106,7 @@ export default function Form({
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
             required 
+            className="dark:bg-gray-900 dark:text-white text-black"
           />
         </div>
         <div className="flex flex-col gap-2 mb-5">

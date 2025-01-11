@@ -1,13 +1,8 @@
-"use client";
-
 import { NavBar } from "@/components/home/Navbar";
 import { FilterBar } from "@/components/home/FilterBar";
 import { ImageGrid } from "@/components/home/ImageGrid";
-import { useDarkMode } from "@/contexts/DarkModeContext";
-import { cn } from "@/lib/utils";
 
 export default function Home() {
-  const { isDarkMode } = useDarkMode();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -15,7 +10,7 @@ export default function Home() {
         <NavBar />
         <FilterBar />
       </header>
-      <main className={cn("flex-1 container px-10 pt-36", isDarkMode ? "bg-gray-900" : "bg-gray-100")}>
+      <main className="w-full px-10 pt-36 dark:bg-gray-900 bg-white">
         <ImageGrid />
       </main>
     </div>

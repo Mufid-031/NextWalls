@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/Button";
 import { useCategories } from "@/contexts/CategoriesContext";
 import { useDarkMode } from "@/contexts/DarkModeContext";
@@ -27,8 +29,9 @@ export function FilterBar() {
               <div key={category.id}>
                 <Input type="checkbox" id={category.name} className="hidden" checked={selectedFilters.has(category.name)} onChange={() => toggleFilter(category.name)} />
                 <Button
+                  size="icon"
                   variant="ghost"
-                  className={cn("transition-all duration-300", selectedFilters.has(category.name) ? "bg-purple-500 text-white" : "bg-gray-600 text-gray-400")}
+                  className={cn("transition-all duration-300 px-10", selectedFilters.has(category.name) ? "bg-purple-500 text-white" : "bg-gray-600 text-gray-400")}
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.01 }}
                   onClick={() => toggleFilter(category.name)}

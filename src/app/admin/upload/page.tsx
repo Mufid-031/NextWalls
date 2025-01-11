@@ -27,7 +27,7 @@ export default function UploadPage() {
 
   return (
     <div className={cn("p-6 space-y-6 transition-all duration-300", isOpen ? "ml-64" : "ml-16")}>
-      <h2 className="text-3xl font-bold">Upload</h2>
+      <h2 className="text-3xl font-bold dark:text-white text-black">Upload</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Form 
           title={title} 

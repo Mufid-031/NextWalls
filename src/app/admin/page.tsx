@@ -49,7 +49,7 @@ export default function AdminPage() {
           <Card icon={<Eye className="w-10 h-10 text-purple-500" />} title="Total Views" desc={`${totalViews} Views`} />
           <Card icon={<Heart className="w-10 h-10 text-purple-500" fill="#a855f7" />} title="Total Likes" desc={`100 Likes`} />
         </div>
-        <div className={cn("w-full p-5 rounded-md flex flex-col gap-4 dark:bg-gray-900 bg-white")}>
+        <div className={cn("w-full p-5 rounded-md flex flex-col gap-4 dark:bg-gray-800 bg-white")}>
           <h3 className={cn("font-bold text-lg dark:text-white text-black")}>Recent Uploads</h3>
           <ul className="flex flex-col gap-4">
             {recentWallpapers?.map((wallpaper) => (
@@ -58,8 +58,8 @@ export default function AdminPage() {
                   <Image src={wallpaper.imageUrl} alt={wallpaper.title} width={100} height={100} />
                 </div>
                 <div>
-                  <h3 className={cn("font-semibold")}>{wallpaper.title}</h3>
-                  <p className={cn("text-sm")}>Uploads {moment(wallpaper.createdAt).fromNow()}</p>
+                  <h3 className={cn("font-semibold dark:text-white text-black")}>{wallpaper.title}</h3>
+                  <p className={cn("text-sm dark:text-white text-black")}>Uploads {moment(wallpaper.createdAt).fromNow()}</p>
                 </div>
               </li>
             ))}

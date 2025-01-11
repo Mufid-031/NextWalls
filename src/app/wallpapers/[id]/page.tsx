@@ -18,16 +18,14 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="fixed top-0 z-30 w-full">
-        <NavBar />
-      </header>
-      <main className="flex-1 container bg-gray-950 grid grid-cols-[3fr_10fr]">
-        <div className="bg-gray-900">
-          <div></div>
-          <div></div>
-          <div></div>
+      <NavBar />
+      <main className="flex-1 bg-gray-950 grid grid-cols-[3fr_10fr]">
+        <div className="bg-gray-900 grid grid-rows-3 gap-2 p-2">
+          <div className="bg-gray-700"></div>
+          <div className="bg-gray-700"></div>
+          <div className="bg-gray-700"></div>
         </div>
-        <div className="p-20">{wallpaper && <Image className="w-full h-full object-cover" unoptimized={true} src={wallpaper?.imageUrl} alt={wallpaper?.title} width={500} height={500} />}</div>
+        <div className="p-5">{wallpaper && <Image className="w-full h-full object-cover" unoptimized={true} src={wallpaper?.imageUrl} alt={wallpaper?.title} width={500} height={500} />}</div>
       </main>
     </div>
   );
