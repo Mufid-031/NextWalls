@@ -5,9 +5,20 @@ import { cn } from "@/lib/utils";
 import Cards from "@/components/admin/dashboard/Cards";
 import RecentWallpapers from "@/components/admin/dashboard/RecentWallpapers";
 import TopCategories from "@/components/admin/dashboard/TopCategories";
+import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { getSession } from "next-auth/react";
 
 export default function AdminPage() {
   const { isOpen } = useAdminSidebar();
+
+  useIsomorphicLayoutEffect(() => {
+    async function tes() {
+      const session = await getSession();
+      console.log(session?.user.email);
+    }
+
+    tes();
+  }, [])
 
   return (
     <div className={cn("p-6 space-y-6 transition-all duration-300", isOpen ? "ml-64" : "ml-16")}>
