@@ -21,7 +21,7 @@ export function FilterBar() {
   return (
     <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-white dark:bg-raisinblack bg-white">
       <div className="container flex items-center justify-center gap-2">
-        <div className="flex items-center py-1">
+        <div className="flex items-center py-1 gap-5">
           <div className="flex rounded-md bg-[#1a1a1a] p-[2px]">
             {categories?.map((category) => (
               <div key={category.id}>
@@ -39,26 +39,30 @@ export function FilterBar() {
               </div>
             ))}
           </div>
-          <Button variant="ghost" size="default">
-            AI Art
-          </Button>
-          <Button variant="ghost" size="default">
-            SFW
-          </Button>
-          <Button variant="ghost" size="default">
-            Sketchy
-          </Button>
+          <div className="flex items-center rounded-md bg-[#1a1a1a] p-[2px]">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+              AI Art
+            </Button>
+          </div>
+          <div className="flex items-center rounded-md bg-[#1a1a1a] p-[2px]">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-green-500 px-10 text-nowrap">
+              SFW
+            </Button>
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+              Sketchy
+            </Button>
+          </div>
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="outline" size="default">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
               Resolution
             </Button>
-            <Button variant="outline" size="default">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
               Ratio
             </Button>
-            <Button variant="outline" size="default">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
               Color
             </Button>
-            <Button variant="outline" size="default">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
               Random
             </Button>
           </div>
