@@ -13,7 +13,7 @@ type SelectedFiltersContextType = {
 export const SelectedFiltersContext = createContext<SelectedFiltersContextType | undefined>(undefined);
 
 export function SelectedFiltersProvider({ children }: { children: React.ReactNode }) {
-  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(["General", "Anime"]));
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(["General", "Anime", "SFW"]));
 
   const toggleFilter = (filterName: string) => {
     const newSelected = new Set(selectedFilters);

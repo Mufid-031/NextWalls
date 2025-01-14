@@ -39,9 +39,9 @@ export function FilterBar() {
   ];
 
   return (
-    <div className="hidden lg:block bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-white dark:bg-raisinblack bg-white">
+    <div className="hidden lg:block bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-white dark:bg-raisinblack bg-white py-1">
       <div className="flex items-center justify-center gap-2">
-        <div className="flex items-center py-1 gap-5">
+        <div className="flex items-center py-1 gap-2">
           <div className="flex rounded-md bg-[#1a1a1a] p-[2px]">
             {categories?.map((category) => (
               <div key={category.id}>
@@ -60,15 +60,30 @@ export function FilterBar() {
             ))}
           </div>
           <div className="flex items-center rounded-md bg-[#1a1a1a] p-[2px]">
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] shadow-inner shadow-black bg-gray-600 text-gray-400 px-10 text-nowrap">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn("transition-all duration-300 px-10 border border-[#1a1a1a] shadow-inner shadow-black text-nowrap", selectedFilters.has("AI Art") ? "bg-purple-500 text-white" : "bg-gray-600 text-gray-400")}
+              onClick={() => toggleFilter("AI Art")}
+            >
               AI Art
             </Button>
           </div>
           <div className="flex items-center rounded-md bg-[#1a1a1a] p-[2px]">
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] shadow-inner shadow-black bg-green-500 px-10 text-nowrap">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn("transition-all duration-300 px-10 border border-[#1a1a1a] shadow-inner shadow-black text-nowrap", selectedFilters.has("SFW") ? "bg-green-500 text-white" : "bg-gray-600 text-gray-400")}
+              onClick={() => toggleFilter("SFW")}
+            >
               SFW
             </Button>
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] shadow-inner shadow-black bg-gray-600 text-gray-400 px-10 text-nowrap">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn("transition-all duration-300 px-10 border border-[#1a1a1a] shadow-inner shadow-black text-nowrap", selectedFilters.has("Sketchy") ? "bg-yellow-500 text-white" : "bg-gray-600 text-gray-400")}
+              onClick={() => toggleFilter("Sketchy")}
+            >
               Sketchy
             </Button>
           </div>
