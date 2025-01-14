@@ -40,7 +40,7 @@ export function FilterBar() {
             ))}
           </div>
           <div className="flex items-center rounded-md bg-[#1a1a1a] p-[2px]">
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-600 text-gray-400 px-10 text-nowrap">
               AI Art
             </Button>
           </div>
@@ -48,21 +48,21 @@ export function FilterBar() {
             <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-green-500 px-10 text-nowrap">
               SFW
             </Button>
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-600 text-gray-400 px-10 text-nowrap">
               Sketchy
             </Button>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black px-10 text-nowrap">
               Resolution
             </Button>
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black px-10 text-nowrap">
               Ratio
             </Button>
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black px-10 text-nowrap">
               Color
             </Button>
-            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-gray-500 px-10 text-nowrap">
+            <Button variant="ghost" size="icon" className="border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black px-10 text-nowrap">
               Random
             </Button>
           </div>
