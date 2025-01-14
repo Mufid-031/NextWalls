@@ -1,13 +1,14 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { signIn } from "next-auth/react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { cn } from "@/lib/utils";
 
 export function NavBar() {
   const { search, setSearch, searchWallpapers } = useSearch();
@@ -21,6 +22,39 @@ export function NavBar() {
     }
   }, [search]);
 
+  const navLinks = [
+    {
+      name: "Latest",
+      href: "/latest",
+      className: "text-green-500 hover:drop-shadow-[0_0_0_green]",
+    },
+    {
+      name: "Hot",
+      href: "/hot",
+      className: "text-red-500 hover:drop-shadow-[0_0_0_red]",
+    },
+    {
+      name: "Toplist",
+      href: "/toplist",
+      className: "text-purple-500 hover:drop-shadow-[0_0_0_purple]",
+    },
+    {
+      name: "Random",
+      href: "/random",
+      className: "text-orange-500 hover:drop-shadow-[0_0_0_orange]",
+    },
+    {
+      name: "upload",
+      href: "/upload",
+      className: "text-yellow-500 hover:drop-shadow-[0_0_0_yellow]",
+    },
+    {
+      name: "Forums",
+      href: "/forums",
+      className: "text-blue-500 hover:drop-shadow-[0_0_0_blue]",
+    },
+  ];
+
   return (
     <header className="w-full px-3 text-white dark:bg-gradient-to-b dark:from-darkgunmetal dark:to-black bg-white">
       <div className="container flex h-14 items-center justify-between">
@@ -31,24 +65,11 @@ export function NavBar() {
             </span>
           </Link>
           <nav className="items-center text-sm font-medium hidden lg:flex">
-            <Link href="/latest" className="p-5 text-center text-foreground/60 text-green-500 w-full h-full border border-slate-700 hover:drop-shadow-[0_0_0_green]">
-              Latest
-            </Link>
-            <Link href="/hot" className="p-5 text-center text-foreground/60 text-red-500 w-full h-full border border-slate-700 hover:drop-shadow-[0_0_0_red]">
-              Hot
-            </Link>
-            <Link href="/toplist" className="p-5 text-center text-foreground/60 text-purple-500 border border-slate-700 hover:drop-shadow-[0_0_0_purple]">
-              Toplist
-            </Link>
-            <Link href="/random" className="p-5 text-center text-foreground/60 text-orange-500 border border-slate-700 hover:drop-shadow-[0_0_0_orange]">
-              Random
-            </Link>
-            <Link href="/upload" className="p-5 text-center text-foreground/60 text-yellow-500 border border-slate-700 hover:drop-shadow-[0_0_0_yellow]">
-              Upload
-            </Link>
-            <Link href="/forums" className="p-5 text-center text-foreground/60 text-blue-500 border border-slate-700 hover:drop-shadow-[0_0_0_blue]">
-              Forums
-            </Link>
+            {navLinks.map((link) => (
+              <Link key={link.name} href={link.href} className={cn("p-5 text-center text-foreground/60 border-slate-700 border", link.className)}>
+                {link.name}
+              </Link>
+            ))}
           </nav>
           <div className="relative w-full flex items-center">
             <Search className="absolute left-2 h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
@@ -56,7 +77,9 @@ export function NavBar() {
           </div>
         </div>
         <div className="flex items-center space-x-4">
-          <Button variant="default" className="bg-purple-600 hover:bg-purple-700" onClick={() => signIn()}>Login</Button>
+          <Button variant="default" className="bg-purple-600 hover:bg-purple-700" onClick={() => signIn()}>
+            Login
+          </Button>
           <Button variant="default" className="bg-gray-800 hover:bg-gray-700">
             <Link href="/auth/register">Register</Link>
           </Button>

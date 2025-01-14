@@ -134,7 +134,7 @@ export default function Form({
             name="tags"
             id="tags"
             className="text-black"
-            onKeyDown={(e) => {
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 handleAddTag(e.currentTarget.value);

@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   
   const sizeStyles = {
     default: 'h-10 py-2 px-4',
-    icon: 'h-8 w-8'
+    icon: 'h-8 w-8 text-xs'
   }
 
   const classes = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`
