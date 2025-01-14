@@ -19,8 +19,8 @@ export function FilterBar() {
   }, [selectedFilters]);
 
   return (
-    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-white dark:bg-raisinblack bg-white">
-      <div className="container flex items-center justify-center gap-2">
+    <div className="hidden lg:block bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 text-white dark:bg-raisinblack bg-white">
+      <div className="flex items-center justify-center gap-2">
         <div className="flex items-center py-1 gap-5">
           <div className="flex rounded-md bg-[#1a1a1a] p-[2px]">
             {categories?.map((category) => (
