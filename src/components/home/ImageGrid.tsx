@@ -18,10 +18,6 @@ interface ImageCardProps {
 function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProps) {
   const [isOpenTags, setIsOpenTags] = useState<boolean>(false);
 
-  useIsomorphicLayoutEffect(() => {
-    console.log(wallpaperTags);
-  }, [isOpenTags])
-
   return (
     <div className="group relative overflow-hidden rounded-lg z-30">
       {isOpenTags && (

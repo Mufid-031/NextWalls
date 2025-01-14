@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async () => {
   const wallpapers = await prisma.wallpaper.findMany({
-    include: { category: true, wallpaperTags: { include: { tag: true } } },
+    include: { uploadedBy: true, category: true, wallpaperTags: { include: { tag: true } } },
   });
 
   if (wallpapers.length === 0) {

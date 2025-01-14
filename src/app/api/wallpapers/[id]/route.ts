@@ -7,6 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const wallpaper = await prisma.wallpaper.findUnique({
         where: { id: Number(id) },
         include: {
+            uploadedBy: true,
             category: true,
             wallpaperTags: {
                 include: {
