@@ -10,13 +10,13 @@ import { Wallpaper } from "@/types/wallpaper.type";
 import ColorThief from "colorthief";
 
 export default function Sidebar({ 
-    id, 
-    wallpaper, 
-    setWallpaper 
+  id, 
+  wallpaper, 
+  setWallpaper 
 }: { 
-    id: string, 
-    wallpaper: Wallpaper | null,
-    setWallpaper: React.Dispatch<React.SetStateAction<Wallpaper | null>> 
+  id: string, 
+  wallpaper: Wallpaper | null,
+  setWallpaper: React.Dispatch<React.SetStateAction<Wallpaper | null>> 
 }) {
     const { getWallpaperById } = useWallpaper();
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(true);
@@ -92,7 +92,7 @@ export default function Sidebar({
                   <div className="flex flex-wrap gap-1 pl-5">
                     {wallpaper?.wallpaperTags.map((wallpaperTag) => (
                       <div key={wallpaperTag.tag.id} className="flex items-center gap-2">
-                        <span className="text-xs font-semibold bg-slate-800 text-green-400 p-1 rounded">
+                        <span className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 rounded-tl-md rounded-br-md">
                           {wallpaperTag.tag.name}
                         </span>
                       </div>
@@ -105,7 +105,7 @@ export default function Sidebar({
                 <Button 
                   onClick={() => setOpenProperties(!openProperties)} 
                   variant="ghost" 
-                  className="text-green-500 flex gap-1"
+                  className="text-sky-500 flex gap-1"
                 >
                   {openProperties ? (
                     <ChevronDown className="w-5 h-5 text-white" />
@@ -114,9 +114,17 @@ export default function Sidebar({
                   )}
                   Properties
                 </Button>
-                <div>
-                  <h3>Uploader : {wallpaper?.uploadedBy.name}</h3>
-                </div>
+                {openProperties && (
+                  <div className="flex flex-col gap-2 pl-10 text-white">
+                    <h3 className="text-sm text-sky-200">Uploader : {wallpaper?.uploadedBy.name}</h3>
+                    <h3 className="text-sm text-sky-200">Category:
+                      <span className="text-green-400 bg-slate-700 px-2 py-1 rounded ml-1">
+                        {wallpaper?.category.name}
+                      </span>
+                    </h3>
+                    <h3 className="text-sm text-sky-200">Views : {wallpaper?.views}</h3>
+                  </div>
+                )}
               </div>
             </>
           )}
