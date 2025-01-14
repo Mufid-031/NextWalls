@@ -1,7 +1,7 @@
 import { Wallpaper } from "@/types/wallpaper.type";
 import Image from "next/image";
 
-export default function WallpaperImage({ wallpaper }: { wallpaper: Wallpaper }) {
+export default function WallpaperImage({ wallpaper }: { wallpaper: Wallpaper}) {
 
     return (
         <div className="flex justify-center items-center w-full">

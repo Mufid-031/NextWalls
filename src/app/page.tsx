@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="fixed top-0 z-30 w-full">
+      <header className="fixed top-0 z-50 w-full">
         <NavBar />
         <FilterBar />
       </header>

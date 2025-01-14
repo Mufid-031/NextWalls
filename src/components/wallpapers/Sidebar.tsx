@@ -25,7 +25,7 @@ export default function Sidebar({
     const [openProperties, setOpenProperties] = useState<boolean>(true);
 
     useIsomorphicLayoutEffect(() => {
-      getWallpaperById(id).then(setWallpaper);
+      getWallpaperById(id).then((data) => setWallpaper(data));
     }, [id, getWallpaperById]);
 
     useIsomorphicLayoutEffect(() => {

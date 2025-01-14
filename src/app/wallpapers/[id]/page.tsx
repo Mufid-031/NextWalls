@@ -19,7 +19,7 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
           wallpaper={wallpaper}
           setWallpaper={setWallpaper}
         />
-        <WallpaperImage wallpaper={wallpaper!} />
+        <WallpaperImage wallpaper={wallpaper!}  />
       </main>
     </div>
   );

@@ -56,7 +56,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
   const getWallpaperById = async (id: string) => {
     try {
       const response = await axios.get(`/api/wallpapers/${id}`);
-      return response.data;
+      return await response.data;
     } catch (error) {
       console.error("Error fetching wallpaper by ID:", error);
       return null;
