@@ -6,7 +6,7 @@ import WallpaperImage from "@/components/wallpapers/WallpaperImage";
 import { Wallpaper } from "@/types/wallpaper.type";
 import { use, useState } from "react";
 
-export default function WallpaperIdPage({ params }: { params: Promise<{ id: string }> }) {
+export default function WallpaperTagPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
 
