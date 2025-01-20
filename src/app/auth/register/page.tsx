@@ -59,19 +59,19 @@ export default function RegisterPage() {
             <Header />
             {error && <p className="text-red-500 mb-5">{error}</p>}
             <div className="mb-5 flex flex-col">
-              <Label className="text-lg mb-1" htmlFor="email">
+              <Label className="text-lg mb-1 dark:text-slate-200" htmlFor="email">
                 Email address
               </Label>
               <Input className="p-3" type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="mb-5 flex flex-col">
-              <Label className="text-lg mb-1" htmlFor="password">
+              <Label className="text-lg mb-1 dark:text-slate-200" htmlFor="password">
                 Password
               </Label>
               <Input className="p-3" type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className="mb-5 flex flex-col">
-              <Label className="text-lg mb-1" htmlFor="confirmPassword">
+              <Label className="text-lg mb-1 text dark:text-slate-200" htmlFor="confirmPassword">
                 Confirm Password
               </Label>
               <Input className="p-3" type="password" name="confirmPassword" id="confirmPassword" onChange={(e) => setConfirmPassword(e.target.value)} />
@@ -79,7 +79,7 @@ export default function RegisterPage() {
             <Button className="w-full bg-purple-600 text-white rounded p-3 mb-5 hover:bg-purple-700" type="submit">
               {isLoading ? "Registering..." : "Register"}
             </Button>
-            <p className="text-sm text-center">
+            <p className="text-sm text-center dark:text-slate-200">
               Already have an account?{" "}
               <Link href="/auth/login" className="underline text-purple-400">
                 Sign In

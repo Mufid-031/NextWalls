@@ -71,9 +71,11 @@ export function NavBar() {
               </Link>
             ))}
           </nav>
-          <div className="relative w-full flex items-center">
-            <Search className="absolute left-2 h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
-            <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 pl-8 dark:bg-[#1a1a1a] bg-white" />
+          <div className="w-full flex items-center">
+            <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 pl-8 dark:bg-black bg-white" />
+            <div className="p-3 mt-1 border-[#1a1a1a] shadow-inner shadow-black">
+              <Search className="h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
+            </div>
           </div>
         </div>
         <div className="flex items-center space-x-4">

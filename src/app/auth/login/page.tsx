@@ -58,13 +58,13 @@ export default function LoginPage() {
             <Header />
             {error && <p className="text-red-500">{error}</p>}
             <div className="mb-5 flex flex-col">
-              <Label className="text-lg mb-1" htmlFor="email">
+              <Label className="text-lg mb-1 dark:text-slate-200" htmlFor="email">
                 Email address
               </Label>
               <Input className="p-3" type="email" name="email" id="email" onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="mb-5 flex flex-col">
-              <Label className="text-lg mb-1" htmlFor="password">
+              <Label className="text-lg mb-1 dark:text-slate-200" htmlFor="password">
                 Password
               </Label>
               <Input className="p-3" type="password" name="password" id="password" onChange={(e) => setPassword(e.target.value)} />
@@ -72,7 +72,7 @@ export default function LoginPage() {
             <div className="mb-5 flex justify-between">
               <div className="flex items-center gap-2">
                 <Checkbox className="checked:bg-purple-600" name="remember" id="remember" />
-                <Label className="text-sm" htmlFor="remember">
+                <Label className="text-sm dark:text-slate-200" htmlFor="remember">
                   Remember for 30 days
                 </Label>
               </div>
@@ -86,7 +86,7 @@ export default function LoginPage() {
             <Button className="w-full bg-slate-100 text-slate-600 p-3 mb-5 hover:bg-slate-200" type="button" onClick={() => signIn("google")}>
               <FcGoogle className="text-2xl" /> Sign in with Google
             </Button>
-            <p className="text-sm text-center">
+            <p className="text-sm text-center dark:text-slate-200">
               Don{`'`}t have an account?{" "}
               <Link href="/auth/register" className="underline text-purple-400">
                 Sign Up
