@@ -3,6 +3,7 @@
 import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { cn } from "@/lib/utils";
 import { Tag, WallpaperTag } from "@prisma/client";
 import { Tags } from "lucide-react";
 import Image from "next/image";
@@ -18,17 +19,23 @@ interface ImageCardProps {
 
 function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProps) {
   const [isOpenTags, setIsOpenTags] = useState<boolean>(false);
+  const { push } = useRouter();
+
+  const handleTagClick = (e: React.MouseEvent<HTMLSpanElement>, tagId: string) => {
+    e.stopPropagation();
+    push(`/tag/${tagId}`);
+  }
 
   return (
     <div className="group relative overflow-hidden rounded-lg z-30">
       {isOpenTags && (
-        <div className="absolute top-0 left-0 right-0 bg-black/50 p-2 text-xs text-white flex gap-1 flex-wrap">
+        <div className="absolute top-0 left-0 right-0 bg-black/50 p-2 text-xs text-white flex gap-1 flex-wrap items-center">
           {wallpaperTags.map((wallpaperTag) => (
-            <span key={wallpaperTag.tag.id} className="text-green-400 bg-gray-700 px-1">{wallpaperTag.tag.name}</span>
+            <span key={wallpaperTag.tag.id} onClick={(e) => handleTagClick(e, wallpaperTag.tag.id.toString())} className="text-green-400 bg-gray-700 px-1 cursor-pointer">{wallpaperTag.tag.name}</span>
           ))}
         </div>
       )}
-      <Image src={src} alt="Wallpaper" width={400} height={225} className="h-[225px] w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+      <Image src={src} alt="Wallpaper" width={400} height={225} className="h-[225px] w-full object-cover transition-transform duration-300" />
       <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex justify-between items-center">
         <p>{totalViews} views</p>
         <p>{resolution}</p>
@@ -37,7 +44,7 @@ function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProp
             setIsOpenTags(!isOpenTags);
           }}
         >
-          <Tags className="w-5 h-5 text-green-400"/>
+          <Tags className={cn("w-5 h-5", isOpenTags ? "text-green-400" : "text-white")}/>
         </p>
       </div>
     </div>
