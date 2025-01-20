@@ -69,7 +69,7 @@ export function NavBar() {
             ))}
           </nav>
           <div className="w-full flex items-center">
-            <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-black bg-white" />
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-black bg-white" />
             <div onClick={handleSearchWallpapersClick} className="p-3 mt-1 border-[#1a1a1a] shadow-inner shadow-black">
               <Search className="h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
             </div>

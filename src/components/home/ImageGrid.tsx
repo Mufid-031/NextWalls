@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { Tag, WallpaperTag } from "@prisma/client";
@@ -44,10 +45,15 @@ function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProp
 }
 
 export function ImageGrid() {
-  const { wallpapers, getWallpapers } = useWallpaper();
+  const { wallpapers, getWallpapers, setWallpapers } = useWallpaper();
+  const { search, searchWallpapers } = useSearch();
   const { push } = useRouter();
 
   useIsomorphicLayoutEffect(() => {
+    if (search) {
+      searchWallpapers(setWallpapers);
+    }
+
     if (wallpapers.length === 0) {
       getWallpapers();
     }

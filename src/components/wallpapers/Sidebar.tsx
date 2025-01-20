@@ -9,6 +9,8 @@ import { useWallpaper } from "@/contexts/WallpaperContext";
 import { Wallpaper } from "@/types/wallpaper.type";
 import ColorThief from "colorthief";
 import moment from "moment";
+import { useSearch } from "@/contexts/SearchContext";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar({ 
   id, 
@@ -24,6 +26,8 @@ export default function Sidebar({
   const [palette, setPalette] = useState<string[]>([]);
   const [openTags, setOpenTags] = useState<boolean>(true);
   const [openProperties, setOpenProperties] = useState<boolean>(true);
+  const { setSearch } = useSearch();
+  const { push } = useRouter();
 
   useIsomorphicLayoutEffect(() => {
     getWallpaperById(id).then((data) => setWallpaper(data));
@@ -41,6 +45,11 @@ export default function Sidebar({
       };
     }
   }, [wallpaper?.imageUrl]);
+
+  const handleTagClick = (tag: string) => {
+    setSearch(tag);
+    push('/');
+  };
 
   return (
     <div
@@ -92,7 +101,7 @@ export default function Sidebar({
             {openTags && (
               <div className="flex flex-wrap gap-1 pl-5">
                 {wallpaper?.wallpaperTags.map((wallpaperTag) => (
-                  <div key={wallpaperTag.tag.id} className="flex items-center gap-2">
+                  <div key={wallpaperTag.tag.id} onClick={() => handleTagClick(wallpaperTag.tag.name)} className="flex items-center gap-2">
                     <span className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 rounded-tl-md rounded-br-md">
                       {wallpaperTag.tag.name}
                     </span>
