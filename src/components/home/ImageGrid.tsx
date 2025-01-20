@@ -36,7 +36,7 @@ function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProp
         </div>
       )}
       <Image src={src} alt="Wallpaper" width={400} height={225} className="h-[225px] w-full object-cover transition-transform duration-300" />
-      <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-xs text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex justify-between items-center">
+      <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-xs text-white opacity-0 translate-y-[100%] group-hover:translate-y-0 transition-all duration-300 group-hover:opacity-100 flex justify-between items-center">
         <p>{totalViews} views</p>
         <p>{resolution}</p>
         <p onClick={(e) => {

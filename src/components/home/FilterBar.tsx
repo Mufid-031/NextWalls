@@ -16,9 +16,12 @@ export function FilterBar() {
   const { setWallpapers } = useWallpaper();
 
   useIsomorphicLayoutEffect(() => {
-    getWallpapersBySelectedFilters(setWallpapers);
     if (categories.length === 0) getCategories();
-  }, [selectedFilters]);
+  }, []);
+
+  const handleFilterWallpaperClick = () => {
+    getWallpapersBySelectedFilters(setWallpapers);
+  }
 
   const optionsFilters = [
     {
@@ -98,7 +101,7 @@ export function FilterBar() {
               </Button>
             ))}
           </div>
-          <Button variant="ghost" size="icon" className="text-gray-200 border border-[#1a1a1a] bg-sky-600 shadow-inner shadow-black text-nowrap hover:bg-sky-700">
+          <Button onClick={handleFilterWallpaperClick} variant="ghost" size="icon" className="text-gray-200 border border-[#1a1a1a] bg-sky-600 shadow-inner shadow-black text-nowrap hover:bg-sky-700">
             <motion.span whileHover={{ rotate: 360, transition: { duration: 2, repeat: Infinity } }}>
               <RefreshCw className="w-4 h-4 text-white" />
             </motion.span>

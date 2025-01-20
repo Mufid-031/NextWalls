@@ -11,13 +11,15 @@ import { cn } from "@/lib/utils";
 
 export function NavBar() {
   const { search, setSearch, searchWallpapers } = useSearch();
-  const { setWallpapers } = useWallpaper();
+  const { setWallpapers, getWallpapers } = useWallpaper();
 
   const handleSearchWallpapersClick = () => {
     if (search) {
       searchWallpapers(setWallpapers);
+    } else {
+      getWallpapers();
     }
-  }
+  };
 
   const navLinks = [
     {
@@ -68,19 +70,19 @@ export function NavBar() {
               </Link>
             ))}
           </nav>
-          <div className="w-full flex items-center">
-            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-black bg-white" />
-            <div onClick={handleSearchWallpapersClick} className="p-3 mt-1 border-[#1a1a1a] shadow-inner shadow-black">
+          <div className="w-full flex items-center gap-2">
+            <Input onKeyDown={(e) => e.key === "Enter" && handleSearchWallpapersClick()} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-[#2a2a2a] bg-white" />
+            <div onClick={handleSearchWallpapersClick} className="p-[10px] border-[#1a1a1a] shadow-inner shadow-black bg-[#1a1a1a]">
               <Search className="h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
             </div>
           </div>
         </div>
         <div className="flex items-center space-x-4">
+          <Button variant="default" className="bg-gray-800 hover:bg-gray-700"> 
+            <Link href="/auth/register">Register</Link>
+          </Button>
           <Button variant="default" className="bg-purple-600 hover:bg-purple-700" onClick={() => signIn()}>
             Login
-          </Button>
-          <Button variant="default" className="bg-gray-800 hover:bg-gray-700">
-            <Link href="/auth/register">Register</Link>
           </Button>
         </div>
       </div>
