@@ -7,20 +7,17 @@ import { Input } from "@/components/ui/Input";
 import { signIn } from "next-auth/react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
-import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { cn } from "@/lib/utils";
 
 export function NavBar() {
   const { search, setSearch, searchWallpapers } = useSearch();
-  const { wallpapers, setWallpapers, getWallpapers } = useWallpaper();
+  const { setWallpapers } = useWallpaper();
 
-  useIsomorphicLayoutEffect(() => {
+  const handleSearchWallpapersClick = () => {
     if (search) {
       searchWallpapers(setWallpapers);
-    } else if (!search || wallpapers.length === 0) {
-      getWallpapers();
     }
-  }, [search]);
+  }
 
   const navLinks = [
     {
@@ -72,8 +69,8 @@ export function NavBar() {
             ))}
           </nav>
           <div className="w-full flex items-center">
-            <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 pl-8 dark:bg-black bg-white" />
-            <div className="p-3 mt-1 border-[#1a1a1a] shadow-inner shadow-black">
+            <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-black bg-white" />
+            <div onClick={handleSearchWallpapersClick} className="p-3 mt-1 border-[#1a1a1a] shadow-inner shadow-black">
               <Search className="h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
             </div>
           </div>
