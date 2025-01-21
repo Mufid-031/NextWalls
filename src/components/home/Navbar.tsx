@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 export function NavBar() {
   const { search, setSearch, searchWallpapers } = useSearch();
   const { setWallpapers, getWallpapers } = useWallpaper();
+  const { data: session } = useSession();
 
   const handleSearchWallpapersClick = () => {
     if (search) {
@@ -78,12 +79,22 @@ export function NavBar() {
           </div>
         </div>
         <div className="flex items-center space-x-4">
-          <Button variant="default" className="bg-gray-800 hover:bg-gray-700"> 
-            <Link href="/auth/register">Register</Link>
-          </Button>
-          <Button variant="default" className="bg-purple-600 hover:bg-purple-700" onClick={() => signIn()}>
-            Login
-          </Button>
+          {session?.user ? (
+            <>
+              <div className="flex justify-center items-center w-10 h-10 rounded-full bg-slate-400 cursor-pointer">
+                <span>{session.user.name.slice(0, 1).toUpperCase()}</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <Button variant="default" className="bg-gray-800 hover:bg-gray-700">
+                <Link href="/auth/register">Register</Link>
+              </Button>
+              <Button variant="default" className="bg-purple-600 hover:bg-purple-700" onClick={() => signIn()}>
+                Login
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
