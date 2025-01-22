@@ -29,6 +29,9 @@ export default function Sidebar({
     getWallpaperById(id).then((data) => setWallpaper(data));
   }, [id, getWallpaperById]);
 
+  const handlePaletteClick = (color: string) => {
+    push(`/color/${color}`);
+  }
 
   const handleTagClick = (tag: string) => {
     push(`/tag/${tag}`);
@@ -60,6 +63,7 @@ export default function Sidebar({
               {wallpaper?.colorPalettes.map((color, index) => (
                 <div
                   key={index}
+                  onClick={() => handlePaletteClick(color.colorPalette.color)}
                   style={{ backgroundColor: color.colorPalette.color }}
                   className="w-14 h-5"
                   title={color.colorPalette.color}
