@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import * as React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { X, ImageIcon } from 'lucide-react';
-import ColorThief from 'colorthief';
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 
 interface PreviewCardProps {
   title: string;
@@ -17,32 +15,6 @@ interface PreviewCardProps {
 
 const PreviewCard: React.FC<PreviewCardProps> = ({ title, description, tags, files, handleRemoveTag }) => {
 
-  const [palette, setPalette] = useState<string[]>([]);
-  const ref = useRef<HTMLImageElement | null>(null);
-
-  
-
-  useIsomorphicLayoutEffect(() => {
-    const getPalette = async () => {
-      const imageElement = ref.current ?? document.createElement("img");
-      imageElement.crossOrigin = "Anonymous";
-      imageElement.src = URL.createObjectURL(files[0]) as string;
-      (imageElement as HTMLImageElement).onload = () => {
-        const colorThief = new ColorThief();
-        const colors = colorThief.getPalette(imageElement, 5);
-        setPalette(colors.map((color: number[]) => `rgb(${color[0]},${color[1]},${color[2]})`));
-      }
-    };
-    
-    if (files[0]) {
-      getPalette();
-    }
-
-  }, [files[0]])
-
-  useIsomorphicLayoutEffect(() => {
-    console.log(palette)
-  }, [palette])
 
   return (
     <div className="w-full p-5 bg-white rounded-md shadow">
@@ -51,7 +23,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ title, description, tags, fil
         {files.length > 0 ? (
           files[0].type.startsWith("image/") ? (
             <Image
-              ref={ref}
               src={URL.createObjectURL(files[0])}
               alt="Preview"
               width={500}

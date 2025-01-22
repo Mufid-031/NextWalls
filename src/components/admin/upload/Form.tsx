@@ -1,12 +1,16 @@
+"use client";
+
 import { Input } from "@/components/ui/Input";
 import Label from "@/components/auth/Label";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { Button } from "@/components/ui/Button";
 import useFetch from "@/hooks/useFetch";
 import { Category } from "@prisma/client";
+import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import ColorThief from "colorthief";
 
 export default function Form({
   title,
@@ -29,12 +33,37 @@ export default function Form({
   setFiles: (files: File[]) => void;
   handleResetTag: () => void;
 }) {
+  const [palette, setPalette] = useState<string[]>([]);
   const { data: session, status } = useSession();
   const { data: categories } = useFetch<Category[]>("/api/category", 60000);
   const [category, setCategory] = useState<string>("1");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const ref = useRef<HTMLImageElement | null>(null);
+  
+
+  useIsomorphicLayoutEffect(() => {
+    const getPalette = async () => {
+      const imageElement = ref.current ?? document.createElement("img");
+      imageElement.crossOrigin = "Anonymous";
+      imageElement.src = URL.createObjectURL(files[0]) as string;
+      (imageElement as HTMLImageElement).onload = () => {
+        const colorThief = new ColorThief();
+        const colors = colorThief.getPalette(imageElement, 5);
+        setPalette(colors.map((color: number[]) => `rgb(${color[0]},${color[1]},${color[2]})`));
+      }
+    };
+    
+    if (files[0]) {
+      getPalette();
+    }
+
+  }, [files[0]])
+
+  useIsomorphicLayoutEffect(() => {
+    console.log(palette)
+  }, [palette])
 
   const handleFileUpload = (files: File[]) => {
     setFiles(files);
@@ -67,8 +96,9 @@ export default function Form({
       formData.append("email", session.user?.email || "");
       formData.append("file", files[0]);
       formData.append("tags", JSON.stringify(tags));
+      formData.append("palette", JSON.stringify(palette));
 
-      const response = await axios.post("/api/wallpapers/cloud", formData, {
+      const response = await axios.post("/api/wallpapers/nocloud", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

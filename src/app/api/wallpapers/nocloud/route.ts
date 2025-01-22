@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     const email = formData.get("email") as string;
     const categoryId = formData.get("categoryId") as string;
     const tags = JSON.parse(formData.get("tags") as string);
+    const palette = JSON.parse(formData.get("palette") as string);
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -90,6 +91,10 @@ export async function POST(req: NextRequest) {
       where: { name: { in: tags } },
     });
 
+    const paletteInDb = await prisma.colorPalette.findMany({
+      where: { color: { in: palette } },
+    });
+
     if (tagsInDb.length !== tags.length) {
       await prisma.tag.createMany({
         data: tags
@@ -102,6 +107,20 @@ export async function POST(req: NextRequest) {
 
     const tagsInTags = await prisma.tag.findMany({
       where: { name: { in: tags } },
+    });
+
+    if (paletteInDb.length !== palette.length) {
+      await prisma.colorPalette.createMany({
+        data: palette
+          .filter((color: string) => !paletteInDb.map((p: {color: string}) => p.color).includes(color))
+          .map((color: string) => ({
+            color: color,
+        }))
+      });
+    }
+    
+    const paletteInPalette = await prisma.colorPalette.findMany({
+      where: { color: { in: palette } },
     });
 
     const wallpaper = await prisma.wallpaper.create({
@@ -120,6 +139,13 @@ export async function POST(req: NextRequest) {
       data: tagsInTags.map((tag: { id: number }) => ({
         wallpaperId: wallpaper.id,
         tagId: tag.id,
+      }))
+    })
+
+    await prisma.wallpaperColorPalette.createMany({
+      data: paletteInPalette.map((palette: { id: number }) => ({
+        wallpaperId: wallpaper.id,
+        colorPaletteId: palette.id,
       }))
     })
 
