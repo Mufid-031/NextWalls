@@ -65,7 +65,7 @@ export default function Sidebar({
                   key={index}
                   onClick={() => handlePaletteClick(color.colorPalette.color)}
                   style={{ backgroundColor: color.colorPalette.color }}
-                  className="w-14 h-5"
+                  className="w-14 h-5 hover:scale-125 transition-all duration-300 cursor-pointer"
                   title={color.colorPalette.color}
                 ></div>
               ))}

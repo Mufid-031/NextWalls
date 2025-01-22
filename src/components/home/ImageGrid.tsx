@@ -73,7 +73,7 @@ export function ImageGrid() {
   };
 
   return (
-    <div className="py-8">
+    <div className="py-8 px-10">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {wallpapers.length > 0 ? (
           wallpapers.map((wallpaper) => (
