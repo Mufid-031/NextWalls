@@ -1,4 +1,4 @@
-import { Tag, User, WallpaperTag } from "@prisma/client";
+import { ColorPalette, Tag, User, WallpaperColorPalette, WallpaperTag } from "@prisma/client";
 
 export interface Wallpaper {
   id: number;
@@ -14,10 +14,8 @@ export interface Wallpaper {
   height: number;
   uploadedBy: User;
   category: { name: string };
-  wallpaperTags: WallpaperTag &
-    {
-      tag: Tag;
-    }[];
+  wallpaperTags: WallpaperTag & { tag: Tag }[];
+  colorPalettes: WallpaperColorPalette & { colorPalette: ColorPalette }[];
   createdAt: Date;
   updatedAt: Date;
 }

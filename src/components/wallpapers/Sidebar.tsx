@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { Wallpaper } from "@/types/wallpaper.type";
-import ColorThief from "colorthief";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +21,6 @@ export default function Sidebar({
 }) {
   const { getWallpaperById } = useWallpaper();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(true);
-  const [palette, setPalette] = useState<string[]>([]);
   const [openTags, setOpenTags] = useState<boolean>(true);
   const [openProperties, setOpenProperties] = useState<boolean>(true);
   const { push } = useRouter();
@@ -30,19 +28,7 @@ export default function Sidebar({
   useIsomorphicLayoutEffect(() => {
     getWallpaperById(id).then((data) => setWallpaper(data));
   }, [id, getWallpaperById]);
-  
-  useIsomorphicLayoutEffect(() => {
-    if (wallpaper?.imageUrl) {
-      const img = document.createElement("img");
-      img.crossOrigin = "Anonymous";
-      img.src = wallpaper.imageUrl;
-      img.onload = () => {
-        const colorThief = new ColorThief();
-        const colors = colorThief.getPalette(img, 5);
-        setPalette(colors.map((color: number[]) => `rgb(${color[0]},${color[1]},${color[2]})`));
-      };
-    }
-  }, [wallpaper?.imageUrl]);
+
 
   const handleTagClick = (tag: string) => {
     push(`/tag/${tag}`);
@@ -71,12 +57,12 @@ export default function Sidebar({
               {wallpaper?.width} x {wallpaper?.height}
             </h2>
             <div className="absolute bottom-5 flex pl-4">
-              {palette.map((color, index) => (
+              {wallpaper?.colorPalettes.map((color, index) => (
                 <div
                   key={index}
-                  style={{ backgroundColor: color }}
+                  style={{ backgroundColor: color.colorPalette.color }}
                   className="w-14 h-5"
-                  title={color}
+                  title={color.colorPalette.color}
                 ></div>
               ))}
             </div>
