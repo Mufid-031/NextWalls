@@ -93,7 +93,7 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
                         <span
                           key={index}
                           onClick={() => {
-                            const wallpaperTag = wallpapers.map(wallpaper => wallpaper.wallpaperTags.find(wallpaperTag => wallpaperTag.tag.name === tag)!)
+                            const wallpaperTag = wallpapers.map(wallpaper => wallpaper.wallpaperTags.find(wallpaperTag => wallpaperTag.tag.name === tag)!).filter(wallpaperTag => wallpaperTag);
                             if (wallpaperTag) push(`/tag/${wallpaperTag[0].tag.id}`);
                           }}
                           className="text-[#98ff98] hover:underline cursor-pointer [text-shadow:_0_0_10px_rgba(152,255,152,0.5)] flex gap-1 items-center"
