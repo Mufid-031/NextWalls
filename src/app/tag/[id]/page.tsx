@@ -49,7 +49,7 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
         <div className="relative w-full h-[500px]">
           {wallpapers[0]?.imageUrl ? <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" /> : null}
 
-          <div className="absolute inset-0 bg-black/30">
+          <div className="absolute inset-0 bg-black/30 w-[90%] mx-auto mt-28">
             <div className="container mx-auto h-full">
               <div className="flex flex-col justify-between h-full p-6">
                 <div className="flex items-center space-x-2">
@@ -108,7 +108,7 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
                   <div className="flex flex-col gap-2">
                     <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
                       <ImageIcon className="w-5 h-5" />
-                      <span className="text-lg">{totalView}</span>
+                      <span className="text-lg">{wallpapers.length}</span>
                     </div>
                     <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
                       <Eye className="w-5 h-5" />
