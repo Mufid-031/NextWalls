@@ -8,9 +8,9 @@ import { Tag, WallpaperTag } from "@prisma/client";
 import { Search, Tags } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 
-interface ImageCardProps {
+interface ImageCardProps extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
   totalViews: number;
   resolution: string;
@@ -56,7 +56,7 @@ function ImageCard({ src, totalViews, resolution, wallpaperTags }: ImageCardProp
 }
 
 export function ImageGrid() {
-  const { wallpapers, getWallpapers, setWallpapers } = useWallpaper();
+  const { wallpapers, getWallpapers, setWallpapers, addView } = useWallpaper();
   const { search, searchWallpapers } = useSearch();
   const { push } = useRouter();
 
@@ -69,6 +69,7 @@ export function ImageGrid() {
   }, []);
 
   const handleWallpaperDetailClick = (wallpaperId: number) => {
+    addView(wallpapers.find((wallpaper) => wallpaper.id === wallpaperId)!);
     push(`/wallpapers/${wallpaperId}`);
   };
 
