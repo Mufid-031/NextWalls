@@ -11,7 +11,15 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; wallpaper: Wallpaper | null; setWallpaper: React.Dispatch<React.SetStateAction<Wallpaper | null>> }) {
+export default function Sidebar({ 
+  id, 
+  wallpaper, 
+  setWallpaper 
+}: { 
+  id: string; 
+  wallpaper: Wallpaper | null; 
+  setWallpaper: React.Dispatch<React.SetStateAction<Wallpaper | null>> 
+}) {
   const { getWallpaperById } = useWallpaper();
   const { push } = useRouter();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(true);
@@ -49,7 +57,18 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
   return (
     <div className={cn("relative transition-all duration-300 p-2", isOpenSidebar ? "w-[24rem] bg-gradient-to-r from-darkgunmetal to-black translate-x-0" : "w-3 bg-black -translate-x-[0.4rem]")}>
       <div className="z-0 absolute top-10 -right-7 w-10 h-10 rounded-r-full bg-black flex justify-center items-center">
-        {isOpenSidebar ? <ChevronLeft className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(false)} /> : <ChevronRight className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(true)} />}
+        {isOpenSidebar 
+          ? 
+          <ChevronLeft 
+            className="w-5 h-5 text-white" 
+            onClick={() => setIsOpenSidebar(false)}
+          /> 
+            : 
+          <ChevronRight 
+            className="w-5 h-5 text-white" 
+            onClick={() => setIsOpenSidebar(true)}
+          />
+        }
       </div>
       {isOpenSidebar && (
         <>
@@ -72,7 +91,12 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
           <hr className="mx-2 text-slate-500" />
           <div className="w-full pb-5">
             <Button onClick={() => setOpenTags(!openTags)} variant="ghost" className="text-green-500 flex gap-1">
-              {openTags ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
+              {openTags 
+                ? 
+                <ChevronDown className="w-5 h-5 text-white" /> 
+                : 
+                <ChevronRight className="w-5 h-5 text-white" />
+              }
               Tags
             </Button>
             {openTags && (
@@ -85,8 +109,14 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {wallpaper?.wallpaperTags.map((wallpaperTag) => (
-                    <div key={wallpaperTag.tag.id} onClick={() => handleTagClick(wallpaperTag.tag.id.toString())} className="flex items-center gap-2">
-                      <span className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 rounded-tl-md rounded-br-md">{wallpaperTag.tag.name}</span>
+                    <div 
+                      key={wallpaperTag.tag.id} 
+                      onClick={() => handleTagClick(wallpaperTag.tag.id.toString())} 
+                      className="flex items-center gap-2"
+                    >
+                      <span className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 rounded-tl-md rounded-br-md">
+                        {wallpaperTag.tag.name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -96,7 +126,12 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
           <hr className="mx-2 text-slate-500" />
           <div className="w-full pb-5">
             <Button onClick={() => setOpenProperties(!openProperties)} variant="ghost" className="text-sky-500 flex gap-1">
-              {openProperties ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
+              {openProperties 
+                ? 
+                <ChevronDown className="w-5 h-5 text-white" /> 
+                : 
+                <ChevronRight className="w-5 h-5 text-white" />
+              }
               Properties
             </Button>
             {openProperties && (

@@ -40,6 +40,15 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
     setRelatedTags(newRelatedTags);
   }, [wallpapers, id]);
 
+  const handleRelatedTagClick = (tag: string) => {
+    const wallpaperTag = wallpapers
+      .map((wallpaper) => wallpaper.wallpaperTags
+      .find((wallpaperTag) => wallpaperTag.tag.name === tag)!)
+      .filter((wallpaperTag) => wallpaperTag);
+
+    if (wallpaperTag) push(`/tag/${wallpaperTag[0].tag.id}`);
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="fixed top-0 z-50 w-full">
@@ -47,7 +56,17 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
       </header>
       <main className="flex-1 w-full dark:bg-[#1a1a1a] bg-white pt-16">
         <div className="relative w-full h-[500px]">
-          {wallpapers[0]?.imageUrl ? <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" /> : null}
+          {wallpapers[0]?.imageUrl ? 
+            <Image 
+              unoptimized 
+              src={wallpapers[0]?.imageUrl || "/placeholder.svg"} 
+              alt="Wallpaper" 
+              width={1920} 
+              height={500} 
+              className="w-full h-full object-cover"
+              /> 
+            : null
+          }
 
           <div className="absolute inset-0 bg-black/30 w-[90%] mx-auto mt-28">
             <div className="container mx-auto h-full">
@@ -69,7 +88,11 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
                     </h1>
                     <div className="flex items-center space-x-4">
                       <div className="relative">
-                        <select className="appearance-none bg-black/50 backdrop-blur-sm text-white px-4 py-2 pr-8 rounded border border-white/20 hover:bg-black/60 transition-colors" name="alias" id="alias">
+                        <select 
+                          className="appearance-none bg-black/50 backdrop-blur-sm text-white px-4 py-2 pr-8 rounded border border-white/20 hover:bg-black/60 transition-colors" 
+                          name="alias" 
+                          id="alias"
+                        >
                           <option value="zzz">Aliases: ZZZ</option>
                         </select>
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -90,12 +113,9 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="text-white hover:underline cursor-pointer">Related Tags: </h3>
                       {Array.from(relatedTags).map((tag, index) => (
-                        <span
-                          key={index}
-                          onClick={() => {
-                            const wallpaperTag = wallpapers.map(wallpaper => wallpaper.wallpaperTags.find(wallpaperTag => wallpaperTag.tag.name === tag)!).filter(wallpaperTag => wallpaperTag);
-                            if (wallpaperTag) push(`/tag/${wallpaperTag[0].tag.id}`);
-                          }}
+                        <span 
+                          key={index} 
+                          onClick={() => {handleRelatedTagClick(tag)}} 
                           className="text-[#98ff98] hover:underline cursor-pointer [text-shadow:_0_0_10px_rgba(152,255,152,0.5)] flex gap-1 items-center"
                         >
                           #{tag}
