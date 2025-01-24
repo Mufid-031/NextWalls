@@ -85,7 +85,6 @@ export default function Jumbotron({ id, relatedState, handleRelatedClick, totalV
           </div>
         </div>
       </div>
-      =
     </JumbotronLayout>
   );
 }

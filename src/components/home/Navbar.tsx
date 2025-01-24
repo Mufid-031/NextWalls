@@ -81,9 +81,9 @@ export function NavBar() {
         <div className="flex items-center space-x-4">
           {session?.user ? (
             <>
-              <div className="flex justify-center items-center w-10 h-10 rounded-full bg-slate-400 cursor-pointer">
+              <Link href={`/user/${session.user.name}`} className="flex justify-center items-center w-10 h-10 rounded-full bg-slate-400 cursor-pointer">
                 <span>{session.user.name.slice(0, 1).toUpperCase()}</span>
-              </div>
+              </Link>
             </>
           ) : (
             <>
