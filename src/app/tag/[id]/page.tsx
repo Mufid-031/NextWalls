@@ -9,6 +9,7 @@ import Link from "next/link";
 import { use, useState } from "react";
 import { Bookmark, Eye, ImageIcon, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { formatNumber } from "@/lib/format-number";
 
 export default function WallpaperIdPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -128,15 +129,15 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
                   <div className="flex flex-col gap-2">
                     <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
                       <ImageIcon className="w-5 h-5" />
-                      <span className="text-lg">{wallpapers.length}</span>
+                      <span className="text-lg">{formatNumber(wallpapers.length)}</span>
                     </div>
                     <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
                       <Eye className="w-5 h-5" />
-                      <span className="text-lg">{totalView}</span>
+                      <span className="text-lg">{formatNumber(totalView)}</span>
                     </div>
                     <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
                       <Bookmark className="w-5 h-5" />
-                      <span className="text-lg">{totalSaved}</span>
+                      <span className="text-lg">{formatNumber(totalSaved)}</span>
                     </div>
                   </div>
                 </div>

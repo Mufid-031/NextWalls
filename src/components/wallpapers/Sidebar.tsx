@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
@@ -10,6 +10,7 @@ import { Wallpaper } from "@/types/wallpaper.type";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { formatNumber } from "@/lib/format-number";
 
 export default function Sidebar({ 
   id, 
@@ -51,6 +52,16 @@ export default function Sidebar({
       } catch (error) {
         console.error("Error adding tag:", error);
       }
+    }
+  };
+
+  const handleDeleteTag = async (e: React.MouseEvent<SVGSVGElement>, wallpaperId: number, tagId: number) => {
+    e.stopPropagation();
+    try {
+      await axios.delete(`/api/wallpapers/tag`, { data: { wallpaperId, tagId } });
+      getWallpaperById(id).then((data) => setWallpaper(data));
+    } catch (error) {
+      console.error("Error deleting tag:", error);
     }
   };
 
@@ -112,11 +123,12 @@ export default function Sidebar({
                     <div 
                       key={wallpaperTag.tag.id} 
                       onClick={() => handleTagClick(wallpaperTag.tag.id.toString())} 
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 cursor-pointer p-1 rounded-tl-md rounded-br-md"
                     >
-                      <span className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 rounded-tl-md rounded-br-md">
+                      <span className="text-xs text-green-400">
                         {wallpaperTag.tag.name}
                       </span>
+                      <X onClick={(e: React.MouseEvent<SVGSVGElement>) => handleDeleteTag(e, wallpaper!.id, wallpaperTag.tag.id)} className="w-5 h-5 text-white cursor-pointer" />
                     </div>
                   ))}
                 </div>
@@ -143,7 +155,7 @@ export default function Sidebar({
                   <span className="text-green-400 bg-slate-700 px-2 py-1 rounded ml-1">{wallpaper?.category.name}</span>
                 </p>
                 {/* <p className="text-sm text-sky-200">Size : {getWallpaperSize(wallpaper!)}</p> */}
-                <p className="text-sm text-sky-200">Views : {wallpaper?.views}</p>
+                <p className="text-sm text-sky-200">Views : {formatNumber(wallpaper?.views as number)}</p>
               </div>
             )}
           </div>

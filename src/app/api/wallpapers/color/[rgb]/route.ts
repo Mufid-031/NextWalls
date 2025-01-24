@@ -25,9 +25,16 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ rgb:
         },
       },
       colorPalettes: {
-        include: {
-          colorPalette: true,
+        where: {
+          colorPalette: {
+            color: {
+              equals: rgb,
+            }
+          }
         },
+        include: {
+          colorPalette: true
+        }
       },
     },
   });
