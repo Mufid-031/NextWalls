@@ -81,7 +81,7 @@ export default function Sidebar({
           />
         }
       </div>
-      {isOpenSidebar && (
+      {isOpenSidebar ? (
         <>
           <div className="w-full h-28 flex justify-center -ml-2 relative">
             <h2 className="text-3xl text-white mt-1">
@@ -113,9 +113,9 @@ export default function Sidebar({
             {openTags && (
               <div className="flex flex-wrap pl-5">
                 <div className="flex items-center mb-4">
-                  <input onChange={(e) => setTagInput(e.target.value)} className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-2 w-56" type="text" name="addTag" id="addTags" placeholder="Add Tag..." />
-                  <span onClick={handleAddNewTag} className="w-[2rem] h-[2rem] bg-slate-500 hover:bg-slate-600 cursor-pointer flex justify-center items-center">
-                    <Plus className="text-white " />
+                  <input onChange={(e) => setTagInput(e.target.value)} className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 w-56" type="text" name="addTag" id="addTags" placeholder="Add Tag..." />
+                  <span onClick={handleAddNewTag} className="w-[1.5rem] h-[1.5rem] bg-slate-500 hover:bg-slate-600 cursor-pointer flex justify-center items-center">
+                    <Plus className="text-white" />
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -128,7 +128,7 @@ export default function Sidebar({
                       <span className="text-xs text-green-400">
                         {wallpaperTag.tag.name}
                       </span>
-                      <X onClick={(e: React.MouseEvent<SVGSVGElement>) => handleDeleteTag(e, wallpaper!.id, wallpaperTag.tag.id)} className="w-5 h-5 text-white cursor-pointer" />
+                      <X onClick={(e: React.MouseEvent<SVGSVGElement>) => handleDeleteTag(e, wallpaper!.id, wallpaperTag.tag.id)} className="w-3 h-3 text-white cursor-pointer" />
                     </div>
                   ))}
                 </div>
@@ -160,6 +160,8 @@ export default function Sidebar({
             )}
           </div>
         </>
+      ): (
+        <div className="w-full h-28 flex justify-center -ml-2 relative"></div>
       )}
     </div>
   );
