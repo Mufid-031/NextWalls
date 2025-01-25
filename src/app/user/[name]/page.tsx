@@ -5,19 +5,34 @@ import { NavBar } from "@/components/home/Navbar";
 import { Button } from "@/components/ui/Button";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
+import { Wallpaper } from "@/types/wallpaper.type";
+import axios from "axios";
 import { Bookmark, Home, Link, Mail, Plus, Star, Upload } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { use } from "react";
+import { use, useState } from "react";
 
 export default function UserProfilePage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = use(params);
   const { wallpapers, getWallpapers } = useWallpaper();
   const { data: session } = useSession();
+  const [recentWallpapers, setRecentWallpapers] = useState<Wallpaper[]>([]);
 
   useIsomorphicLayoutEffect(() => {
     getWallpapers();
-  }, []);
+
+    const getRecentWallpapers = async (name: string) => {
+      try {
+        const response = await axios.get(`/api/users/recent/${name}`);
+        const data = await response.data;
+        setRecentWallpapers(data);
+      } catch (error) {
+        console.error("error fetch recent wallpapers: ", error);
+      }
+    };
+
+    getRecentWallpapers(name);
+  }, [name]);
 
   return (
     <>
@@ -50,20 +65,20 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
       </JumbotronLayout>
       <main className="w-[90%] h-screen mx-auto bg-black/30 shadow-2xl relative">
         <div className="flex justify-center absolute -top-5 left-[50%] translate-x-[-50%] drop-shadow-2xl">
-          <div className="w-40 h-10 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
+          <div className="w-fit h-10 px-3 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
             <Home className="w-5 h-5 text-white" />
             <span className="text-white">Profile</span>
           </div>
-          <div className="w-40 h-10 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
+          <div className="w-fit h-10 px-3 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
             <Upload className="w-5 h-5 text-white" />
             <span className="text-white">Uploads</span>
           </div>
-          <div className="w-40 h-10 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
+          <div className="w-fit h-10 px-3 bg-darkgunmetal hover:bg-[#2b2b2b] transition-all duration-300 border border-white/10 flex justify-center items-center gap-2 cursor-pointer">
             <Star className="w-5 h-5 text-white" />
             <span className="text-white">Collections</span>
           </div>
         </div>
-        <section className="grid grid-cols-2 pt-20 px-10">
+        <section className="grid grid-cols-2 pt-20 px-10 gap-3">
           <div className="w-full h-full overflow-hidden">
             <span className="flex justify-between group">
               <h3 className="text-teal-400 font-bold pb-1">1 Comments</h3>
@@ -111,7 +126,21 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
               </div>
             </div>
           </div>
-          <div className="w-full h-full">1</div>
+          <div className="w-full h-full">
+            <div className="w-full h-full overflow-hidden">
+              <span className="flex justify-between group">
+                <h3 className="text-teal-400 font-bold pb-1">Recent Uploads</h3>
+              </span>
+              <hr className="border-[#383838] mb-4" />
+              <div className="w-full bg-black/70 flex flex-wrap justify-center py-2">
+                {recentWallpapers.map((wallpaper) => (
+                  <div key={wallpaper.id} className="w-36 h-20">
+                    <Image src={wallpaper?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </>
