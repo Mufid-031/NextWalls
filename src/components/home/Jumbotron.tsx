@@ -18,7 +18,19 @@ export default function Jumbotron({ id, relatedState, handleRelatedClick, totalV
   }, [wallpapers]);
 
   return (
-    <JumbotronLayout backgroundImage={wallpapers[random]?.imageUrl ? <Image unoptimized src={wallpapers[random]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" /> : null}>
+    <JumbotronLayout 
+        backgroundImage={wallpapers[random]?.imageUrl ? 
+            <Image 
+                unoptimized 
+                src={wallpapers[random]?.imageUrl || "/placeholder.svg"} 
+                alt="Wallpaper" 
+                width={1920} 
+                height={500} 
+                className="w-full h-full object-cover" 
+            /> : null
+        } 
+        className="h-[500px]"
+    >
       <div className="flex items-center space-x-2">
         <Link href="/wallpapers" className="text-white/80 hover:text-white">
           Wallpapers
