@@ -63,21 +63,36 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
           </div>
         </div>
         <section className="grid grid-cols-2 pt-20 px-10">
-          <div className="w-full h-full cursor-pointer">
+          <div className="w-full h-full cursor-pointer overflow-hidden">
             <span className="flex justify-between group">
               <h3 className="text-teal-400 font-bold pb-1">1 Comments</h3>
               <Link className="w-5 h-5 text-[#383838] group-hover:text-white" />
             </span>
             <hr className="border-[#383838] mb-4" />
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center mb-5">
               <Button size="default" variant="ghost" className="bg-green-400">
                 <Plus className="w-4 h-4 text-black" />
                 <span>Add Comment</span>
               </Button>
             </div>
             <div className="flex flex-col gap-2">
-                <div></div>
-                <div></div>
+              <div className="w-full h-16 bg-slate-400 flex items-center px-2 gap-1">
+                <div className="w-10 h-10">
+                  <Image src={wallpapers[2]?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
+                </div>
+                <div className="flex flex-col w-full">
+                  <div className="w-full flex justify-between items-center">
+                    <h5>
+                      <span>Imam</span>-1 week ago
+                    </h5>
+                    <div>
+                      <span>Reply</span> #65732
+                    </div>
+                  </div>
+                  <div>Bagus bang</div>
+                </div>
+              </div>
+              <div className="w-full h-16 bg-slate-400 ml-10"></div>
             </div>
           </div>
           <div className="w-full h-full">1</div>
