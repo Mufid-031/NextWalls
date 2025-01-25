@@ -1,4 +1,5 @@
 "use client";
+
 import JumbotronLayout from "@/components/home/JumbotronLayout";
 import { NavBar } from "@/components/home/Navbar";
 import { Button } from "@/components/ui/Button";
@@ -34,7 +35,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
             </div>
             <div className="p-5 w-[34rem] bg-white/30">
               <h1 className="text-3xl text-[#98ff98] hover:underline cursor-pointer [text-shadow:_0_0_10px_rgba(152,255,152,0.5)] font-bold">{name}</h1>
-              <p className="text-md mt-2 text-[#98ff98]">{session?.user.role}</p>
+              <p className="text-md mt-2 text-[#98ff98]">{session?.user.role || "USER"}</p>
             </div>
           </div>
           <div className="flex">
@@ -63,7 +64,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
           </div>
         </div>
         <section className="grid grid-cols-2 pt-20 px-10">
-          <div className="w-full h-full cursor-pointer overflow-hidden">
+          <div className="w-full h-full overflow-hidden">
             <span className="flex justify-between group">
               <h3 className="text-teal-400 font-bold pb-1">1 Comments</h3>
               <Link className="w-5 h-5 text-[#383838] group-hover:text-white" />
@@ -76,23 +77,38 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
               </Button>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="w-full h-16 bg-slate-400 flex items-center px-2 gap-1">
+              <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">
                 <div className="w-10 h-10">
                   <Image src={wallpapers[2]?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
                 </div>
-                <div className="flex flex-col w-full">
-                  <div className="w-full flex justify-between items-center">
-                    <h5>
-                      <span>Imam</span>-1 week ago
+                <div className="flex flex-col w-full ml-3">
+                  <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
+                    <h5 className="text-white">
+                      <span className="text-teal-400 font-semibold">Imam</span>-1 week ago
                     </h5>
-                    <div>
-                      <span>Reply</span> #65732
+                    <div className="cursor-pointer text-white">
+                      <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #65732
                     </div>
                   </div>
-                  <div>Bagus bang</div>
+                  <div className="text-white">Bagus bang</div>
                 </div>
               </div>
-              <div className="w-full h-16 bg-slate-400 ml-10"></div>
+              <div className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14">
+                <div className="w-10 h-10">
+                  <Image src={wallpapers[1]?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
+                </div>
+                <div className="flex flex-col w-full ml-3">
+                  <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
+                    <h5 className="text-white">
+                      <span className="text-teal-400 font-semibold">{session?.user.name || "USER"}</span>-1 week ago
+                    </h5>
+                    <div className="cursor-pointer text-white">
+                      <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #86132
+                    </div>
+                  </div>
+                  <div className="text-white">Makasih Bang</div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="w-full h-full">1</div>
