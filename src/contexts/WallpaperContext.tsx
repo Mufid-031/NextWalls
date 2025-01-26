@@ -30,7 +30,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get("/api/wallpapers");
       setWallpapers(response.data);
     } catch (error) {
-      console.error("Error fetching wallpapers:", error);
+      console.log("Error fetching wallpapers:", error);
       setWallpapers([]);
     }
   };
@@ -40,7 +40,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get("/api/wallpapers/recent");
       setRecentWallpapers(response.data);
     } catch (error) {
-      console.error("Error fetching recent wallpapers:", error);
+      console.log("Error fetching recent wallpapers:", error);
       setRecentWallpapers([]);
     }
   };
@@ -50,7 +50,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get("/api/wallpapers/view");
       setTotalViews(response.data.totalViews);
     } catch (error) {
-      console.error("Error fetching total views:", error);
+      console.log("Error fetching total views:", error);
       setTotalViews(0);
     }
   };
@@ -60,7 +60,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`/api/wallpapers/${id}`);
       return await response.data;
     } catch (error) {
-      console.error("Error fetching wallpaper by ID:", error);
+      console.log("Error fetching wallpaper by ID:", error);
       return null;
     }
   };
@@ -72,7 +72,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
           wallpaperId: selectedWallpaper.id,
         });
       } catch (error) {
-        console.error("Error adding view:", error);
+        console.log("Error adding view:", error);
       }
     }
   };
@@ -82,7 +82,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`/api/wallpapers/tag/${tag}`);
       setWallpapers(response.data);
     } catch (error) {
-      console.error("Error fetching wallpapers by tag:", error);
+      console.log("Error fetching wallpapers by tag:", error);
     }
   }
 
@@ -91,7 +91,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`/api/wallpapers/color/${color}`);
       setWallpapers(response.data);
     } catch (error) {
-      console.error("Error fetching wallpapers by color:", error);
+      console.log("Error fetching wallpapers by color:", error);
     }
   }
 

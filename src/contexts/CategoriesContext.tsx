@@ -29,7 +29,7 @@ export function CategoriesProvider({ children }: { children: React.ReactNode }) 
       const { data } = await axios.get("/api/category");
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.log("Error fetching categories:", error);
     }
   };
 
@@ -38,11 +38,22 @@ export function CategoriesProvider({ children }: { children: React.ReactNode }) 
       const { data } = await axios.get("/api/category/top");
       setTopCategories(data);
     } catch (error) {
-      console.error("Error fetching top categories:", error);
+      console.log("Error fetching top categories:", error);
     }
   };
 
-  return <CategoriesContext.Provider value={{ categories, setCategories, getCategories, topCategories, getTopCategories }}>{children}</CategoriesContext.Provider>;
+  return (
+    <CategoriesContext.Provider 
+      value={{ 
+        categories, 
+        setCategories, 
+        getCategories, 
+        topCategories, 
+        getTopCategories 
+      }}
+    >{children}
+    </CategoriesContext.Provider>
+  )
 }
 
 export function useCategories() {

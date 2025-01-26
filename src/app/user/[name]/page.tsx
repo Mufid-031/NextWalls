@@ -7,10 +7,11 @@ import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { Wallpaper } from "@/types/wallpaper.type";
 import axios from "axios";
-import { Bookmark, Home, Link, Mail, Plus, Star, Upload } from "lucide-react";
+import { Bookmark, Home, Link as LinkIcon, Mail, Plus, Star, Upload } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { use, useState } from "react";
+import Link from "next/link";
 
 export default function UserProfilePage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = use(params);
@@ -82,7 +83,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
           <div className="w-full h-full overflow-hidden">
             <span className="flex justify-between group">
               <h3 className="text-teal-400 font-bold pb-1">1 Comments</h3>
-              <Link className="w-5 h-5 text-[#383838] group-hover:text-white" />
+              <LinkIcon className="w-5 h-5 text-[#383838] group-hover:text-white" />
             </span>
             <hr className="border-[#383838] mb-4" />
             <div className="flex justify-center items-center mb-5">
@@ -128,17 +129,22 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
           </div>
           <div className="w-full h-full">
             <div className="w-full h-full overflow-hidden">
-              <span className="flex justify-between group">
+              <Link href={`/user/${name}/uploads`} className="flex justify-between group">
                 <h3 className="text-teal-400 font-bold pb-1">Recent Uploads</h3>
-              </span>
+              </Link>
               <hr className="border-[#383838] mb-4" />
-              <div className="w-full bg-black/70 flex flex-wrap justify-center py-2">
+              <div className="w-full bg-black/70 flex flex-wrap justify-center py-2 mb-5">
                 {recentWallpapers.map((wallpaper) => (
-                  <div key={wallpaper.id} className="w-36 h-20">
+                  <Link href={`/wallpapers/${wallpaper.id}`} key={wallpaper.id} className="w-36 h-20">
                     <Image src={wallpaper?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
-                  </div>
+                  </Link>
                 ))}
               </div>
+              <div className="flex justify-between group">
+                <h3 className="text-teal-400 font-bold pb-1">User Information</h3>
+                <LinkIcon className="w-5 h-5 text-[#383838] group-hover:text-white" />
+              </div>
+              <hr className="border-[#383838] mb-4" />
             </div>
           </div>
         </section>

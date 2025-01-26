@@ -19,8 +19,13 @@ model User {
   wallpapers Wallpaper[]
   savedWallpapers SavedWallpaper[]
   likedWallpapers LikedWallpaper[]
+  commentsMade Comment[] @relation("UserComments")
+  profileComments Comment[] @relation("ProfileComments")
+  avatar  String?
+  backgroundImage String?
 
   @@map("users")
+  Comment Comment[] @relation("UserProfile")
 }
 
 model Wallpaper {
@@ -133,4 +138,21 @@ model WallpaperColorPalette {
 
   @@unique([wallpaperId, colorPaletteId]) // Prevent duplicate entries
   @@map("wallpaper_color_palettes")
+}
+
+model Comment {
+  id          Int       @id @default(autoincrement())
+  content     String
+  userId      Int
+  user        User      @relation("UserComments", fields: [userId], references: [id])
+  profileId   Int
+  profile     User      @relation("UserProfile", fields: [profileId], references: [id])
+  parentId    Int?      // Nullable untuk komentar utama
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("comments")
+  User User[] @relation("ProfileComments")
 }

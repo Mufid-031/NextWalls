@@ -30,7 +30,7 @@ export function SelectedFiltersProvider({ children }: { children: React.ReactNod
       const response = await axios.get(`/api/wallpapers/filter?general=${selectedFilters.has("General") ? "General" : ""}&anime=${selectedFilters.has("Anime") ? "Anime" : ""}&people=${selectedFilters.has("People") ? "People" : ""}`);
       setWallpapers(response.data);
     } catch (error) {
-      console.error("Error searching wallpapers:", error);
+      console.log("Error searching wallpapers:", error);
     }
   };
   

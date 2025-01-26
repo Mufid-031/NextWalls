@@ -20,7 +20,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.get(`/api/wallpapers/search?name=${search}`);
       setWallpapers(response.data);
     } catch (error) {
-      console.error("Error searching wallpapers:", error);
+      console.log("Error searching wallpapers:", error);
       setWallpapers([]);
     }
   };
