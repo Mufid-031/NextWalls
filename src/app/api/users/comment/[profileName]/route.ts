@@ -27,6 +27,9 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ prof
         },
       },
     },
+    orderBy: {
+      id: "desc",
+    }
   });
 
   if (profileComments.length === 0) {
