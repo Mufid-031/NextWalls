@@ -28,6 +28,8 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
   const [commentMode, setCommentMode] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const [profileComments, setProfileComments] = useState<CommentProps[]>([]);
+  const [replyMode, setReplyMode] = useState<boolean>(false);
+  const [reply, setReply] = useState<string>("");
 
   const handleAddCommentClick = async () => {
     if (comment === "") return;
@@ -51,6 +53,27 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
       console.log("error add comment: ", error);
     }
   };
+
+  const handleReplyClick = async (parentId: number) => {
+    if (reply === "") return;
+    try {
+      const userId = session?.user?.id;
+      const profileId = name;
+      const response = await axios.post("/api/users/comment/reply", {
+        comment: reply,
+        userId,
+        profileId,
+        parentId,
+      });
+
+      const data = await response.data;
+      console.log(data);
+      setReply("");
+      setReplyMode(false);
+    } catch (error) {
+      console.log("error add reply: ", error);
+    }
+  }
 
   useIsomorphicLayoutEffect(() => {
     getWallpapers();
@@ -77,7 +100,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
 
     getRecentWallpapers(name);
     getProfileComments(name);
-  }, [name]);
+  }, [name, comment, reply]);
 
   return (
     <>
@@ -154,7 +177,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
             </div>
             <div className="flex flex-col gap-2">
               {profileComments.map((comment) => (
-                <div key={comment.id}>
+                <div key={comment.id} className="flex flex-col gap-4 mb-3">
                   <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">
                     <div className="w-10 h-10">
                       <Image src={comment.user?.avatar || "/uploads/5ad3549c-bd20-495b-a2db-5826fe9b71ee.jpg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
@@ -165,14 +188,14 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
                           <span className="text-teal-400 font-semibold">{comment.user.name}</span>-{moment(comment.createdAt).fromNow()}
                         </h5>
                         <div className="cursor-pointer text-white">
-                          <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #{comment.id}
+                          <span onClick={() => setReplyMode(true)} className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #{comment.id}
                         </div>
                       </div>
                       <div className="text-white">{comment.content}</div>
                     </div>
                   </div>
                   {comment.replies.map((reply) => (
-                    <div key={reply.id} className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14 mt-5">
+                    <div key={reply.id} className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14">
                       <div className="w-10 h-10">
                         <Image src={reply.user?.avatar || "/uploads/9f9bbca9-272a-4fd5-bda2-b54ea5ddc553.png"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
                       </div>
@@ -182,13 +205,28 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
                             <span className="text-teal-400 font-semibold">{reply.user?.name}</span>-{moment(reply.createdAt).fromNow()}
                           </h5>
                           <div className="cursor-pointer text-white">
-                            <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #{reply.id}
+                            <span className="text-teal-400/50 hover:text-teal-400 font-semibold"></span> #{reply.id}
                           </div>
                         </div>
                         <div className="text-white">{reply.content}</div>
                       </div>
                     </div>
                   ))}
+                  {replyMode ? (
+                    <div className="w-full px-2 flex flex-col gap-3">
+                    <textarea onChange={(e) => setReply(e.target.value)} name="comment" id="comment" className="w-full h-36 bg-darkgunmetal text-white p-2"></textarea>
+                    <div className="flex gap-2 justify-end">
+                      <Button size="default" variant="ghost" className="bg-red-400 flex items-center gap-1" onClick={() => setReplyMode(false)}>
+                        <X className="w-4 h-4 text-black" />
+                        <span>Cancel</span>
+                      </Button>
+                      <Button size="default" variant="ghost" className="bg-green-400 flex items-center gap-1" onClick={() => handleReplyClick(comment.id)}>
+                        <MessageCircleIcon fill="#000" className="w-4 h-4 text-black" />
+                        <span>Add Comment</span>
+                      </Button>
+                    </div>
+                  </div>
+                  ): null}
                 </div>
               ))}
             </div>
