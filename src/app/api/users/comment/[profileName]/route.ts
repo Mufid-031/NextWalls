@@ -21,7 +21,11 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ prof
     },
     include: {
       user: true,
-      replies: true,
+      replies: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
 

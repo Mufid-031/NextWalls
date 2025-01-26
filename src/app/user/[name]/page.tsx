@@ -12,6 +12,13 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { use, useState } from "react";
 import Link from "next/link";
+import { Comment, User } from "@prisma/client";
+import moment from "moment";
+
+interface CommentProps extends Comment {
+  user: User;
+  replies: (Comment & { user: User })[];
+}
 
 export default function UserProfilePage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = use(params);
@@ -20,6 +27,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
   const [recentWallpapers, setRecentWallpapers] = useState<Wallpaper[]>([]);
   const [commentMode, setCommentMode] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+  const [profileComments, setProfileComments] = useState<CommentProps[]>([]);
 
   const handleAddCommentClick = async () => {
     if (comment === "") return;
@@ -53,11 +61,22 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
         const data = await response.data;
         setRecentWallpapers(data);
       } catch (error) {
-        console.error("error fetch recent wallpapers: ", error);
+        console.log("error fetch recent wallpapers: ", error);
+      }
+    };
+
+    const getProfileComments = async (name: string) => {
+      try {
+        const response = await axios.get(`/api/users/comment/${name}`);
+        const data = await response.data;
+        setProfileComments(data);
+      } catch (error) {
+        console.log("error fetch profile comments: ", error);
       }
     };
 
     getRecentWallpapers(name);
+    getProfileComments(name);
   }, [name]);
 
   return (
@@ -134,38 +153,44 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">
-                <div className="w-10 h-10">
-                  <Image src={wallpapers[2]?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
-                </div>
-                <div className="flex flex-col w-full ml-3">
-                  <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
-                    <h5 className="text-white">
-                      <span className="text-teal-400 font-semibold">Imam</span>-1 week ago
-                    </h5>
-                    <div className="cursor-pointer text-white">
-                      <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #65732
+              {profileComments.map((comment) => (
+                <div key={comment.id}>
+                  <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">
+                    <div className="w-10 h-10">
+                      <Image src={comment.user?.avatar || "/uploads/5ad3549c-bd20-495b-a2db-5826fe9b71ee.jpg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
+                    </div>
+                    <div className="flex flex-col w-full ml-3">
+                      <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
+                        <h5 className="text-white">
+                          <span className="text-teal-400 font-semibold">{comment.user.name}</span>-{moment(comment.createdAt).fromNow()}
+                        </h5>
+                        <div className="cursor-pointer text-white">
+                          <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #{comment.id}
+                        </div>
+                      </div>
+                      <div className="text-white">{comment.content}</div>
                     </div>
                   </div>
-                  <div className="text-white">Bagus bang</div>
-                </div>
-              </div>
-              <div className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14">
-                <div className="w-10 h-10">
-                  <Image src={wallpapers[1]?.imageUrl || "/placeholder.svg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
-                </div>
-                <div className="flex flex-col w-full ml-3">
-                  <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
-                    <h5 className="text-white">
-                      <span className="text-teal-400 font-semibold">{session?.user.name || "USER"}</span>-1 week ago
-                    </h5>
-                    <div className="cursor-pointer text-white">
-                      <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #86132
+                  {comment.replies.map((reply) => (
+                    <div key={reply.id} className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14 mt-5">
+                      <div className="w-10 h-10">
+                        <Image src={reply.user?.avatar || "/uploads/9f9bbca9-272a-4fd5-bda2-b54ea5ddc553.png"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
+                      </div>
+                      <div className="flex flex-col w-full ml-3">
+                        <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
+                          <h5 className="text-white">
+                            <span className="text-teal-400 font-semibold">{reply.user?.name}</span>-{moment(reply.createdAt).fromNow()}
+                          </h5>
+                          <div className="cursor-pointer text-white">
+                            <span className="text-teal-400/50 hover:text-teal-400 font-semibold">Reply</span> #{reply.id}
+                          </div>
+                        </div>
+                        <div className="text-white">{reply.content}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-white">Makasih Bang</div>
+                  ))}
                 </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="w-full h-full">
