@@ -11,6 +11,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { formatNumber } from "@/lib/format-number";
+import Link from "next/link";
 
 export default function Sidebar({ 
   id, 
@@ -148,7 +149,7 @@ export default function Sidebar({
             </Button>
             {openProperties && (
               <div className="flex flex-col gap-2 pl-10 text-white">
-                <p className="text-sm text-sky-200">Uploader : {wallpaper?.uploadedBy.name}</p>
+                <Link href={`/user/${wallpaper?.uploadedBy.name}`} className="text-sm text-sky-200">Uploader : {wallpaper?.uploadedBy.name}</Link>
                 <p className="text-sm text-sky-200">Upload Date : {moment(wallpaper?.createdAt).fromNow()}</p>
                 <p className="text-sm text-sky-200">
                   Category:

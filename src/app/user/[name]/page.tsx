@@ -7,7 +7,7 @@ import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { Wallpaper } from "@/types/wallpaper.type";
 import axios from "axios";
-import { Bookmark, Home, Link as LinkIcon, Mail, Plus, Star, Upload } from "lucide-react";
+import { Bookmark, Home, Link as LinkIcon, Mail, MessageCircleIcon, Plus, Star, Upload, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { use, useState } from "react";
@@ -18,6 +18,31 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
   const { wallpapers, getWallpapers } = useWallpaper();
   const { data: session } = useSession();
   const [recentWallpapers, setRecentWallpapers] = useState<Wallpaper[]>([]);
+  const [commentMode, setCommentMode] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>("");
+
+  const handleAddCommentClick = async () => {
+    if (comment === "") return;
+    console.log(comment);
+    console.log(session?.user?.id);
+    console.log(name);
+    try {
+      const userId = session?.user?.id;
+      const profileId = name;
+      const response = await axios.post("/api/users/comment", {
+        comment,
+        userId,
+        profileId,
+      });
+
+      const data = await response.data;
+      console.log(data);
+      setComment("");
+      setCommentMode(false);
+    } catch (error) {
+      console.log("error add comment: ", error);
+    }
+  };
 
   useIsomorphicLayoutEffect(() => {
     getWallpapers();
@@ -87,10 +112,26 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
             </span>
             <hr className="border-[#383838] mb-4" />
             <div className="flex justify-center items-center mb-5">
-              <Button size="default" variant="ghost" className="bg-green-400">
-                <Plus className="w-4 h-4 text-black" />
-                <span>Add Comment</span>
-              </Button>
+              {commentMode ? (
+                <div className="w-full px-2 flex flex-col gap-3">
+                  <textarea onChange={(e) => setComment(e.target.value)} name="comment" id="comment" className="w-full h-36 bg-darkgunmetal text-white p-2"></textarea>
+                  <div className="flex gap-2 justify-end">
+                    <Button size="default" variant="ghost" className="bg-red-400 flex items-center gap-1" onClick={() => setCommentMode(false)}>
+                      <X className="w-4 h-4 text-black" />
+                      <span>Cancel</span>
+                    </Button>
+                    <Button size="default" variant="ghost" className="bg-green-400 flex items-center gap-1" onClick={handleAddCommentClick}>
+                      <MessageCircleIcon fill="#000" className="w-4 h-4 text-black" />
+                      <span>Add Comment</span>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Button size="default" variant="ghost" className="bg-green-400" onClick={() => setCommentMode(true)}>
+                  <Plus className="w-4 h-4 text-black" />
+                  <span>Add Comment</span>
+                </Button>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">

@@ -1,12 +1,22 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest, { params }: { params: Promise<{ profileId: string }> }) => {
-  const profileId = (await params).profileId;
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ profileName: string }> }) => {
+  const profileName = (await params).profileName;
+
+  const profileUser = await prisma.user.findFirst({
+    where: {
+      name: profileName,
+    },
+  });
+
+  if (!profileUser) {
+    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+  }
 
   const profileComments = await prisma.comment.findMany({
     where: {
-      profileId: Number(profileId),
+      profileId: Number(profileUser.id),
       parentId: null,
     },
     include: {
