@@ -84,38 +84,42 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal pr-2 flex justify-end items-center text-sky-400 font-semibold">Last Active</div>
+                <div className="w-1/2 bg-gray-700 pl-2 flex items-center text-white font-semibold">5 minutes ago</div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal pr-2 flex justify-end items-center text-sky-400 font-semibold">Joined</div>
+                <div className="w-1/2 bg-gray-700 pl-2 flex items-center text-white font-semibold">1 week ago</div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal pr-2 flex justify-end items-center text-sky-400 font-semibold">Uploads</div>
+                <div className="w-1/2 bg-gray-700 pl-2 flex items-center text-white font-semibold">5</div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal pr-2 flex justify-end items-center text-sky-400 font-semibold">Favorites</div>
+                <div className="w-1/2 bg-gray-700 pl-2 flex items-center text-white font-semibold">5</div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-darkgunmetal pr-2 flex justify-end items-center text-sky-400 font-semibold">Subcribe</div>
+                <div className="w-1/2 bg-gray-700 pl-2 flex items-center text-white font-semibold">5</div>
               </div>
             </div>
             <div className="flex flex-col gap-1">
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal"></div>
+                <div className="w-1/2 bg-gray-700"></div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal"></div>
+                <div className="w-1/2 bg-gray-700"></div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal"></div>
+                <div className="w-1/2 bg-gray-700"></div>
               </div>
               <div className="flex w-full h-10">
-                <div className="w-1/2 bg-slate-800"></div>
-                <div className="w-1/2 bg-gray-500"></div>
+                <div className="w-1/2 bg-darkgunmetal"></div>
+                <div className="w-1/2 bg-gray-700"></div>
               </div>
             </div>
           </div>

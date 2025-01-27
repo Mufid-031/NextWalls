@@ -11,7 +11,7 @@ export default async function UserLayout({ children, params }: { children: React
         <NavBar />
       </header>
       <Jumbotron name={name} />
-      <main className="w-[90%] h-screen mx-auto bg-black/30 shadow-2xl relative">
+      <main className="w-[90%] mx-auto bg-black/30 shadow-2xl relative">
         <Menu name={name} />
         {children}
       </main>
