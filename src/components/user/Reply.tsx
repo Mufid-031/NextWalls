@@ -2,7 +2,7 @@ import { MessageCircleIcon, X } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Comment } from "@prisma/client";
 
-export default function Reply({ setReply, setReplyMode, comment, handleReplyClick }: { setReply: (value: string) => void, setReplyMode: (value: boolean) => void, comment: Comment, handleReplyClick: (value: number) => void }) {
+export default function Reply({ setReply, setReplyMode, comment, handleReplyClick }: { setReply: (value: string) => void; setReplyMode: (value: boolean) => void; comment: Comment; handleReplyClick: (value: number) => void }) {
   return (
     <div className="w-full px-2 flex flex-col gap-3">
       <textarea onChange={(e) => setReply(e.target.value)} name="comment" id="comment" className="w-full h-36 bg-darkgunmetal text-white p-2"></textarea>

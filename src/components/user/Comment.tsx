@@ -15,13 +15,16 @@ interface Comment extends CommentType {
 
 export default function CommentComponent({
   comment,
+  reply,
+  setReply,
 }: {
   comment: Comment;
+  reply: string;
+  setReply: React.Dispatch<React.SetStateAction<string>>;
 }) {
 
   const { data: session } = useSession();
   const [replyMode, setReplyMode] = useState<boolean>(false);
-  const [reply, setReply] = useState<string>("");
 
   const handleReplyClick = async (parentId: number) => {
     if (reply === "") return;
@@ -57,7 +60,7 @@ export default function CommentComponent({
             <div className="flex flex-col w-full ml-3">
               <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
                 <h5 className="text-white">
-                  <span className="text-teal-400 font-semibold">{comment.user.name}</span>-{moment(comment.createdAt).fromNow()}
+                  <span className="text-teal-400 font-semibold">{comment.user.name}</span> - {moment(comment.createdAt).fromNow()}
                 </h5>
                 <div className="cursor-pointer text-white">
                   <span onClick={() => setReplyMode(true)} className="text-teal-400/50 hover:text-teal-400 font-semibold">
@@ -77,7 +80,7 @@ export default function CommentComponent({
               <div className="flex flex-col w-full ml-3">
                 <div className="w-full flex justify-between items-center border-b-2 border-dotted border-[#383838] pb-1 text-xs">
                   <h5 className="text-white">
-                    <span className="text-teal-400 font-semibold">{reply.user?.name}</span>-{moment(reply.createdAt).fromNow()}
+                    <span className="text-teal-400 font-semibold">{reply.user?.name}</span> - {moment(reply.createdAt).fromNow()}
                   </h5>
                   <div className="cursor-pointer text-white">
                     <span className="text-teal-400/50 hover:text-teal-400 font-semibold"></span> #{reply.id}
