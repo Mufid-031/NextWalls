@@ -1,8 +1,5 @@
 "use client";
 
-import { NavBar } from "@/components/home/Navbar";
-import Jumbotron from "@/components/user/Jumbotron";
-import Menu from "@/components/user/Menu";
 import CommentInput from "@/components/user/CommentInput";
 import CommentComponent from "@/components/user/Comment";
 import RecentUploads from "@/components/user/RecentUploads";
@@ -67,12 +64,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
 
   return (
     <>
-      <header className="fixed top-0 z-50 w-full">
-        <NavBar />
-      </header>
-      <Jumbotron />
-      <main className="w-[90%] h-screen mx-auto bg-black/30 shadow-2xl relative">
-        <Menu name={name} />
+      
         <section className="grid grid-cols-2 pt-20 px-10 gap-3">
           <div className="w-full h-full overflow-hidden">
             <Title iconLink>{profileComments.length} Comments</Title>
@@ -95,7 +87,6 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
             </div>
           </div>
         </section>
-      </main>
     </>
   );
 }
