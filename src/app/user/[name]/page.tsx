@@ -25,7 +25,6 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
   const [profileComments, setProfileComments] = useState<Comment[]>([]);
   const [reply, setReply] = useState<string>("");
 
-
   const handleAddCommentClick = async () => {
     if (comment === "") return;
     try {
@@ -63,30 +62,65 @@ export default function UserProfilePage({ params }: { params: Promise<{ name: st
   }, [name, comment, reply]);
 
   return (
-    <>
-      
-        <section className="grid grid-cols-2 pt-20 px-10 gap-3">
-          <div className="w-full h-full overflow-hidden">
-            <Title iconLink>{profileComments.length} Comments</Title>
-            <CommentInput
-              commentMode={commentMode}
-              setCommentMode={setCommentMode}
-              setComment={setComment}
-              handleAddCommentClick={handleAddCommentClick}
-            />
-            {profileComments.map((comment: Comment) => (
-              <div key={comment.id}>
-                <CommentComponent comment={comment} reply={reply} setReply={setReply} />
-              </div>
-            ))}
+    <section className="grid grid-cols-2 pt-20 px-10 gap-3">
+      <div className="w-full h-full overflow-hidden">
+        <Title iconLink>{profileComments.length} Comments</Title>
+        <CommentInput 
+          commentMode={commentMode} 
+          setCommentMode={setCommentMode} 
+          setComment={setComment} 
+          handleAddCommentClick={handleAddCommentClick} 
+        />
+        {profileComments.map((comment: Comment) => (
+          <div key={comment.id}>
+            <CommentComponent comment={comment} reply={reply} setReply={setReply} />
           </div>
-          <div className="w-full h-full">
-            <div className="w-full h-full overflow-hidden">
-              <RecentUploads name={name} />
-              <Title iconLink>User Information</Title>Tit
+        ))}
+      </div>
+      <div className="w-full h-full">
+        <div className="w-full h-full overflow-hidden">
+          <RecentUploads name={name} />
+          <Title iconLink>User Information</Title>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col gap-1">
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
+              <div className="flex w-full h-10">
+                <div className="w-1/2 bg-slate-800"></div>
+                <div className="w-1/2 bg-gray-500"></div>
+              </div>
             </div>
           </div>
-        </section>
-    </>
+        </div>
+      </div>
+    </section>
   );
 }

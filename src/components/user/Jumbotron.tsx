@@ -1,15 +1,14 @@
 "use client";
 
-import { Bookmark, Mail } from "lucide-react";
+import { Bookmark, Edit2, Mail, Settings } from "lucide-react";
 import Image from "next/image";
 import JumbotronLayout from "../home/JumbotronLayout";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useSession } from "next-auth/react";
 
-export default function Jumbotron() {
+export default function Jumbotron({ name }: { name: string }) {
   const { wallpapers } = useWallpaper();
   const { data: session } = useSession();
-  const name = session?.user.name.split(" ")[0];
 
   return (
     <JumbotronLayout
@@ -27,12 +26,25 @@ export default function Jumbotron() {
           </div>
         </div>
         <div className="flex">
-          <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
-            <Bookmark className="w-7 h-7 text-white" />
-          </div>
-          <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
-            <Mail className="w-7 h-7 text-white" />
-          </div>
+          {name === session?.user?.name ? (
+            <>
+              <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
+                <Edit2 className="w-7 h-7 text-white" />
+              </div>
+              <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
+                <Settings className="w-7 h-7 text-white" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
+                <Bookmark className="w-7 h-7 text-white" />
+              </div>
+              <div className="w-12 h-12 shadow-inner shadow-black flex justify-center items-center cursor-pointer">
+                <Mail className="w-7 h-7 text-white" />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </JumbotronLayout>
