@@ -26,6 +26,7 @@ const itemsVariants = {
       type: "spring",
       stiffness: 100,
       damping: 15,
+      delay: 0.4,
     },
   },
 };
@@ -49,10 +50,10 @@ export default function Sidebar({
 
   useIsomorphicLayoutEffect(() => {
     const fetchWallpaper = async () => {
-      setIsLoaded(true);
+      setIsLoaded(false);
       const wallpaper = await getWallpaperById(id);
       setWallpaper(wallpaper);
-      setIsLoaded(false);
+      setIsLoaded(true);
     }
 
     fetchWallpaper();
@@ -107,7 +108,7 @@ export default function Sidebar({
           />
         }
       </div>
-      {isOpenSidebar && !isLoaded ? (
+      {isOpenSidebar && isLoaded && (
         <>
           <div className="w-full h-28 flex justify-center -ml-2 relative">
             <motion.h2 initial="hidden" animate="visible" variants={itemsVariants} className="text-3xl text-white mt-1">
@@ -194,8 +195,6 @@ export default function Sidebar({
             )}
           </div>
         </>
-      ): (
-        <div className="w-full h-28 flex justify-center -ml-2 relative"></div>
       )}
     </div>
   );
