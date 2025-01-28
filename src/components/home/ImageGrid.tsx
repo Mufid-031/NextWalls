@@ -129,9 +129,9 @@ export function ImageGrid() {
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       >
         {wallpapers.length > 0 ? (
-          wallpapers.map((wallpaper) => (
+          wallpapers.map((wallpaper, index) => (
             <ImageCard
-              id={wallpaper.id}
+              id={index}
               key={wallpaper.id}
               src={wallpaper.imageUrl}
               totalViews={wallpaper.views}

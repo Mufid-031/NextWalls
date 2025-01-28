@@ -12,6 +12,23 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { formatNumber } from "@/lib/format-number";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const itemsVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+};
 
 export default function Sidebar({ 
   id, 
@@ -28,9 +45,17 @@ export default function Sidebar({
   const [openTags, setOpenTags] = useState<boolean>(true);
   const [openProperties, setOpenProperties] = useState<boolean>(true);
   const [tagInput, setTagInput] = useState<string>("");
+  const [isLoaded, setIsLoaded] = useState<boolean>(true);
 
   useIsomorphicLayoutEffect(() => {
-    getWallpaperById(id).then((data) => setWallpaper(data));
+    const fetchWallpaper = async () => {
+      setIsLoaded(true);
+      const wallpaper = await getWallpaperById(id);
+      setWallpaper(wallpaper);
+      setIsLoaded(false);
+    }
+
+    fetchWallpaper();
   }, [id, getWallpaperById]);
 
   const handlePaletteClick = (color: string) => {
@@ -82,21 +107,26 @@ export default function Sidebar({
           />
         }
       </div>
-      {isOpenSidebar ? (
+      {isOpenSidebar && !isLoaded ? (
         <>
           <div className="w-full h-28 flex justify-center -ml-2 relative">
-            <h2 className="text-3xl text-white mt-1">
+            <motion.h2 initial="hidden" animate="visible" variants={itemsVariants} className="text-3xl text-white mt-1">
               {wallpaper?.width} x {wallpaper?.height}
-            </h2>
-            <div className="absolute bottom-5 flex pl-4">
+            </motion.h2>
+            <div  className="absolute bottom-5 flex pl-4">
               {wallpaper?.colorPalettes.map((color, index) => (
-                <div
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={itemsVariants}
                   key={index}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => handlePaletteClick(color.colorPalette.color)}
                   style={{ backgroundColor: color.colorPalette.color }}
                   className="w-14 h-5 hover:scale-125 transition-all duration-300 cursor-pointer"
                   title={color.colorPalette.color}
-                ></div>
+                ></motion.div>
               ))}
             </div>
           </div>
@@ -113,15 +143,18 @@ export default function Sidebar({
             </Button>
             {openTags && (
               <div className="flex flex-wrap pl-5">
-                <div className="flex items-center mb-4">
+                <motion.div initial="hidden" animate="visible" variants={itemsVariants} className="flex items-center mb-4">
                   <input onChange={(e) => setTagInput(e.target.value)} className="text-xs bg-slate-800 hover:bg-slate-700 cursor-pointer text-green-400 p-1 w-56" type="text" name="addTag" id="addTags" placeholder="Add Tag..." />
                   <span onClick={handleAddNewTag} className="w-[1.5rem] h-[1.5rem] bg-slate-500 hover:bg-slate-600 cursor-pointer flex justify-center items-center">
                     <Plus className="text-white" />
                   </span>
-                </div>
+                </motion.div>
                 <div className="flex flex-wrap gap-2">
                   {wallpaper?.wallpaperTags.map((wallpaperTag) => (
-                    <div 
+                    <motion.div 
+                      initial="hidden"
+                      animate="visible"
+                      variants={itemsVariants}
                       key={wallpaperTag.tag.id} 
                       onClick={() => handleTagClick(wallpaperTag.tag.id.toString())} 
                       className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 cursor-pointer p-1 rounded-tl-md rounded-br-md"
@@ -130,7 +163,7 @@ export default function Sidebar({
                         {wallpaperTag.tag.name}
                       </span>
                       <X onClick={(e: React.MouseEvent<SVGSVGElement>) => handleDeleteTag(e, wallpaper!.id, wallpaperTag.tag.id)} className="w-3 h-3 text-white cursor-pointer" />
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
@@ -148,7 +181,7 @@ export default function Sidebar({
               Properties
             </Button>
             {openProperties && (
-              <div className="flex flex-col gap-2 pl-10 text-white">
+              <motion.div initial="hidden" animate="visible" variants={itemsVariants} className="flex flex-col gap-2 pl-10 text-white">
                 <Link href={`/user/${wallpaper?.uploadedBy.name}`} className="text-sm text-sky-200">Uploader : {wallpaper?.uploadedBy.name}</Link>
                 <p className="text-sm text-sky-200">Upload Date : {moment(wallpaper?.createdAt).fromNow()}</p>
                 <p className="text-sm text-sky-200">
@@ -157,7 +190,7 @@ export default function Sidebar({
                 </p>
                 {/* <p className="text-sm text-sky-200">Size : {getWallpaperSize(wallpaper!)}</p> */}
                 <p className="text-sm text-sky-200">Views : {formatNumber(wallpaper?.views as number)}</p>
-              </div>
+              </motion.div>
             )}
           </div>
         </>
