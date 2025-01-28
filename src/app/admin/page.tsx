@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Cards from "@/components/admin/dashboard/Cards";
 import RecentWallpapers from "@/components/admin/dashboard/RecentWallpapers";
 import TopCategories from "@/components/admin/dashboard/TopCategories";
+import Link from "next/link";
 
 export default function AdminPage() {
   const { isOpen } = useAdminSidebar();
@@ -16,6 +17,7 @@ export default function AdminPage() {
         <Cards />
         <RecentWallpapers />
         <TopCategories />
+        <Link href="/admin/upload">Upload</Link>
       </div>
     </div>
   );
