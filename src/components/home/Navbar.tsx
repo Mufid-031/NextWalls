@@ -8,11 +8,43 @@ import { signIn, useSession } from "next-auth/react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { cn } from "@/lib/utils";
+import {  motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delay: 0.5,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+      delay: 0.5,
+    },
+  },
+};
 
 export function NavBar() {
   const { search, setSearch, searchWallpapers } = useSearch();
   const { setWallpapers, getWallpapers } = useWallpaper();
   const { data: session } = useSession();
+  // const session = getSession();
 
   const handleSearchWallpapersClick = () => {
     if (search) {
@@ -57,29 +89,29 @@ export function NavBar() {
 
   return (
     <header className="w-full px-3 text-white dark:bg-gradient-to-b dark:from-darkgunmetal dark:to-black bg-white">
-      <div className="container flex h-14 items-center justify-between">
-        <div className="mr-4 flex gap-5">
+      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="container flex h-14 items-center justify-between">
+        <div  className="mr-4 flex gap-5">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-2xl font-bold">
+            <motion.span initial="hidden" animate="visible" variants={itemVariants} className="text-2xl font-bold">
               <span className="text-purple-500">Next</span>Walls
-            </span>
+            </motion.span>
           </Link>
-          <nav className="items-center text-sm font-medium hidden lg:flex">
+          <motion.nav initial="hidden" animate="visible" variants={itemVariants} className="items-center text-sm font-medium hidden lg:flex">
             {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} className={cn("p-5 text-center text-foreground/60 border-slate-700 border", link.className)}>
+              <Link key={link.name} href={link.href} className={cn("py-4 px-5 text-center text-foreground/60 border-slate-700 border-l border-r", link.className)}>
                 {link.name}
               </Link>
             ))}
-          </nav>
-          <div className="w-full flex items-center gap-2">
+          </motion.nav>
+          <motion.div initial="hidden" animate="visible" variants={itemVariants} className="w-full flex items-center gap-2">
             <Input onKeyDown={(e) => e.key === "Enter" && handleSearchWallpapersClick()} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className="w-96 dark:bg-[#2a2a2a] bg-white" />
             <div onClick={handleSearchWallpapersClick} className="p-[10px] border-[#1a1a1a] shadow-inner shadow-black bg-[#1a1a1a]">
               <Search className="h-4 w-4 text-muted-foreground dark:text-white text-gray-900" />
             </div>
-          </div>
+          </motion.div>
         </div>
-        <div className="flex items-center space-x-4">
-          {session?.user ? (
+        <motion.div initial="hidden" animate="visible" variants={itemVariants} className="flex items-center space-x-4">
+          {session?.user.name ? (
             <>
               <Link href={`/user/${session.user.name}`} className="flex justify-center items-center w-10 h-10 rounded-full bg-slate-400 cursor-pointer">
                 <span>{session.user.name.slice(0, 1).toUpperCase()}</span>
@@ -95,8 +127,8 @@ export function NavBar() {
               </Button>
             </>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </header>
   );
 }

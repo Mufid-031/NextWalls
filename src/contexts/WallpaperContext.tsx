@@ -61,7 +61,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       return await response.data;
     } catch (error) {
       console.log("Error fetching wallpaper by ID:", error);
-      return null;
+      return [];
     }
   };
 
@@ -83,6 +83,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
       setWallpapers(response.data);
     } catch (error) {
       console.log("Error fetching wallpapers by tag:", error);
+      setWallpapers([]);
     }
   }
 

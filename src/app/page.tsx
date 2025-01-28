@@ -1,3 +1,5 @@
+"use client";
+
 import { NavBar } from "@/components/home/Navbar";
 import { FilterBar } from "@/components/home/FilterBar";
 import { ImageGrid } from "@/components/home/ImageGrid";

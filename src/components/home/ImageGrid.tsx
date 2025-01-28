@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 interface ImageCardProps {
+  id: number;
   src: string;
   totalViews: number;
   resolution: string;
@@ -35,20 +36,18 @@ const containerVariants = {
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 20
   },
-  visible: {
+  visible: (custom: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
-  },
+      delay: custom * 0.2,
+    }
+  })
 };
 
-function ImageCard({ src, totalViews, resolution, wallpaperTags, handleAddCommentClick }: ImageCardProps) {
+function ImageCard({ id, src, totalViews, resolution, wallpaperTags, handleAddCommentClick }: ImageCardProps) {
   const [isOpenTags, setIsOpenTags] = useState(false);
   const { push } = useRouter();
 
@@ -59,7 +58,8 @@ function ImageCard({ src, totalViews, resolution, wallpaperTags, handleAddCommen
 
   return (
     <motion.div
-      variants={itemVariants} // Animasi individual untuk setiap kartu
+      custom={id}
+      variants={itemVariants} 
       className="group relative overflow-hidden rounded-lg z-30"
       onClick={handleAddCommentClick}
     >
@@ -123,7 +123,7 @@ export function ImageGrid() {
   return (
     <div className="py-8 px-10">
       <motion.div
-        variants={containerVariants} // Variants untuk elemen induk
+        variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
@@ -131,6 +131,7 @@ export function ImageGrid() {
         {wallpapers.length > 0 ? (
           wallpapers.map((wallpaper) => (
             <ImageCard
+              id={wallpaper.id}
               key={wallpaper.id}
               src={wallpaper.imageUrl}
               totalViews={wallpaper.views}

@@ -31,6 +31,7 @@ export function SelectedFiltersProvider({ children }: { children: React.ReactNod
       setWallpapers(response.data);
     } catch (error) {
       console.log("Error searching wallpapers:", error);
+      setWallpapers([]);
     }
   };
   
