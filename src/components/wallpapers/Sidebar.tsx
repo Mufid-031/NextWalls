@@ -7,13 +7,11 @@ import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { Wallpaper } from "@/types/wallpaper.type";
-import moment from "moment";
 import { useRouter } from "next/navigation";
-import { formatNumber } from "@/lib/format-number";
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import ColorPalette from "./ColorPalette";
 import Tag from "./Tag";
+import Properti from "./Properti";
 
 const itemsVariants = {
   hidden: {
@@ -69,68 +67,45 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
     push(`/color/${color}`);
   };
 
-  
-
   return (
     <div className={cn("relative transition-all duration-700 p-2", isOpenSidebar ? "bg-gradient-to-r from-darkgunmetal to-black translate-x-0 w-[24rem]" : "bg-black w-2 -translate-x-full")}>
       <div className="z-0 absolute top-10 -right-7 w-10 h-10 rounded-r-full bg-black flex justify-center items-center">
         {isOpenSidebar ? <ChevronLeft className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(false)} /> : <ChevronRight className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(true)} />}
       </div>
-      {isOpenSidebar && isLoaded ? (
-        <>
-          <div className="w-full h-28 flex justify-center -ml-2 relative">
-            <motion.h2 initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="text-3xl text-white mt-1">
-              {wallpaper?.width} x {wallpaper?.height}
-            </motion.h2>
-            <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="absolute bottom-5 flex pl-4">
-              {wallpaper?.colorPalettes.map((color, index) => (
-                <ColorPalette 
-                  key={color.colorPalette.color + index} 
-                  color={color.colorPalette.color} 
-                  onClick={() => handlePaletteClick(color.colorPalette.color)} 
-                />
-              ))}
+      <AnimatePresence>
+        {isOpenSidebar && isLoaded ? (
+          <>
+            <div className="w-full h-28 flex justify-center -ml-2 relative">
+              <motion.h2 initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="text-3xl text-white mt-1">
+                {wallpaper?.width} x {wallpaper?.height}
+              </motion.h2>
+              <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="absolute bottom-5 flex pl-4">
+                {wallpaper?.colorPalettes.map((color, index) => (
+                  <ColorPalette key={color.colorPalette.color + index} color={color.colorPalette.color} onClick={() => handlePaletteClick(color.colorPalette.color)} />
+                ))}
+              </motion.div>
+            </div>
+            <motion.hr initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="mx-2 text-slate-500" />
+            <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="w-full pb-5">
+              <Button onClick={() => setOpenTags(!openTags)} variant="ghost" className="text-green-500 flex gap-1">
+                {openTags ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
+                Tags
+              </Button>
+              {openTags && <Tag wallpaper={wallpaper} setWallpaper={setWallpaper} itemsVariants={itemsVariants} id={id} />}
             </motion.div>
-          </div>
-          <motion.hr initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="mx-2 text-slate-500" />
-          <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="w-full pb-5">
-            <Button onClick={() => setOpenTags(!openTags)} variant="ghost" className="text-green-500 flex gap-1">
-              {openTags ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
-              Tags
-            </Button>
-            <AnimatePresence>
-              {openTags && (
-                <Tag wallpaper={wallpaper} setWallpaper={setWallpaper} itemsVariants={itemsVariants} id={id} />
-              )}
-            </AnimatePresence>
-          </motion.div>
-          <motion.hr initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="mx-2 text-slate-500" />
-          <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="w-full pb-5">
-            <Button onClick={() => setOpenProperties(!openProperties)} variant="ghost" className="text-sky-500 flex gap-1">
-              {openProperties ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
-              Properties
-            </Button>
-            <AnimatePresence>
-              {openProperties && (
-                <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="flex flex-col gap-2 pl-10 text-white">
-                  <Link href={`/user/${wallpaper?.uploadedBy.name}`} className="text-sm text-sky-200">
-                    Uploader : {wallpaper?.uploadedBy.name}
-                  </Link>
-                  <p className="text-sm text-sky-200">Upload Date : {moment(wallpaper?.createdAt).fromNow()}</p>
-                  <p className="text-sm text-sky-200">
-                    Category:
-                    <span className="text-green-400 bg-slate-700 px-2 py-1 rounded ml-1">{wallpaper?.category.name}</span>
-                  </p>
-                  {/* <p className="text-sm text-sky-200">Size : {getWallpaperSize(wallpaper!)}</p> */}
-                  <p className="text-sm text-sky-200">Views : {formatNumber(wallpaper?.views as number)}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </>
-      ) : (
-        <div className="w-full h-[90vh] flex justify-center -ml-2 relative"></div>
-      )}
+            <motion.hr initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="mx-2 text-slate-500" />
+            <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="w-full pb-5">
+              <Button onClick={() => setOpenProperties(!openProperties)} variant="ghost" className="text-sky-500 flex gap-1">
+                {openProperties ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
+                Properties
+              </Button>
+              {openProperties && <Properti wallpaper={wallpaper} itemsVariants={itemsVariants} />}
+            </motion.div>
+          </>
+        ) : (
+          <div className="w-full h-[90vh] flex justify-center -ml-2 relative"></div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
