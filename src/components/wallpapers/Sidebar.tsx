@@ -68,7 +68,7 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
   };
 
   return (
-    <div className={cn("relative transition-all duration-700 p-2", isOpenSidebar ? "bg-gradient-to-r from-darkgunmetal to-black translate-x-0 w-[24rem]" : "bg-black w-2 -translate-x-full")}>
+    <motion.div className={cn("relative transition-all duration-700 p-2", isOpenSidebar ? "bg-gradient-to-r from-darkgunmetal to-black translate-x-0 w-[24rem]" : "bg-black w-2 -translate-x-full")}>
       <div className="z-0 absolute top-10 -right-7 w-10 h-10 rounded-r-full bg-black flex justify-center items-center">
         {isOpenSidebar ? <ChevronLeft className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(false)} /> : <ChevronRight className="w-5 h-5 text-white" onClick={() => setIsOpenSidebar(true)} />}
       </div>
@@ -106,6 +106,6 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
           <div className="w-full h-[90vh] flex justify-center -ml-2 relative"></div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

@@ -5,32 +5,33 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, Eye, Image as ImageIcon, Search } from "lucide-react";
 import { formatNumber } from "@/lib/format-number";
-import { useState } from "react";
-import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import JumbotronLayout from "./JumbotronLayout";
 import { motion } from "framer-motion";
-import { Wallpaper } from "@/types/wallpaper.type";
 
-export default function Jumbotron({ id, relatedState, handleRelatedClick, totalView, totalSaved }: { id?: string; relatedState: Set<string>; handleRelatedClick: (related: string) => void; totalView: number; totalSaved: number }) {
+export default function Jumbotron({
+  id,
+  relatedState,
+  handleRelatedClick,
+  totalView,
+  totalSaved,
+  isLoaded,
+}: {
+  id?: string;
+  relatedState: Set<string>;
+  handleRelatedClick: (related: string) => void;
+  totalView: number;
+  totalSaved: number;
+  isLoaded: boolean;
+}) {
   const { wallpapers } = useWallpaper();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
-
-  useIsomorphicLayoutEffect(() => {
-    const random = Math.floor(Math.random() * wallpapers.length);
-    if (random) {
-      setWallpaper(wallpapers[random]);
-      setIsLoaded(true);
-    }
-  }, [wallpapers]);
 
   return (
     <JumbotronLayout
       className="h-[500px] overflow-hidden"
       backgroundImage={
-        wallpaper?.imageUrl && isLoaded ? (
+        wallpapers[0]?.imageUrl && isLoaded ? (
           <motion.div className="w-full h-full object-cover" initial={{ scale: 1.2 }} animate={{ scale: 1, transition: { duration: 1.5, ease: "easeInOut" } }}>
-            <Image unoptimized src={wallpaper?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" />
+            <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" />
           </motion.div>
         ) : null
       }

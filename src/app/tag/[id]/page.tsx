@@ -15,9 +15,13 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
   const [relatedTags, setRelatedTags] = useState<Set<string>>(new Set());
   const [totalView, setTotalView] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useIsomorphicLayoutEffect(() => {
-    if (id) getWallpapersByTag(id);
+    if (id) {
+      getWallpapersByTag(id);
+      setIsLoaded(true);
+    }
   }, [id]);
 
   useIsomorphicLayoutEffect(() => {
@@ -58,11 +62,12 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
           relatedState={relatedTags} 
           handleRelatedClick={handleRelatedTagClick} 
           totalView={totalView} 
-          totalSaved={totalSaved} 
+          totalSaved={totalSaved}
+          isLoaded={isLoaded}
         />
 
         <div className="container mx-auto px-4 py-8">
-          <ImageGrid />
+          <ImageGrid wallpapers={wallpapers} isLoaded={isLoaded} />
         </div>
       </main>
     </div>

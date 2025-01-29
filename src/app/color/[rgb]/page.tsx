@@ -13,11 +13,15 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ rgb: str
   const { push } = useRouter();
   const { wallpapers, getWallpapersByColor } = useWallpaper();
   const [relatedPalettes, setRelatedPalettes] = useState<Set<string>>(new Set());
-  const [totalView, setTotalView] = useState(0);
-  const [totalSaved, setTotalSaved] = useState(0);
+  const [totalView, setTotalView] = useState<number>(0);
+  const [totalSaved, setTotalSaved] = useState<number>(0);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useIsomorphicLayoutEffect(() => {
-    if (rgb) getWallpapersByColor(rgb);
+    if (rgb) {
+      getWallpapersByColor(rgb);
+      setIsLoaded(true);
+    }
   }, [rgb]);
 
   useIsomorphicLayoutEffect(() => {
@@ -58,10 +62,11 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ rgb: str
           handleRelatedClick={handleRelatedPaletteClick}
           totalView={totalView}
           totalSaved={totalSaved}
+          isLoaded={isLoaded}
         />
 
         <div className="container mx-auto px-4 py-8">
-          <ImageGrid />
+          <ImageGrid wallpapers={wallpapers} isLoaded={isLoaded} />
         </div>
       </main>
     </div>

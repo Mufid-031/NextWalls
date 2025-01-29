@@ -1,8 +1,6 @@
 "use client";
 
-import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
-import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { formatNumber } from "@/lib/format-number";
 import { cn } from "@/lib/utils";
 import { Tag, WallpaperTag } from "@prisma/client";
@@ -11,6 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Wallpaper } from "@/types/wallpaper.type";
 
 interface ImageCardProps {
   id: number;
@@ -27,24 +26,21 @@ const containerVariants = {
   },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
   },
 };
 
 const itemVariants = {
   hidden: {
     opacity: 0,
-    y: 20
+    y: 20,
   },
   visible: (custom: number) => ({
     opacity: 1,
     y: 0,
     transition: {
       delay: custom * 0.2,
-    }
-  })
+    },
+  }),
 };
 
 function ImageCard({ id, src, totalViews, resolution, wallpaperTags, handleAddCommentClick }: ImageCardProps) {
@@ -57,33 +53,18 @@ function ImageCard({ id, src, totalViews, resolution, wallpaperTags, handleAddCo
   };
 
   return (
-    <motion.div
-      custom={id}
-      variants={itemVariants} 
-      className="group relative overflow-hidden rounded-lg z-30"
-      onClick={handleAddCommentClick}
-    >
+    <motion.div custom={id} variants={itemVariants} className="group relative overflow-hidden rounded-lg z-30" onClick={handleAddCommentClick}>
       {isOpenTags && (
         <div className="absolute top-0 left-0 right-0 bg-black/50 p-2 text-xs text-white flex gap-1 flex-wrap items-center">
           {wallpaperTags.map((wallpaperTag, index) => (
-            <span
-              key={wallpaperTag.tag.id + index}
-              onClick={(e) => handleTagClick(e, wallpaperTag.tag.id.toString())}
-              className="flex gap-1 items-center text-green-400 bg-gray-700 px-2 py-1 rounded-md cursor-pointer"
-            >
+            <span key={wallpaperTag.tag.id + index} onClick={(e) => handleTagClick(e, wallpaperTag.tag.id.toString())} className="flex gap-1 items-center text-green-400 bg-gray-700 px-2 py-1 rounded-md cursor-pointer">
               {wallpaperTag.tag.name}
               <Search className="w-4 h-4 text-white" />
             </span>
           ))}
         </div>
       )}
-      <Image
-        src={src}
-        alt="Wallpaper"
-        width={400}
-        height={225}
-        className="h-[225px] w-full object-cover transition-transform duration-300"
-      />
+      <Image src={src} alt="Wallpaper" width={400} height={225} className="h-[225px] w-full object-cover transition-transform duration-300" />
       <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2 text-xs text-white opacity-0 translate-y-[100%] group-hover:translate-y-0 transition-all duration-300 group-hover:opacity-100 flex justify-between items-center">
         <p>{formatNumber(totalViews)} views</p>
         <p>{resolution}</p>
@@ -100,17 +81,9 @@ function ImageCard({ id, src, totalViews, resolution, wallpaperTags, handleAddCo
   );
 }
 
-export function ImageGrid() {
-  const { wallpapers, getWallpapers, setWallpapers, addView } = useWallpaper();
-  const { search, searchWallpapers } = useSearch();
+export function ImageGrid({ wallpapers, isLoaded }: { wallpapers: Wallpaper[]; isLoaded: boolean }) {
+  const { addView } = useWallpaper();
   const { push } = useRouter();
-
-  useIsomorphicLayoutEffect(() => {
-    if (search) {
-      searchWallpapers(setWallpapers);
-    }
-    getWallpapers();
-  }, []);
 
   const handleWallpaperDetailClick = (wallpaperId: number) => {
     const wallpaper = wallpapers.find((w) => w.id === wallpaperId);
@@ -122,13 +95,8 @@ export function ImageGrid() {
 
   return (
     <div className="py-8 px-10">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-      >
-        {wallpapers.length > 0 ? (
+      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {wallpapers.length > 0 && isLoaded ? (
           wallpapers.map((wallpaper, index) => (
             <ImageCard
               id={index}
