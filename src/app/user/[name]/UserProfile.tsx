@@ -65,8 +65,8 @@ export default function UserProfile({ name }: { name: string }) {
       <div className="w-full h-full overflow-hidden">
         <Title iconLink>{profileComments.length} Comments</Title>
         <CommentInput commentMode={commentMode} setCommentMode={setCommentMode} setComment={setComment} handleAddCommentClick={handleAddCommentClick} />
-        {profileComments.map((comment: Comment) => (
-          <div key={comment.id}>
+        {profileComments.map((comment: Comment, index: number) => (
+          <div key={comment.content + index}>
             <CommentComponent comment={comment} reply={reply} setReply={setReply} />
           </div>
         ))}

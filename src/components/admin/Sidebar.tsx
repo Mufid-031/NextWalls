@@ -44,11 +44,11 @@ export function Sidebar() {
       </div>
       <nav className="h-[calc(100vh-4rem)] overflow-y-auto">
         <ul className="p-4 space-y-2">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <motion.li 
               initial={{ opacity: 0, x: -20 }} 
               animate={{ opacity: 1, x: 0 }} 
-              key={item.label} 
+              key={item.label + index} 
               className="group"
             >
               <Link 

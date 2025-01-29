@@ -71,8 +71,8 @@ export function FilterBar() {
       <div className="flex items-center justify-center gap-2">
         <motion.div initial="hidden" animate="visible" variants={containerVariants} className="flex items-center py-1 gap-2">
           <motion.div initial="hidden" animate="visible" variants={itemVariants} className="flex rounded-md bg-[#1a1a1a] p-[2px]">
-            {categories?.map((category) => (
-              <div key={category.name}>
+            {categories?.map((category, index) => (
+              <div key={category.name + index}>
                 <Input type="checkbox" id={category.name} className="hidden" checked={selectedFilters.has(category.name)} onChange={() => toggleFilter(category.name)} />
                 <Button
                   size="icon"
@@ -123,7 +123,7 @@ export function FilterBar() {
           </motion.div>
           <motion.div initial="hidden" animate="visible" variants={itemVariants} className="ml-auto flex items-center gap-2">
             {optionsFilters.map((option, index) => (
-              <Button key={index} variant="ghost" size="icon" className={cn("flex items-center gap-1 text-gray-200 border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black text-nowrap hover:bg-[#2a2a2a]", option.className)}>
+              <Button key={option.name + index} variant="ghost" size="icon" className={cn("flex items-center gap-1 text-gray-200 border border-[#1a1a1a] bg-[#1a1a1a] shadow-inner shadow-black text-nowrap hover:bg-[#2a2a2a]", option.className)}>
                 {option.name}
                 <div>
                   <ChevronDown className="w-4 h-4 text-white" />

@@ -5,6 +5,7 @@ import Image from "next/image";
 import JumbotronLayout from "../home/JumbotronLayout";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 
 export default function Jumbotron({ name }: { name: string }) {
   const { wallpapers } = useWallpaper();
@@ -12,8 +13,14 @@ export default function Jumbotron({ name }: { name: string }) {
 
   return (
     <JumbotronLayout
-      backgroundImage={wallpapers[0]?.imageUrl ? <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" /> : null}
       className="h-[350px]"
+      backgroundImage={
+        wallpapers[0]?.imageUrl ? (
+          <motion.div className="w-full h-full object-cover" initial={{ scale: 1.2 }} animate={{ scale: 1, transition: { duration: 1.5, ease: "easeInOut" } }}>
+            <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" />
+          </motion.div>
+        ) : null
+      }
     >
       <div className="flex justify-between">
         <div className="w-full h-full flex gap-5 items-center mt-2">

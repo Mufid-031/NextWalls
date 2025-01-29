@@ -11,7 +11,7 @@ export default function WallpaperTagPage({ params }: { params: Promise<{ id: str
   const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex flex-col">
       <NavBar />
       <main className="flex-1 bg-[#1a1a1a] flex z-50">
         <Sidebar

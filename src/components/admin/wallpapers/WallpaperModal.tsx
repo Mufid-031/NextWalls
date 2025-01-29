@@ -60,7 +60,7 @@ const WallpaperModal = React.memo(({
                 <div>
                   <h2 className="text-2xl font-bold mb-2">{wallpaper.title}</h2>
                   {wallpaper.wallpaperTags.map((wallpaper, index) => (
-                    <span key={index} className="inline-block bg-gray-200 text-gray-600 px-3 py-1 rounded-full mr-2 mb-2">
+                    <span key={wallpaper.tag.name + index} className="inline-block bg-gray-200 text-gray-600 px-3 py-1 rounded-full mr-2 mb-2">
                       {wallpaper.tag.name}
                     </span>
                   ))}

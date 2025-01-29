@@ -24,8 +24,8 @@ export default function RecentWallpapers() {
     <div className="w-full p-5 rounded-md flex flex-col gap-4 dark:bg-gray-800 bg-white">
       <h3 className="font-bold text-lg dark:text-white text-black">Recent Uploads</h3>
       <ul className="flex flex-col gap-4">
-        {recentWallpapers?.map((wallpaper) => (
-          <li key={wallpaper.id} className="flex gap-2">
+        {recentWallpapers?.map((wallpaper, index) => (
+          <li key={wallpaper.title + index} className="flex gap-2">
             <div className="w-20 h-10 bg-gray-300 rounded">
               <Image src={wallpaper.imageUrl} alt={wallpaper.title} width={100} height={100} />
             </div>

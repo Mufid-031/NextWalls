@@ -22,8 +22,8 @@ export default function TopCategories() {
     <div className="w-full p-5 rounded-md flex flex-col gap-4 dark:bg-gray-800 bg-white">
       <h3 className="font-bold text-lg dark:text-white text-black">Top Categories</h3>
       <ul className="flex flex-col gap-4">
-        {topCategories?.map((category) => (
-          <li key={category.id} className="flex justify-between">
+        {topCategories?.map((category, index) => (
+          <li key={category.name + index} className="flex justify-between">
             <h3 className="font-semibold dark:text-white text-black">{category.name}</h3>
             <p className="text-sm dark:text-white text-black">{category._count.wallpapers} wallpapers</p>
           </li>

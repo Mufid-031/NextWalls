@@ -52,7 +52,7 @@ export default function CommentComponent({
 
     <>
       <div className="flex flex-col gap-2">
-        <div key={comment.id} className="flex flex-col gap-4 mb-3">
+        <div key={comment.id + comment.content  } className="flex flex-col gap-4 mb-3">
           <div className="w-full h-16 bg-darkgunmetal flex items-center px-2 gap-1">
             <div className="w-10 h-10">
               <Image src={comment.user?.avatar || "/uploads/5ad3549c-bd20-495b-a2db-5826fe9b71ee.jpg"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
@@ -72,8 +72,8 @@ export default function CommentComponent({
               <div className="text-white">{comment.content}</div>
             </div>
           </div>
-          {comment.replies && comment.replies.map((reply: Comment) => (
-            <div key={reply.id} className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14">
+          {comment.replies && comment.replies.map((reply: Comment, index: number) => (
+            <div key={reply.content + index} className="h-16 bg-darkgunmetal flex items-center px-2 gap-1 ml-14">
               <div className="w-10 h-10">
                 <Image src={reply.user?.avatar || "/uploads/9f9bbca9-272a-4fd5-bda2-b54ea5ddc553.png"} width={300} height={300} alt="profile" className="w-full h-full object-cover object-left" />
               </div>

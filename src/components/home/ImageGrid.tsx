@@ -65,9 +65,9 @@ function ImageCard({ id, src, totalViews, resolution, wallpaperTags, handleAddCo
     >
       {isOpenTags && (
         <div className="absolute top-0 left-0 right-0 bg-black/50 p-2 text-xs text-white flex gap-1 flex-wrap items-center">
-          {wallpaperTags.map((wallpaperTag) => (
+          {wallpaperTags.map((wallpaperTag, index) => (
             <span
-              key={wallpaperTag.tag.id}
+              key={wallpaperTag.tag.id + index}
               onClick={(e) => handleTagClick(e, wallpaperTag.tag.id.toString())}
               className="flex gap-1 items-center text-green-400 bg-gray-700 px-2 py-1 rounded-md cursor-pointer"
             >
@@ -132,7 +132,7 @@ export function ImageGrid() {
           wallpapers.map((wallpaper, index) => (
             <ImageCard
               id={index}
-              key={wallpaper.id}
+              key={wallpaper.title + wallpaper.id}
               src={wallpaper.imageUrl}
               totalViews={wallpaper.views}
               resolution={`${wallpaper.width}x${wallpaper.height}`}

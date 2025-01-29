@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressContentEditableWarning lang="en">
+    <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-[#1a1a1a]`}>
         <Session>
           <DarkModeProvider>

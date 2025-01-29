@@ -51,9 +51,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ title, description, tags, fil
         </p>
         <div className="flex flex-wrap gap-2 mt-5">
           {tags.length > 0 ? (
-            tags.map((tag) => (
+            tags.map((tag, index) => (
               <motion.span
-                key={tag}
+                key={tag + index}
                 whileHover={{ scale: 1.1 }}
                 className="px-2 py-1 text-sm bg-purple-500 text-white rounded-md flex gap-2 items-center font-semibold cursor-pointer"
               >

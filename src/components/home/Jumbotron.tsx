@@ -8,28 +8,32 @@ import { formatNumber } from "@/lib/format-number";
 import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import JumbotronLayout from "./JumbotronLayout";
+import { motion } from "framer-motion";
+import { Wallpaper } from "@/types/wallpaper.type";
 
 export default function Jumbotron({ id, relatedState, handleRelatedClick, totalView, totalSaved }: { id?: string; relatedState: Set<string>; handleRelatedClick: (related: string) => void; totalView: number; totalSaved: number }) {
   const { wallpapers } = useWallpaper();
-  const [random, setRandom] = useState(0);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
 
   useIsomorphicLayoutEffect(() => {
-    setRandom(Math.floor(Math.random() * wallpapers.length));
+    const random = Math.floor(Math.random() * wallpapers.length);
+    if (random) {
+      setWallpaper(wallpapers[random]);
+      setIsLoaded(true);
+    }
   }, [wallpapers]);
 
   return (
-    <JumbotronLayout 
-        backgroundImage={wallpapers[random]?.imageUrl ? 
-            <Image 
-                unoptimized 
-                src={wallpapers[random]?.imageUrl || "/placeholder.svg"} 
-                alt="Wallpaper" 
-                width={1920} 
-                height={500} 
-                className="w-full h-full object-cover" 
-            /> : null
-        } 
-        className="h-[500px]"
+    <JumbotronLayout
+      className="h-[500px] overflow-hidden"
+      backgroundImage={
+        wallpaper?.imageUrl && isLoaded ? (
+          <motion.div className="w-full h-full object-cover" initial={{ scale: 1.2 }} animate={{ scale: 1, transition: { duration: 1.5, ease: "easeInOut" } }}>
+            <Image unoptimized src={wallpaper?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" />
+          </motion.div>
+        ) : null
+      }
     >
       <div className="flex items-center space-x-2">
         <Link href="/wallpapers" className="text-white/80 hover:text-white">
@@ -69,7 +73,7 @@ export default function Jumbotron({ id, relatedState, handleRelatedClick, totalV
             <h3 className="text-white hover:underline cursor-pointer">{id ? "Related Tags: " : "Related Colors: "}</h3>
             {Array.from(relatedState).map((related, index) => (
               <span
-                key={index}
+                key={related + index}
                 onClick={() => {
                   handleRelatedClick(related);
                 }}

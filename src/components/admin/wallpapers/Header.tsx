@@ -19,8 +19,8 @@ export default function Header() {
     return (
         <header className="flex items-center bg-gray-700 gap-3 overflow-x-auto px-4 py-2">
         <div className="flex gap-1 p-2 bg-gray-800 rounded-md">
-          {categories?.map((category) => (
-            <div key={category.id}>
+          {categories?.map((category, index) => (
+            <div key={category.name + index}>
               <Input
                 type="checkbox"
                 id={category.name}

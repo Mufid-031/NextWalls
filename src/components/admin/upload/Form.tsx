@@ -149,8 +149,8 @@ export default function Form({
             onChange={(e) => setCategory(e.target.value)}
             className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
-            {categories?.map((category: Category) => (
-              <option key={category.id} value={category.id}>
+            {categories?.map((category: Category, index: number) => (
+              <option key={category.name + index} value={category.id}>
                 {category.name}
               </option>
             ))}
