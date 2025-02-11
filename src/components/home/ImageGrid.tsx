@@ -8,8 +8,9 @@ import { Search, Tags } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Wallpaper } from "@/types/wallpaper.type";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ImageCardProps {
   id: number;
@@ -20,7 +21,7 @@ interface ImageCardProps {
   handleAddCommentClick: () => void;
 }
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {
     opacity: 0,
   },
@@ -29,7 +30,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 20,
@@ -85,10 +86,18 @@ export function ImageGrid({ wallpapers, isLoaded }: { wallpapers: Wallpaper[]; i
   const { addView } = useWallpaper();
   const { push } = useRouter();
 
+  const queryClient = useQueryClient();
+  const { mutateAsync: mutateAddViewWallpaper } = useMutation({
+    mutationFn: addView,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["wallpapers"], data);
+    },
+  });
+
   const handleWallpaperDetailClick = (wallpaperId: number) => {
     const wallpaper = wallpapers.find((w) => w.id === wallpaperId);
     if (wallpaper) {
-      addView(wallpaper);
+      mutateAddViewWallpaper(wallpaper);
       push(`/wallpapers/${wallpaperId}`);
     }
   };
@@ -96,8 +105,8 @@ export function ImageGrid({ wallpapers, isLoaded }: { wallpapers: Wallpaper[]; i
   return (
     <div className="py-8 px-10">
       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {wallpapers.length > 0 && isLoaded ? (
-          wallpapers.map((wallpaper, index) => (
+        {isLoaded ? (
+          wallpapers?.map((wallpaper, index) => (
             <ImageCard
               id={index}
               key={wallpaper.title + wallpaper.id}
@@ -109,7 +118,9 @@ export function ImageGrid({ wallpapers, isLoaded }: { wallpapers: Wallpaper[]; i
             />
           ))
         ) : (
-          <p>Not Found</p>
+          Array.from({ length: 8 }).map((_, index) => (
+            <div key={index} className="w-[400px] h-[225px] bg-slate-600 rounded-lg"></div>
+          ))
         )}
       </motion.div>
     </div>

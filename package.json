@@ -13,6 +13,7 @@
     "@prisma/client": "^6.1.0",
     "@supabase/supabase-js": "^2.47.11",
     "@tabler/icons-react": "^3.26.0",
+    "@tanstack/react-query": "^5.66.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "canvas": "^3.0.1",

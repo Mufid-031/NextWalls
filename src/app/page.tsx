@@ -3,23 +3,14 @@
 import { NavBar } from "@/components/home/Navbar";
 import { FilterBar } from "@/components/home/FilterBar";
 import { ImageGrid } from "@/components/home/ImageGrid";
-import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
-import { useWallpaper } from "@/contexts/WallpaperContext";
-import { useSearch } from "@/contexts/SearchContext";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getWallpapers } from "@/service/wallpaper";
 
 export default function Home() {
-  const { wallpapers, getWallpapers, setWallpapers } = useWallpaper();
-  const { search, searchWallpapers } = useSearch();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useIsomorphicLayoutEffect(() => {
-    if (search) {
-      searchWallpapers(setWallpapers);
-    }
-    getWallpapers();
-    setIsLoaded(true);
-  }, []);
+  const { data: wallpapers, isLoading } = useQuery({
+    queryKey: ["wallpapers"],
+    queryFn: getWallpapers,
+  });
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -28,7 +19,7 @@ export default function Home() {
         <FilterBar />
       </header>
       <main className="w-full px-10 pt-36 dark:bg-[#1a1a1a] bg-white">
-        <ImageGrid wallpapers={wallpapers} isLoaded={isLoaded} />
+        <ImageGrid wallpapers={wallpapers ?? []} isLoaded={!isLoading} />
       </main>
     </div>
   );

@@ -9,6 +9,8 @@ import { useSearch } from "@/contexts/SearchContext";
 import { useWallpaper } from "@/contexts/WallpaperContext";
 import { cn } from "@/lib/utils";
 import {  motion } from "framer-motion";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { searchWallpapers } from "@/service/wallpaper";
 
 const containerVariants = {
   hidden: {
@@ -41,14 +43,22 @@ const itemVariants = {
 };
 
 export function NavBar() {
-  const { search, setSearch, searchWallpapers } = useSearch();
-  const { setWallpapers, getWallpapers } = useWallpaper();
+  const { search, setSearch } = useSearch();
+  const { getWallpapers } = useWallpaper();
   const { data: session } = useSession();
   // const session = getSession();
 
-  const handleSearchWallpapersClick = () => {
+  const queryClient = useQueryClient();
+  const { mutateAsync: mutateSearchWallpapers } = useMutation({
+    mutationFn: searchWallpapers,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["wallpapers"], data);
+    },
+  });
+
+  const handleSearchWallpapersClick = async () => {
     if (search) {
-      searchWallpapers(setWallpapers);
+      await mutateSearchWallpapers(search);
     } else {
       getWallpapers();
     }
