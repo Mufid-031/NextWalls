@@ -30,10 +30,10 @@ export default function Tag({ wallpaper, itemsVariants, id }: { wallpaper: Wallp
     }
   };
   
-  const handleDeleteTag = (wallpaper: Wallpaper) => async (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleDeleteTag = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
     try {
-      const response = await axios.delete(`/api/wallpapers/tag`, { data: { wallpaperId: wallpaper.id, tagId: wallpaper.tag.id } });
+      const response = await axios.delete(`/api/wallpapers/tag/${wallpaper?.id}/${wallpaper?.tag.id}`);
       return response.data;
     } catch (error) {
       console.error("Error deleting tag:", error);
@@ -50,7 +50,7 @@ export default function Tag({ wallpaper, itemsVariants, id }: { wallpaper: Wallp
   });
 
   const { mutateAsync: MutateHandleDeleteTag } = useMutation({
-    mutationFn: (e: React.MouseEvent<SVGSVGElement>) => handleDeleteTag(wallpaper!)(e),
+    mutationFn: handleDeleteTag,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallpaper"] });
     }
@@ -59,8 +59,6 @@ export default function Tag({ wallpaper, itemsVariants, id }: { wallpaper: Wallp
   const handleTagClick = (tag: string) => {
     push(`/tag/${tag}`);
   };
-
-
 
   return (
     <div className="flex flex-wrap pl-5 w-full">

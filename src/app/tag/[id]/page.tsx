@@ -2,37 +2,37 @@
 
 import { ImageGrid } from "@/components/home/ImageGrid";
 import { NavBar } from "@/components/home/Navbar";
-import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Jumbotron from "@/components/home/Jumbotron";
+import { useQuery } from "@tanstack/react-query";
+import { getWallpapersByTag } from "@/service/wallpaper";
+import { Wallpaper } from "@/types/wallpaper.type";
 
 export default function WallpaperIdPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { push } = useRouter();
-  const { wallpapers, getWallpapersByTag } = useWallpaper();
+  // const { wallpapers, getWallpapersByTag } = useWallpaper();
   const [relatedTags, setRelatedTags] = useState<Set<string>>(new Set());
   const [totalView, setTotalView] = useState(0);
   const [totalSaved, setTotalSaved] = useState(0);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  const { data: wallpapers, isLoading } = useQuery({
+    queryKey: ["wallpapers"],
+    queryFn: () => getWallpapersByTag(id),
+  });
 
   useIsomorphicLayoutEffect(() => {
-    if (id) {
-      getWallpapersByTag(id);
-      setIsLoaded(true);
-    }
-  }, [id]);
+    setTotalView(wallpapers?.reduce((acc: number, wallpaper: Wallpaper) => acc + wallpaper?.views, 0));
+    setTotalSaved(wallpapers?.reduce((acc: number, wallpaper: Wallpaper) => acc + wallpaper?.totalSaves, 0));
 
-  useIsomorphicLayoutEffect(() => {
-    setTotalView(wallpapers.reduce((acc, wallpaper) => acc + wallpaper.views, 0));
-    setTotalSaved(wallpapers.reduce((acc, wallpaper) => acc + wallpaper.totalSaves, 0));
-
-    const currentTag = wallpapers[0]?.wallpaperTags.find((wallpapersTag) => wallpapersTag.tag.id === Number(id))?.tag.name;
+    const currentTag = wallpapers?.[0]?.wallpaperTags
+      .find((wallpapersTag: Wallpaper) => wallpapersTag.tag.id === Number(id))?.tag.name;
 
     const newRelatedTags = new Set<string>();
-    wallpapers.forEach((wallpaper) => {
-      wallpaper.wallpaperTags.forEach((tag) => {
+    wallpapers?.forEach((wallpaper: Wallpaper) => {
+      wallpaper?.wallpaperTags?.forEach((tag) => {
         if (tag.tag.name.includes(currentTag!) && newRelatedTags.size < 10) {
           newRelatedTags.add(tag.tag.name);
         }
@@ -44,9 +44,9 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
 
   const handleRelatedTagClick = (tag: string) => {
     const wallpaperTag = wallpapers
-      .map((wallpaper) => wallpaper.wallpaperTags
-      .find((wallpaperTag) => wallpaperTag.tag.name === tag)!)
-      .filter((wallpaperTag) => wallpaperTag);
+      .map((wallpaper: Wallpaper) => wallpaper.wallpaperTags
+      .find((wallpaperTag) => wallpaperTag.tag.name === tag))
+      .filter((wallpaperTag: Wallpaper) => wallpaperTag);
 
     if (wallpaperTag) push(`/tag/${wallpaperTag[0].tag.id}`);
   };
@@ -62,12 +62,13 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ id: stri
           relatedState={relatedTags} 
           handleRelatedClick={handleRelatedTagClick} 
           totalView={totalView} 
-          totalSaved={totalSaved}
-          isLoaded={isLoaded}
+          totalSaved={totalSaved} 
+          isLoaded={!isLoading} 
+          wallpapers={wallpapers ?? []}
         />
 
         <div className="container mx-auto px-4 py-8">
-          <ImageGrid wallpapers={wallpapers} isLoaded={isLoaded} />
+          <ImageGrid wallpapers={wallpapers ?? []} isLoaded={!isLoading} />
         </div>
       </main>
     </div>

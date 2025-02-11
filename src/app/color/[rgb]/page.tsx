@@ -2,39 +2,37 @@
 
 import { ImageGrid } from "@/components/home/ImageGrid";
 import { NavBar } from "@/components/home/Navbar";
-import { useWallpaper } from "@/contexts/WallpaperContext";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Jumbotron from "@/components/home/Jumbotron";
+import { useQuery } from "@tanstack/react-query";
+import { getWallpapersByColor } from "@/service/wallpaper";
+import { Wallpaper } from "@/types/wallpaper.type";
 
-export default function WallpaperIdPage({ params }: { params: Promise<{ rgb: string }> }) {
+export default function WallpaperRgbPage({ params }: { params: Promise<{ rgb: string }> }) {
   const { rgb } = use(params);
   const { push } = useRouter();
-  const { wallpapers, getWallpapersByColor } = useWallpaper();
   const [relatedPalettes, setRelatedPalettes] = useState<Set<string>>(new Set());
   const [totalView, setTotalView] = useState<number>(0);
   const [totalSaved, setTotalSaved] = useState<number>(0);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  const { data: wallpapers, isLoading } = useQuery({
+    queryKey: ["wallpapers"],
+    queryFn: () => getWallpapersByColor(rgb),
+  })
 
   useIsomorphicLayoutEffect(() => {
-    if (rgb) {
-      getWallpapersByColor(rgb);
-      setIsLoaded(true);
-    }
-  }, [rgb]);
+    setTotalView(wallpapers?.reduce((acc: number, wallpaper: Wallpaper) => acc + wallpaper?.views, 0));
+    setTotalSaved(wallpapers?.reduce((acc: number, wallpaper: Wallpaper) => acc + wallpaper?.totalSaves, 0));
 
-  useIsomorphicLayoutEffect(() => {
-    setTotalView(wallpapers.reduce((acc, wallpaper) => acc + wallpaper.views, 0));
-    setTotalSaved(wallpapers.reduce((acc, wallpaper) => acc + wallpaper.totalSaves, 0));
-
-    const currentPalette = wallpapers[0]?.colorPalettes[0].colorPalette.color;
+    const currentPalette = wallpapers[0]?.colorPalettes[0]?.colorPalette?.color;
 
     const newRelatedPalettes = new Set<string>();
-    wallpapers.forEach((wallpaper) => {
-      wallpaper.colorPalettes.forEach((color) => {
-        if (color.colorPalette.color.includes(currentPalette!) && newRelatedPalettes.size < 10) {
-          newRelatedPalettes.add(color.colorPalette.color);
+    wallpapers?.forEach((wallpaper: Wallpaper) => {
+      wallpaper?.colorPalettes?.forEach((color) => {
+        if (color?.colorPalette?.color?.includes(currentPalette!) && newRelatedPalettes.size < 10) {
+          newRelatedPalettes.add(color?.colorPalette?.color);
         }
       });
     });
@@ -43,12 +41,11 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ rgb: str
   }, [wallpapers, rgb]);
 
   const handleRelatedPaletteClick = (tag: string) => {
-    const wallpaperPalette = wallpapers
-      .map((wallpaper) => wallpaper.colorPalettes
-      .find((color) => color.colorPalette.color === tag)!)
-      .filter((color) => color);
+    const wallpaperPalette = wallpapers?.map((wallpaper: Wallpaper) => wallpaper.colorPalettes
+      .find((color) => color?.colorPalette?.color === tag)!)
+      .filter((color: string) => color);
 
-    if (wallpaperPalette) push(`/color/${wallpaperPalette[0].colorPalette.color}`);
+    if (wallpaperPalette) push(`/color/${wallpaperPalette[0]?.colorPalette?.color}`);
   };
 
   return (
@@ -62,11 +59,12 @@ export default function WallpaperIdPage({ params }: { params: Promise<{ rgb: str
           handleRelatedClick={handleRelatedPaletteClick}
           totalView={totalView}
           totalSaved={totalSaved}
-          isLoaded={isLoaded}
+          isLoaded={!isLoading}
+          wallpapers={wallpapers ?? []}
         />
 
         <div className="container mx-auto px-4 py-8">
-          <ImageGrid wallpapers={wallpapers} isLoaded={isLoaded} />
+          <ImageGrid wallpapers={wallpapers} isLoaded={!isLoading} />
         </div>
       </main>
     </div>

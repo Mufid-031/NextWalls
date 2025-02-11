@@ -25,20 +25,3 @@ export const POST = async (req: NextRequest) => {
 
   return NextResponse.json(wallpaperTag, { status: 201 });
 };
-
-export const DELETE = async (req: NextRequest) => {
-  const body = await req.formData();
-  const wallpaperId = body.get("wallpaperId");
-  const tagId = body.get("tagId");
-
-  const wallpaperTag = await prisma.wallpaperTag.delete({
-    where: {
-      wallpaperId_tagId: {
-        wallpaperId: Number(wallpaperId),
-        tagId: Number(tagId),
-      },
-    },
-  });
-
-  return NextResponse.json(wallpaperTag, { status: 200 });
-};

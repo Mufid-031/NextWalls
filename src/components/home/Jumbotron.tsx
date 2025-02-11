@@ -1,12 +1,12 @@
 "use client";
 
-import { useWallpaper } from "@/contexts/WallpaperContext";
 import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, Eye, Image as ImageIcon, Search } from "lucide-react";
 import { formatNumber } from "@/lib/format-number";
 import JumbotronLayout from "./JumbotronLayout";
 import { motion } from "framer-motion";
+import { Wallpaper } from "@/types/wallpaper.type";
 
 export default function Jumbotron({
   id,
@@ -15,6 +15,7 @@ export default function Jumbotron({
   totalView,
   totalSaved,
   isLoaded,
+  wallpapers,
 }: {
   id?: string;
   relatedState: Set<string>;
@@ -22,14 +23,13 @@ export default function Jumbotron({
   totalView: number;
   totalSaved: number;
   isLoaded: boolean;
+  wallpapers: Wallpaper[];
 }) {
-  const { wallpapers } = useWallpaper();
-
   return (
     <JumbotronLayout
       className="h-[500px] overflow-hidden"
       backgroundImage={
-        wallpapers[0]?.imageUrl && isLoaded ? (
+        isLoaded ? (
           <motion.div className="w-full h-full object-cover" initial={{ scale: 1.2 }} animate={{ scale: 1, transition: { duration: 1.5, ease: "easeInOut" } }}>
             <Image unoptimized src={wallpapers[0]?.imageUrl || "/placeholder.svg"} alt="Wallpaper" width={1920} height={500} className="w-full h-full object-cover" />
           </motion.div>
@@ -48,7 +48,7 @@ export default function Jumbotron({
       <div className="flex justify-between items-end">
         <div className="space-y-4">
           <h1 className="text-5xl font-bold text-[#98ff98] hover:underline cursor-pointer [text-shadow:_0_0_10px_rgba(152,255,152,0.5)]">
-            #{id ? wallpapers[0]?.wallpaperTags.find((wallpapersTag) => wallpapersTag.tag.id === Number(id))?.tag.name : wallpapers[0]?.colorPalettes[0]?.colorPalette.color}
+            #{id ? wallpapers[0]?.wallpaperTags?.find((wallpapersTag) => wallpapersTag?.tag.id === Number(id))?.tag?.name : wallpapers[0]?.colorPalettes[0]?.colorPalette?.color}
           </h1>
           <div className="flex items-center space-x-4">
             <div className="relative">
@@ -90,7 +90,7 @@ export default function Jumbotron({
         <div className="flex flex-col gap-2">
           <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
             <ImageIcon className="w-5 h-5" />
-            <span className="text-lg">{formatNumber(wallpapers.length)}</span>
+            <span className="text-lg">{formatNumber(wallpapers?.length)}</span>
           </div>
           <div className="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center gap-3 min-w-[200px]">
             <Eye className="w-5 h-5" />
