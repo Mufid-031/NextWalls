@@ -43,7 +43,7 @@ export default function WallpaperRgbPage({ params }: { params: Promise<{ rgb: st
   const handleRelatedPaletteClick = (tag: string) => {
     const wallpaperPalette = wallpapers?.map((wallpaper: Wallpaper) => wallpaper.colorPalettes
       .find((color) => color?.colorPalette?.color === tag)!)
-      .filter((color: string) => color);
+      .filter((color: Wallpaper) => color);
 
     if (wallpaperPalette) push(`/color/${wallpaperPalette[0]?.colorPalette?.color}`);
   };
