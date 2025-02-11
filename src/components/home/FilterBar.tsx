@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/ui/Button";
 import { useSelectedFilters } from "@/contexts/SelectedFiltersContext";
-import { useWallpaper } from "@/contexts/WallpaperContext";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/Input";
 import { ChevronDown, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getWallpapersBySelectedFilters } from "@/service/wallpaper";
 
 const containerVariants = {
   hidden: {
@@ -38,11 +39,18 @@ const itemVariants = {
 };
 
 export function FilterBar() {
-  const { selectedFilters, toggleFilter, getWallpapersBySelectedFilters } = useSelectedFilters();
-  const { setWallpapers } = useWallpaper();
+  const { selectedFilters, toggleFilter } = useSelectedFilters();
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: mutateGetWallpapersBySelectedFilters } = useMutation({
+    mutationFn: getWallpapersBySelectedFilters,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["wallpapers"], data);
+    },
+  });
 
   const handleFilterWallpaperClick = () => {
-    getWallpapersBySelectedFilters(setWallpapers);
+    mutateGetWallpapersBySelectedFilters(selectedFilters);
   };
 
   const categories = [{ name: "General" }, { name: "Anime" }, { name: "People" }];

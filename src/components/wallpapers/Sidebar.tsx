@@ -5,7 +5,6 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useState } from "react";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
-import { useWallpaper } from "@/contexts/WallpaperContext";
 import { Wallpaper } from "@/types/wallpaper.type";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -30,28 +29,12 @@ const itemsVariants = {
   },
 };
 
-export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; wallpaper: Wallpaper | null; setWallpaper: React.Dispatch<React.SetStateAction<Wallpaper | null>> }) {
-  const { getWallpaperById } = useWallpaper();
+export default function Sidebar({ id, wallpaper }: { id: string; wallpaper: Wallpaper | null;}) {
   const { push } = useRouter();
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(true);
   const [openTags, setOpenTags] = useState<boolean>(true);
   const [openProperties, setOpenProperties] = useState<boolean>(true);
   const [isLoaded, setIsLoaded] = useState<boolean>(true);
-
-  useIsomorphicLayoutEffect(() => {
-    const fetchWallpaper = async () => {
-      try {
-        setIsLoaded(false);
-        const wallpaper = await getWallpaperById(id);
-        setWallpaper(wallpaper);
-        setIsLoaded(true);
-      } catch (error) {
-        console.error("Error fetching wallpaper:", error);
-      }
-    };
-
-    fetchWallpaper();
-  }, [id, getWallpaperById]);
 
   useIsomorphicLayoutEffect(() => {
     if (isOpenSidebar) {
@@ -91,7 +74,7 @@ export default function Sidebar({ id, wallpaper, setWallpaper }: { id: string; w
                 {openTags ? <ChevronDown className="w-5 h-5 text-white" /> : <ChevronRight className="w-5 h-5 text-white" />}
                 Tags
               </Button>
-              {openTags && <Tag wallpaper={wallpaper} setWallpaper={setWallpaper} itemsVariants={itemsVariants} id={id} />}
+              {openTags && <Tag wallpaper={wallpaper} itemsVariants={itemsVariants} id={id} />}
             </motion.div>
             <motion.hr initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="mx-2 text-slate-500" />
             <motion.div initial="hidden" animate="visible" exit="hidden" variants={itemsVariants} className="w-full pb-5">

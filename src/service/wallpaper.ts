@@ -83,3 +83,13 @@ export const searchWallpapers = async (search: string) => {
     throw error;
   }
 };
+
+export const getWallpapersBySelectedFilters = async (selectedFilters: Set<string>) => {
+  try {
+    const response = await axios.get(`/api/wallpapers/filter?general=${selectedFilters.has("General") ? "General" : ""}&anime=${selectedFilters.has("Anime") ? "Anime" : ""}&people=${selectedFilters.has("People") ? "People" : ""}`);
+    return response.data;
+  } catch (error) {
+    console.log("Error searching wallpapers:", error);
+    throw error;
+  }
+};

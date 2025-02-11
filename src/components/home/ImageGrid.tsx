@@ -94,10 +94,10 @@ export function ImageGrid({ wallpapers, isLoaded }: { wallpapers: Wallpaper[]; i
     },
   });
 
-  const handleWallpaperDetailClick = (wallpaperId: number) => {
+  const handleWallpaperDetailClick = async (wallpaperId: number) => {
     const wallpaper = wallpapers.find((w) => w.id === wallpaperId);
     if (wallpaper) {
-      mutateAddViewWallpaper(wallpaper);
+      await mutateAddViewWallpaper(wallpaper);
       push(`/wallpapers/${wallpaperId}`);
     }
   };

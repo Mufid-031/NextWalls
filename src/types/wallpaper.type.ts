@@ -16,6 +16,7 @@ export interface Wallpaper {
   category: { name: string };
   wallpaperTags: WallpaperTag & { tag: Tag }[];
   colorPalettes: WallpaperColorPalette & { colorPalette: ColorPalette }[];
+  tag: Tag;
   createdAt: Date;
   updatedAt: Date;
 }

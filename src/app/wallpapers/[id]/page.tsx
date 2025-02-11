@@ -3,12 +3,16 @@
 import { NavBar } from "@/components/home/Navbar";
 import Sidebar from "@/components/wallpapers/Sidebar";
 import WallpaperImage from "@/components/wallpapers/WallpaperImage";
-import { Wallpaper } from "@/types/wallpaper.type";
-import { use, useState } from "react";
+import { getWallpaperById } from "@/service/wallpaper";
+import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
 
 export default function WallpaperTagPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [wallpaper, setWallpaper] = useState<Wallpaper | null>(null);
+  const { data: wallpaper } = useQuery({
+    queryKey: ["wallpaper"],
+    queryFn: () => getWallpaperById(id),
+  });
 
   return (
     <div className="flex flex-col">
@@ -17,7 +21,6 @@ export default function WallpaperTagPage({ params }: { params: Promise<{ id: str
         <Sidebar
           id={id}
           wallpaper={wallpaper}
-          setWallpaper={setWallpaper}
         />
         <WallpaperImage wallpaper={wallpaper!}  />
       </main>
